@@ -1,0 +1,16 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: device-definition
+  datasource:
+    url: jdbc:postgresql://localhost:5432/device_definition
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: com.umasuo.database.dialect.JSONBPostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
