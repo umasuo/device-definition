@@ -1,6 +1,6 @@
 package com.umasuo.device.definition.infrastructure.exception;
 
-import com.umasuo.developer.infrastructure.util.JsonUtils;
+import com.umasuo.device.definition.infrastructure.util.JsonUtils;
 import com.umasuo.exception.AlreadyExistException;
 import com.umasuo.exception.NotExistException;
 import com.umasuo.exception.PasswordErrorException;
@@ -20,9 +20,9 @@ import javax.servlet.http.HttpServletResponse;
  * Created by umasuo on 17/3/2.
  */
 @Component
-public class DeveloperExceptionHandler implements ExceptionHandler, HandlerExceptionResolver {
+public class DeviceDefinitionExceptionHandler implements ExceptionHandler, HandlerExceptionResolver {
 
-  private static Logger logger = LoggerFactory.getLogger(DeveloperExceptionHandler.class);
+  private static Logger logger = LoggerFactory.getLogger(DeviceDefinitionExceptionHandler.class);
 
   @Override
   public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response,
