@@ -1,0 +1,4 @@
+jar {
+    baseName = 'device-definition'
+    version = '0.0.1'
+}
