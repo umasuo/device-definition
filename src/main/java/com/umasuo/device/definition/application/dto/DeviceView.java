@@ -55,6 +55,7 @@ public class DeviceView implements Serializable {
 
   /**
    * 数据定义ID，需要提前定义好不同的数据类型.
+   * TODO 替换成 data definition model.
    */
   private List<String> dataDefineIds;
 

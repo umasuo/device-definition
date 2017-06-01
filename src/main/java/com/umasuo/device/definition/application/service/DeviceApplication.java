@@ -5,6 +5,9 @@ import com.umasuo.device.definition.application.dto.DeviceView;
 import com.umasuo.device.definition.application.dto.mapper.DeviceMapper;
 import com.umasuo.device.definition.domain.model.Device;
 import com.umasuo.device.definition.domain.service.DeviceService;
+import com.umasuo.device.definition.infrastructure.update.UpdateAction;
+import com.umasuo.device.definition.infrastructure.update.UpdaterService;
+import com.umasuo.exception.ConflictException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +26,11 @@ public class DeviceApplication {
   @Autowired
   private transient DeviceService deviceService;
 
+  @Autowired
+  private transient UpdaterService updaterService;
+
   /**
-   * create new device view.
+   * save new device view.
    *
    * @param draft device draft
    * @return device view
@@ -33,7 +39,7 @@ public class DeviceApplication {
     logger.debug("Enter. draft: {}.", draft);
 
     Device device = DeviceMapper.viewToModel(draft);
-    Device deviceCreated = deviceService.create(device);
+    Device deviceCreated = deviceService.save(device);
 
     DeviceView view = DeviceMapper.modelToView(device);
 
@@ -72,5 +78,44 @@ public class DeviceApplication {
     logger.debug("Exit. devicesSize: {}.", views.size());
     logger.trace("Devices: {}.", views);
     return views;
+  }
+
+  /**
+   * update device with actions.
+   *
+   * @param id
+   * @param version
+   * @param actions
+   * @return
+   */
+  public DeviceView update(String id, Integer version, List<UpdateAction> actions) {
+    logger.debug("Enter: id: {}, version: {}, actions: {}", id, version, actions);
+
+    Device valueInDb = deviceService.get(id);
+    logger.debug("Data in db: {}", valueInDb);
+    checkVersion(version, valueInDb.getVersion());
+
+    actions.stream().forEach(
+        action -> updaterService.handle(valueInDb, action)
+    );
+
+    Device savedDevice = deviceService.save(valueInDb);
+    DeviceView updatedDevice = DeviceMapper.modelToView(savedDevice);
+
+    logger.debug("Exit: data updated: {}", updatedDevice);
+    return updatedDevice;
+  }
+
+  /**
+   * check the version.
+   *
+   * @param inputVersion Integer
+   * @param existVersion Integer
+   */
+  private void checkVersion(Integer inputVersion, Integer existVersion) {
+    if (!inputVersion.equals(existVersion)) {
+      logger.debug("Device definition version is not correct.");
+      throw new ConflictException("Device definition version is not correct.");
+    }
   }
 }
