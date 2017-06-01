@@ -7,6 +7,6 @@ public class Router {
 
   public static final String DEVICE_DEFINITION_ROOT = "/device-definitions";
 
-  public static final String DEVICE_DEFINITION_WITH_ID = DEVICE_DEFINITION_ROOT + "/id";
+  public static final String DEVICE_DEFINITION_WITH_ID = DEVICE_DEFINITION_ROOT + "/{id}";
 
 }

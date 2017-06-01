@@ -11,6 +11,10 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: com.umasuo.database.dialect.JSONBPostgreSQLDialect
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
+
+jwt:
+  secret: QWERTYUIOPASDFGHJKLZXCVBNM
+  expires: 72000

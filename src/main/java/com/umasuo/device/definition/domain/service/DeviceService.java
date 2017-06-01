@@ -4,6 +4,7 @@ import com.umasuo.device.definition.domain.model.Device;
 import com.umasuo.device.definition.infrastructure.repository.DeviceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class DeviceService {
 
   private final static Logger logger = LoggerFactory.getLogger(DeviceService.class);
 
+  @Autowired
   private transient DeviceRepository deviceRepository;
 
   /**
