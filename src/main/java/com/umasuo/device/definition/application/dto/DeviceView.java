@@ -1,56 +1,36 @@
-package com.umasuo.device.definition.domain.model;
+package com.umasuo.device.definition.application.dto;
 
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 import com.umasuo.device.definition.infrastructure.enums.DeviceType;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
-
 /**
- * Created by umasuo on 17/3/7.
+ * Created by umasuo on 17/6/1.
  */
-@Entity
-@Table(name = "device_definition")
-@Setter
-@Getter
-public class Device {
+@Data
+public class DeviceView implements Serializable {
 
-  @Id
-  @GeneratedValue(generator = "uuid")
-  @GenericGenerator(name = "uuid", strategy = "uuid2")
-  @Column(name = "id")
+  private static final long serialVersionUID = -8662294173374891858L;
+
   private String id;
 
   /**
    * The Created at.
    */
-  @CreatedDate
-  @Column(name = "created_at")
   protected ZonedDateTime createdAt;
 
   /**
    * The Last modified at.
    */
-  @LastModifiedDate
-  @Column(name = "last_modified_at")
   protected ZonedDateTime lastModifiedAt;
 
   /**
    * version used for update date check.
    */
-  @Version
   private Integer version;
 
   /**
