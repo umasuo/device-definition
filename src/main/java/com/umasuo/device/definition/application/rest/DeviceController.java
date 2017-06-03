@@ -41,7 +41,6 @@ public class DeviceController {
   public DeviceView create(@RequestBody @Valid DeviceDraft draft) {
     logger.info("Enter. deviceDraft: {}.", draft);
 
-    // TODO 检查开发者是否存在
     DeviceView view = deviceApplication.create(draft);
 
     logger.info("Exit. deviceView: {}.", view);

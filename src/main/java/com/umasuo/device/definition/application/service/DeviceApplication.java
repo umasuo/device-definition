@@ -9,6 +9,8 @@ import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdaterService;
 import com.umasuo.exception.ConflictException;
+import com.umasuo.exception.ParametersException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,12 @@ public class DeviceApplication {
   private transient UpdaterService updaterService;
 
   /**
+   * The Rest client.
+   */
+  @Autowired
+  private transient RestClient restClient;
+
+  /**
    * save new device view.
    *
    * @param draft device draft
@@ -38,6 +46,14 @@ public class DeviceApplication {
    */
   public DeviceView create(DeviceDraft draft) {
     logger.debug("Enter. draft: {}.", draft);
+
+    boolean isDeveloperExist = restClient.isDeveloperExist(draft.getDeveloperId());
+
+    if (!isDeveloperExist) {
+      logger.debug("Developer: {} not exist.", draft.getDeveloperId());
+      throw new ParametersException("Developer not exist");
+    }
+
 
     Device device = DeviceMapper.viewToModel(draft);
     device.setStatus(DeviceStatus.UNPUBLISHED);
