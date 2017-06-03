@@ -5,6 +5,7 @@ import com.umasuo.device.definition.application.dto.DeviceView;
 import com.umasuo.device.definition.application.dto.mapper.DeviceMapper;
 import com.umasuo.device.definition.domain.model.Device;
 import com.umasuo.device.definition.domain.service.DeviceService;
+import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdaterService;
 import com.umasuo.exception.ConflictException;
@@ -39,9 +40,10 @@ public class DeviceApplication {
     logger.debug("Enter. draft: {}.", draft);
 
     Device device = DeviceMapper.viewToModel(draft);
+    device.setStatus(DeviceStatus.UNPUBLISHED);
     Device deviceCreated = deviceService.save(device);
 
-    DeviceView view = DeviceMapper.modelToView(device);
+    DeviceView view = DeviceMapper.modelToView(deviceCreated);
 
     logger.debug("Exit. deviceCreatedView: {}.", view);
     return view;

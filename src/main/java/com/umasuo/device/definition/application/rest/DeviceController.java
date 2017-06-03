@@ -31,7 +31,12 @@ public class DeviceController {
   @Autowired
   private transient DeviceApplication deviceApplication;
 
-
+  /**
+   * create new device.
+   *
+   * @param draft Device draft
+   * @return
+   */
   @PostMapping(Router.DEVICE_DEFINITION_ROOT)
   public DeviceView create(@RequestBody @Valid DeviceDraft draft) {
     logger.info("Enter. deviceDraft: {}.", draft);

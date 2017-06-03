@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by umasuo on 17/6/1.
  */
-@Service(value = UpdateActionUtils.ADD_DATA_DEFINITION)
+@Service(value = UpdateActionUtils.UPDATE_DATA_DEFINITION)
 public class UpdateDeviceService implements Updater<Device, UpdateAction> {
 
   @Override
