@@ -16,7 +16,6 @@ public class UpdateDeviceService implements Updater<Device, UpdateAction> {
   @Override
   public void handle(Device entity, UpdateAction action) {
     UpdateDevice updateDevice = (UpdateDevice) action;
-    //TODO 检查data definition是否存在，且是否属于该开发者
     entity.setName(updateDevice.getName());
     entity.setIcon(updateDevice.getIcon());
     entity.setType(updateDevice.getType());

@@ -22,3 +22,6 @@ jwt:
 developer:
   service:
     uri: http://localhost:8804/developers/
+datadefinition:
+  service:
+    uri: http://localhost:8802/data-definitions/
