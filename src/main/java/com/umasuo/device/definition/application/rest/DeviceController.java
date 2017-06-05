@@ -4,6 +4,8 @@ import com.umasuo.device.definition.application.dto.DeviceDraft;
 import com.umasuo.device.definition.application.dto.DeviceView;
 import com.umasuo.device.definition.application.service.DeviceApplication;
 import com.umasuo.device.definition.infrastructure.Router;
+import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +48,26 @@ public class DeviceController {
 
     logger.info("Exit. deviceView: {}.", view);
     return view;
+  }
+
+  /**
+   * Update Device view.
+   *
+   * @param id the Device id
+   * @param updateRequest the update request
+   * @return the DeviceView
+   */
+  @PutMapping(Router.DEVICE_DEFINITION_ROOT)
+  public DeviceView update(@PathVariable("id") String id,
+      @RequestBody @Valid UpdateRequest updateRequest) {
+    logger.info("Enter. deviceId: {}, updateRequest: {}.", id, updateRequest);
+
+    DeviceView result =
+        deviceApplication.update(id, updateRequest.getVersion(), updateRequest.getActions());
+
+    logger.trace("Updated device: {}.", result);
+    logger.info("Exit.");
+    return result;
   }
 
   /**

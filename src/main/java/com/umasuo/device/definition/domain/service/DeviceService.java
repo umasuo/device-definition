@@ -64,8 +64,4 @@ public class DeviceService {
 
     return devices;
   }
-
-  public Device update() {
-    return null;
-  }
 }

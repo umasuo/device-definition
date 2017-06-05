@@ -54,7 +54,6 @@ public class DeviceApplication {
       throw new ParametersException("Developer not exist");
     }
 
-
     Device device = DeviceMapper.viewToModel(draft);
     device.setStatus(DeviceStatus.UNPUBLISHED);
     Device deviceCreated = deviceService.save(device);
@@ -69,7 +68,6 @@ public class DeviceApplication {
    * get device by id.
    *
    * @param id String
-   * @return
    */
   public DeviceView get(String id) {
     logger.debug("Enter. id: {}.", id);
@@ -100,11 +98,6 @@ public class DeviceApplication {
 
   /**
    * update device with actions.
-   *
-   * @param id
-   * @param version
-   * @param actions
-   * @return
    */
   public DeviceView update(String id, Integer version, List<UpdateAction> actions) {
     logger.debug("Enter: id: {}, version: {}, actions: {}", id, version, actions);
@@ -113,14 +106,12 @@ public class DeviceApplication {
     logger.debug("Data in db: {}", valueInDb);
     checkVersion(version, valueInDb.getVersion());
 
-    actions.stream().forEach(
-        action -> updaterService.handle(valueInDb, action)
-    );
+    actions.stream().forEach(action -> updaterService.handle(valueInDb, action));
 
     Device savedDevice = deviceService.save(valueInDb);
     DeviceView updatedDevice = DeviceMapper.modelToView(savedDevice);
 
-    logger.debug("Exit: data updated: {}", updatedDevice);
+    logger.debug("Exit: updated device: {}", updatedDevice);
     return updatedDevice;
   }
 
