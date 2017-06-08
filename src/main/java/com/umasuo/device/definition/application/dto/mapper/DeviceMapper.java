@@ -28,6 +28,7 @@ public final class DeviceMapper {
     device.setName(draft.getName());
     device.setType(draft.getType());
     device.setDataDefineIds(draft.getDataDefineIds());
+    device.setOpenable(draft.getOpenable());
     return device;
   }
 
@@ -49,6 +50,7 @@ public final class DeviceMapper {
     view.setName(device.getName());
     view.setDataDefineIds(device.getDataDefineIds());
     view.setType(device.getType());
+    view.setOpenable(device.getOpenable());
     return view;
   }
 

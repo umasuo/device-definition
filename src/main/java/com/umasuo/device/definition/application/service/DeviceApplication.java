@@ -97,6 +97,23 @@ public class DeviceApplication {
   }
 
   /**
+   * get all open device define by developer id.
+   *
+   * @param id developer id
+   * @return list of device view
+   */
+  public List<DeviceView> getAllOpenDevice(String id) {
+    logger.debug("Enter. developerId: {}.", id);
+
+    List<Device> devices = deviceService.getAllOpenDevice(id);
+    List<DeviceView> views = DeviceMapper.modelToView(devices);
+
+    logger.debug("Exit. devicesSize: {}.", views.size());
+    logger.trace("Devices: {}.", views);
+    return views;
+  }
+
+  /**
    * update device with actions.
    */
   public DeviceView update(String id, Integer version, List<UpdateAction> actions) {
