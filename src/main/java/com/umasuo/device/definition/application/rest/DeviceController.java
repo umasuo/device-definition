@@ -38,7 +38,7 @@ public class DeviceController {
    * create new device.
    *
    * @param draft Device draft
-   * @return
+   * @return device view
    */
   @PostMapping(Router.DEVICE_DEFINITION_ROOT)
   public DeviceView create(@RequestBody @Valid DeviceDraft draft) {
@@ -74,7 +74,7 @@ public class DeviceController {
    * get device definition by device id.
    *
    * @param id String
-   * @return DeviceView
+   * @return DeviceView device view
    */
   @GetMapping(Router.DEVICE_DEFINITION_WITH_ID)
   public DeviceView get(@PathVariable String id) {
@@ -103,4 +103,21 @@ public class DeviceController {
     return views;
   }
 
+
+  /**
+   * Gets all open device.
+   *
+   * @param developerId the developer id
+   * @return the all open device
+   */
+  @GetMapping(Router.OPEN_DEVICE_DEFINITION)
+  public List<DeviceView> getAllOpenDevice(@RequestParam String developerId) {
+    logger.info("Enter. developerId: {}.", developerId);
+
+    List<DeviceView> views = deviceApplication.getAllOpenDevice(developerId);
+
+    logger.info("Exit. viewsSize: {}.", views.size());
+    logger.trace("views: {}.", views);
+    return views;
+  }
 }

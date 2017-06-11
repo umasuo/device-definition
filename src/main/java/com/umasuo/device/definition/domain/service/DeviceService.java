@@ -6,6 +6,7 @@ import com.umasuo.exception.NotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class DeviceService {
   /**
    * 新建device.
    *
-   * @param device
-   * @return
+   * @param device the device
+   * @return device
    */
   public Device save(Device device) {
     logger.debug("Enter. device: {}.", device);
@@ -37,8 +38,10 @@ public class DeviceService {
   }
 
   /**
-   * @param id
-   * @return
+   * Get device.
+   *
+   * @param id the id
+   * @return device
    */
   public Device get(String id) {
     logger.debug("Enter. id: {}.", id);
@@ -53,12 +56,37 @@ public class DeviceService {
   }
 
   /**
-   * @return
+   * Gets by developer id.
+   *
+   * @param developerId the developer id
+   * @return by developer id
    */
   public List<Device> getByDeveloperId(String developerId) {
     logger.debug("Enter. developerId: {}.", developerId);
 
     List<Device> devices = deviceRepository.findAllByDeveloperId(developerId);
+
+    logger.debug("Exit. devicesSize: {}.", devices.size());
+
+    return devices;
+  }
+
+  /**
+   * Gets all open device.
+   *
+   * @param developerId the developer id
+   * @return the all openable device
+   */
+  public List<Device> getAllOpenDevice(String developerId) {
+    logger.debug("Enter. developerId: {}.", developerId);
+
+    Device sample = new Device();
+    sample.setDeveloperId(developerId);
+    sample.setOpenable(true);
+
+    Example<Device> exam = Example.of(sample);
+
+    List<Device> devices = deviceRepository.findAll(exam);
 
     logger.debug("Exit. devicesSize: {}.", devices.size());
 

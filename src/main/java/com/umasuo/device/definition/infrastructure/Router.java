@@ -9,4 +9,6 @@ public class Router {
 
   public static final String DEVICE_DEFINITION_WITH_ID = DEVICE_DEFINITION_ROOT + "/{id}";
 
+  public static final String OPEN_DEVICE_DEFINITION = DEVICE_DEFINITION_ROOT + "/open";
+
 }

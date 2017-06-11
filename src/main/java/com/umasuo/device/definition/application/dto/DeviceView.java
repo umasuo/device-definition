@@ -63,4 +63,10 @@ public class DeviceView implements Serializable {
    * device type, identify by how the communicate with other services(app, cloud)
    */
   private DeviceType type;
+
+  /**
+   * Open status about this device.
+   * True means this device can be find by other developers and false means not.
+   */
+  private Boolean openable = false;
 }

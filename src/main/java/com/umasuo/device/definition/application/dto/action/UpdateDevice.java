@@ -3,6 +3,7 @@ package com.umasuo.device.definition.application.dto.action;
 import com.umasuo.device.definition.infrastructure.enums.DeviceType;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -28,6 +29,12 @@ public class UpdateDevice implements UpdateAction, Serializable {
    */
   @NotNull
   private String icon;
+
+  /**
+   * The openable for device.
+   */
+  @NotNull
+  private Boolean openable;
 
   /**
    * device type, identify by how the communicate with other services(app, cloud)

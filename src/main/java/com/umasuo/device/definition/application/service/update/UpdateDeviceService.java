@@ -19,6 +19,7 @@ public class UpdateDeviceService implements Updater<Device, UpdateAction> {
     entity.setName(updateDevice.getName());
     entity.setIcon(updateDevice.getIcon());
     entity.setType(updateDevice.getType());
+    entity.setOpenable(updateDevice.getOpenable());
   }
 
 }
