@@ -5,7 +5,6 @@ import com.umasuo.device.definition.application.dto.DeviceView;
 import com.umasuo.device.definition.application.service.DeviceApplication;
 import com.umasuo.device.definition.infrastructure.Router;
 import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,10 +41,11 @@ public class DeviceController {
    * @return device view
    */
   @PostMapping(Router.DEVICE_DEFINITION_ROOT)
-  public DeviceView create(@RequestBody @Valid DeviceDraft draft) {
+  public DeviceView create(@RequestBody @Valid DeviceDraft draft, @RequestHeader String
+      developerId) {
     logger.info("Enter. deviceDraft: {}.", draft);
 
-    DeviceView view = deviceApplication.create(draft);
+    DeviceView view = deviceApplication.create(draft, developerId);
 
     logger.info("Exit. deviceView: {}.", view);
     return view;
@@ -53,17 +54,20 @@ public class DeviceController {
   /**
    * Update Device view.
    *
-   * @param id the Device id
+   * @param id            the Device id
    * @param updateRequest the update request
    * @return the DeviceView
    */
   @PutMapping(Router.DEVICE_DEFINITION_ROOT)
   public DeviceView update(@PathVariable("id") String id,
-      @RequestBody @Valid UpdateRequest updateRequest) {
-    logger.info("Enter. deviceId: {}, updateRequest: {}.", id, updateRequest);
+                           @RequestBody @Valid UpdateRequest updateRequest,
+                           @RequestHeader String developerId) {
+    logger.info("Enter. deviceId: {}, updateRequest: {}, developerId: {}.", id, updateRequest,
+        developerId);
 
     DeviceView result =
-        deviceApplication.update(id, updateRequest.getVersion(), updateRequest.getActions());
+        deviceApplication.update(id, developerId, updateRequest.getVersion(), updateRequest
+            .getActions());
 
     logger.trace("Updated device: {}.", result);
     logger.info("Exit.");
@@ -77,10 +81,10 @@ public class DeviceController {
    * @return DeviceView device view
    */
   @GetMapping(Router.DEVICE_DEFINITION_WITH_ID)
-  public DeviceView get(@PathVariable String id) {
+  public DeviceView get(@PathVariable String id, @RequestHeader String developerId) {
     logger.info("Enter. id: {}.", id);
 
-    DeviceView view = deviceApplication.get(id);
+    DeviceView view = deviceApplication.get(id, developerId);
 
     logger.info("Exit. view: {}.", view);
     return view;

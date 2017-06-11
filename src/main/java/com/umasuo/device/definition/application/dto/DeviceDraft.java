@@ -15,12 +15,6 @@ import javax.validation.constraints.NotNull;
 public class DeviceDraft {
 
   /**
-   * which developer this kind of device belong to.
-   */
-  @NotNull
-  private String developerId;
-
-  /**
    * name of the device.
    */
   @NotNull

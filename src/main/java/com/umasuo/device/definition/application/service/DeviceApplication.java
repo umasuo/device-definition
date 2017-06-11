@@ -10,7 +10,6 @@ import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdaterService;
 import com.umasuo.exception.ConflictException;
 import com.umasuo.exception.ParametersException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,17 +43,17 @@ public class DeviceApplication {
    * @param draft device draft
    * @return device view
    */
-  public DeviceView create(DeviceDraft draft) {
+  public DeviceView create(DeviceDraft draft, String developerId) {
     logger.debug("Enter. draft: {}.", draft);
 
-    boolean isDeveloperExist = restClient.isDeveloperExist(draft.getDeveloperId());
+    boolean isDeveloperExist = restClient.isDeveloperExist(developerId);
 
     if (!isDeveloperExist) {
-      logger.debug("Developer: {} not exist.", draft.getDeveloperId());
+      logger.debug("Developer: {} not exist.", developerId);
       throw new ParametersException("Developer not exist");
     }
 
-    Device device = DeviceMapper.viewToModel(draft);
+    Device device = DeviceMapper.viewToModel(draft, developerId);
     device.setStatus(DeviceStatus.UNPUBLISHED);
     Device deviceCreated = deviceService.save(device);
 
@@ -69,10 +68,14 @@ public class DeviceApplication {
    *
    * @param id String
    */
-  public DeviceView get(String id) {
-    logger.debug("Enter. id: {}.", id);
+  public DeviceView get(String id, String developerId) {
+    logger.debug("Enter. id: {}, developerId: {}.", id, developerId);
 
     Device device = deviceService.get(id);
+    if (!device.getDeveloperId().equals(developerId)) {
+      throw new ParametersException("Device not belong to developer: " + developerId + ", " +
+          "deviceId: " + id);
+    }
     DeviceView view = DeviceMapper.modelToView(device);
 
     logger.debug("Exit. device: {}.", view);
@@ -82,13 +85,13 @@ public class DeviceApplication {
   /**
    * get all device define by developer id.
    *
-   * @param id developer id
+   * @param developerId developer id
    * @return list of device view
    */
-  public List<DeviceView> getAllByDeveloperId(String id) {
-    logger.debug("Enter. developerId: {}.", id);
+  public List<DeviceView> getAllByDeveloperId(String developerId) {
+    logger.debug("Enter. developerId: {}.", developerId);
 
-    List<Device> devices = deviceService.getByDeveloperId(id);
+    List<Device> devices = deviceService.getByDeveloperId(developerId);
     List<DeviceView> views = DeviceMapper.modelToView(devices);
 
     logger.debug("Exit. devicesSize: {}.", views.size());
@@ -116,10 +119,15 @@ public class DeviceApplication {
   /**
    * update device with actions.
    */
-  public DeviceView update(String id, Integer version, List<UpdateAction> actions) {
+  public DeviceView update(String id, String developerId, Integer version, List<UpdateAction>
+      actions) {
     logger.debug("Enter: id: {}, version: {}, actions: {}", id, version, actions);
 
     Device valueInDb = deviceService.get(id);
+    if (!valueInDb.getDeveloperId().equals(developerId)) {
+      throw new ParametersException("The device not belong to the developer: " + developerId + "," +
+          " deviceId: " + id);
+    }
     logger.debug("Data in db: {}", valueInDb);
     checkVersion(version, valueInDb.getVersion());
 

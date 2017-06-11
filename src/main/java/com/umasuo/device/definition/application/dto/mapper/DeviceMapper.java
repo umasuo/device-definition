@@ -21,9 +21,9 @@ public final class DeviceMapper {
    *
    * @return
    */
-  public static Device viewToModel(DeviceDraft draft) {
+  public static Device viewToModel(DeviceDraft draft, String developerId) {
     Device device = new Device();
-    device.setDeveloperId(draft.getDeveloperId());
+    device.setDeveloperId(developerId);
     device.setIcon(draft.getIcon());
     device.setName(draft.getName());
     device.setType(draft.getType());
