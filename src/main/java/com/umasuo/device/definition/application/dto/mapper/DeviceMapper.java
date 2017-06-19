@@ -18,8 +18,6 @@ public final class DeviceMapper {
 
   /**
    * convert from view to domain model
-   *
-   * @return
    */
   public static Device viewToModel(DeviceDraft draft, String developerId) {
     Device device = new Device();
@@ -28,15 +26,14 @@ public final class DeviceMapper {
     device.setName(draft.getName());
     device.setType(draft.getType());
     device.setDataDefineIds(draft.getDataDefineIds());
-    device.setOpenable(draft.getOpenable());
+    if (draft.getOpenable() != null) {
+      device.setOpenable(draft.getOpenable());
+    }
     return device;
   }
 
   /**
    * convert domain model to view.
-   *
-   * @param device
-   * @return
    */
   public static DeviceView modelToView(Device device) {
     DeviceView view = new DeviceView();
@@ -56,9 +53,6 @@ public final class DeviceMapper {
 
   /**
    * convert list of model to list of views.
-   *
-   * @param deviceList
-   * @return
    */
   public static List<DeviceView> modelToView(List<Device> deviceList) {
     List<DeviceView> views = new ArrayList<>();

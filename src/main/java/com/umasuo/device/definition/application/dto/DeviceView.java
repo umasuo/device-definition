@@ -2,10 +2,10 @@ package com.umasuo.device.definition.application.dto;
 
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 import com.umasuo.device.definition.infrastructure.enums.DeviceType;
+
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -21,12 +21,12 @@ public class DeviceView implements Serializable {
   /**
    * The Created at.
    */
-  protected ZonedDateTime createdAt;
+  private Long createdAt;
 
   /**
    * The Last modified at.
    */
-  protected ZonedDateTime lastModifiedAt;
+  private Long lastModifiedAt;
 
   /**
    * version used for update date check.

@@ -58,7 +58,7 @@ public class DeviceController {
    * @param updateRequest the update request
    * @return the DeviceView
    */
-  @PutMapping(Router.DEVICE_DEFINITION_ROOT)
+  @PutMapping(Router.DEVICE_DEFINITION_WITH_ID)
   public DeviceView update(@PathVariable("id") String id,
                            @RequestBody @Valid UpdateRequest updateRequest,
                            @RequestHeader String developerId) {
@@ -97,7 +97,7 @@ public class DeviceController {
    * @return list of device view
    */
   @GetMapping(Router.DEVICE_DEFINITION_ROOT)
-  public List<DeviceView> getByDeveloperId(@RequestParam String developerId) {
+  public List<DeviceView> getByDeveloperId(@RequestHeader String developerId) {
     logger.info("Enter. developerId: {}.", developerId);
 
     List<DeviceView> views = deviceApplication.getAllByDeveloperId(developerId);

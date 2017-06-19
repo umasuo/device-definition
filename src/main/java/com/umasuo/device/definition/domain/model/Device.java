@@ -2,13 +2,14 @@ package com.umasuo.device.definition.domain.model;
 
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 import com.umasuo.device.definition.infrastructure.enums.DeviceType;
+
 import lombok.Data;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -40,14 +41,14 @@ public class Device {
    */
   @CreatedDate
   @Column(name = "created_at")
-  protected ZonedDateTime createdAt;
+  private Long createdAt;
 
   /**
    * The Last modified at.
    */
   @LastModifiedDate
   @Column(name = "last_modified_at")
-  protected ZonedDateTime lastModifiedAt;
+  private Long lastModifiedAt;
 
   /**
    * version used for update date check.

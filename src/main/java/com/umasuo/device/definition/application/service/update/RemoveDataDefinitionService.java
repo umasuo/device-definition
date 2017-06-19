@@ -18,17 +18,15 @@ public class RemoveDataDefinitionService implements Updater<Device, UpdateAction
   @Override
   public void handle(Device entity, UpdateAction action) {
     RemoveDataDefinition removeDataDefinition = (RemoveDataDefinition) action;
-    //TODO 检查data definition是否存在，且是否属于该开发者
     List<String> dataDefinitions = entity.getDataDefineIds();
     List<String> newDataDefinitions = removeDataDefinition.getDataDefinitionIds();
     newDataDefinitions.stream().forEach(
         dataDefinition -> {
-          if (!dataDefinitions.contains(dataDefinition)) {
+          if (dataDefinitions.contains(dataDefinition)) {
             dataDefinitions.remove(dataDefinition);
           }
         }
     );
-
   }
 
 }

@@ -32,12 +32,6 @@ public class DeviceApplication {
   private transient UpdaterService updaterService;
 
   /**
-   * The Rest client.
-   */
-  @Autowired
-  private transient RestClient restClient;
-
-  /**
    * save new device view.
    *
    * @param draft device draft
@@ -45,13 +39,6 @@ public class DeviceApplication {
    */
   public DeviceView create(DeviceDraft draft, String developerId) {
     logger.debug("Enter. draft: {}.", draft);
-
-    boolean isDeveloperExist = restClient.isDeveloperExist(developerId);
-
-    if (!isDeveloperExist) {
-      logger.debug("Developer: {} not exist.", developerId);
-      throw new ParametersException("Developer not exist");
-    }
 
     Device device = DeviceMapper.viewToModel(draft, developerId);
     device.setStatus(DeviceStatus.UNPUBLISHED);
@@ -73,6 +60,7 @@ public class DeviceApplication {
 
     Device device = deviceService.get(id);
     if (!device.getDeveloperId().equals(developerId)) {
+      logger.debug("Device: {} not belong to developer: {}.", id, developerId);
       throw new ParametersException("Device not belong to developer: " + developerId + ", " +
           "deviceId: " + id);
     }
@@ -125,6 +113,7 @@ public class DeviceApplication {
 
     Device valueInDb = deviceService.get(id);
     if (!valueInDb.getDeveloperId().equals(developerId)) {
+      logger.debug("Device: {} not belong to developer: {}.", id, developerId);
       throw new ParametersException("The device not belong to the developer: " + developerId + "," +
           " deviceId: " + id);
     }
