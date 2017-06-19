@@ -32,6 +32,12 @@ public class DeviceApplication {
   private transient UpdaterService updaterService;
 
   /**
+   * The DataDefinitionValidator.
+   */
+  @Autowired
+  private transient DataDefinitionValidator dataDefinitionValidator;
+
+  /**
    * save new device view.
    *
    * @param draft device draft
@@ -39,6 +45,10 @@ public class DeviceApplication {
    */
   public DeviceView create(DeviceDraft draft, String developerId) {
     logger.debug("Enter. draft: {}.", draft);
+
+    if (draft.getDataDefineIds() != null && !draft.getDataDefineIds().isEmpty()) {
+      dataDefinitionValidator.checkDataDefinitionExist(developerId, draft.getDataDefineIds());
+    }
 
     Device device = DeviceMapper.viewToModel(draft, developerId);
     device.setStatus(DeviceStatus.UNPUBLISHED);
