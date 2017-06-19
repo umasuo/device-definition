@@ -2,9 +2,7 @@ package com.umasuo.device.definition.domain.model;
 
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 import com.umasuo.device.definition.infrastructure.enums.DeviceType;
-
 import lombok.Data;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -41,14 +39,14 @@ public class Device {
    */
   @CreatedDate
   @Column(name = "created_at")
-  private Long createdAt;
+  protected Long createdAt;
 
   /**
    * The Last modified at.
    */
   @LastModifiedDate
   @Column(name = "last_modified_at")
-  private Long lastModifiedAt;
+  protected Long lastModifiedAt;
 
   /**
    * version used for update date check.

@@ -2,7 +2,6 @@ package com.umasuo.device.definition.application.dto;
 
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 import com.umasuo.device.definition.infrastructure.enums.DeviceType;
-
 import lombok.Data;
 
 import java.io.Serializable;
@@ -21,12 +20,12 @@ public class DeviceView implements Serializable {
   /**
    * The Created at.
    */
-  private Long createdAt;
+  protected Long createdAt;
 
   /**
    * The Last modified at.
    */
-  private Long lastModifiedAt;
+  protected Long lastModifiedAt;
 
   /**
    * version used for update date check.
