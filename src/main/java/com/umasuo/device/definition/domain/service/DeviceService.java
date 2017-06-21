@@ -26,7 +26,7 @@ public class DeviceService {
    * 新建device.
    *
    * @param device the device
-   * @return device
+   * @return device device
    */
   public Device save(Device device) {
     logger.debug("Enter. device: {}.", device);
@@ -41,7 +41,7 @@ public class DeviceService {
    * Get device.
    *
    * @param id the id
-   * @return device
+   * @return device device
    */
   public Device get(String id) {
     logger.debug("Enter. id: {}.", id);
@@ -91,5 +91,29 @@ public class DeviceService {
     logger.debug("Exit. devicesSize: {}.", devices.size());
 
     return devices;
+  }
+
+
+  /**
+   * Is exist name in developer.
+   *
+   * @param developerId the developer id
+   * @param name the name
+   * @return the boolean
+   */
+  public boolean isExistName(String developerId, String name) {
+    logger.debug("Enter. developerId: {}, name: {}.", developerId, name);
+
+    Device sample = new Device();
+    sample.setDeveloperId(developerId);
+    sample.setName(name);
+
+    Example<Device> example = Example.of(sample);
+
+    boolean result = deviceRepository.exists(example);
+
+    logger.debug("Exit. name: {} exist: {}.", name, result);
+
+    return result;
   }
 }

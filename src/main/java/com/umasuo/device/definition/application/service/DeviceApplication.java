@@ -8,8 +8,10 @@ import com.umasuo.device.definition.domain.service.DeviceService;
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdaterService;
+import com.umasuo.exception.AlreadyExistException;
 import com.umasuo.exception.ConflictException;
 import com.umasuo.exception.ParametersException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,11 @@ public class DeviceApplication {
 
     if (draft.getDataDefineIds() != null && !draft.getDataDefineIds().isEmpty()) {
       dataDefinitionValidator.checkDataDefinitionExist(developerId, draft.getDataDefineIds());
+    }
+
+    if (deviceService.isExistName(developerId, draft.getName())) {
+      logger.debug("Device name: {} has existed in developer: {}.", draft.getName(), developerId);
+      throw new AlreadyExistException("Device name has existed");
     }
 
     Device device = DeviceMapper.viewToModel(draft, developerId);
