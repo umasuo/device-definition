@@ -31,6 +31,11 @@ public class ProductTypeApplication {
   @Autowired
   private transient RestClient restClient;
 
+  /**
+   * 查询所有的产品类型。
+   *
+   * @return
+   */
   public List<ProductTypeView> getAll() {
     LOG.debug("Enter.");
 
@@ -52,6 +57,12 @@ public class ProductTypeApplication {
     return result;
   }
 
+  /**
+   * 获取所有的data definition id，用于查询具体的data definition view。
+   *
+   * @param productTypes
+   * @return
+   */
   private List<String> getDataDefinitionIds(List<ProductType> productTypes) {
     List<String> dataDefinitionIds = Lists.newArrayList();
 

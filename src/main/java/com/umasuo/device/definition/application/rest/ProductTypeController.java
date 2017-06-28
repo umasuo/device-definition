@@ -30,36 +30,10 @@ public class ProductTypeController {
   private transient ProductTypeApplication productTypeApplication;
 
   /**
-   * 新增产品类别接口，对平台维护者开放。
-   *
-   * @return
+   * 查询所有的产品类型，用于新建产品时选择类型和对应的功能，数据。
    */
-  public ProductTypeView create() {
-    // TODO: 17/6/28  
-    return null;
-  }
-
-  /**
-   * 删除产品类别，对平台维护者开放。
-   * 如果现有产品使用该类别，则不能删除。
-   */
-  public void delete() {
-    // TODO: 17/6/28
-  }
-
-  /**
-   * 修改产品类别，对平台维护者开放。
-   *
-   * @return
-   */
-  public ProductTypeView update() {
-    // TODO: 17/6/28
-    return null;
-  }
-
   @GetMapping(PRODUCT_TYPE_ROOT)
   public List<ProductTypeView> getAll() {
-    // TODO: 17/6/28
     LOG.info("Enter.");
 
     List<ProductTypeView> result = productTypeApplication.getAll();

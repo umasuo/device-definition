@@ -2,12 +2,10 @@ package com.umasuo.device.definition.application.dto.mapper;
 
 import com.google.common.collect.Lists;
 import com.umasuo.device.definition.application.dto.CommonDataView;
-import com.umasuo.device.definition.application.dto.DataDefinitionView;
 import com.umasuo.device.definition.application.dto.ProductTypeView;
 import com.umasuo.device.definition.domain.model.ProductType;
 
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**

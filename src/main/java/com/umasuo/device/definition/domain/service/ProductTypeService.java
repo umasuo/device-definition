@@ -27,6 +27,11 @@ public class ProductTypeService {
   @Autowired
   private transient ProductTypeRepository repository;
 
+  /**
+   * 查询所有的产品类型。
+   *
+   * @return
+   */
   public List<ProductType> getAll() {
     LOG.debug("Enter.");
 
