@@ -12,6 +12,7 @@ import java.io.Serializable;
  * configurations for common update actions that will be used in more thant one service
  * and this action also extends other action configure in each service.
  */
+// TODO: 17/6/27 添加功能，移除功能，修改发售状态
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property =
     "action")
 @JsonSubTypes( {
