@@ -57,9 +57,20 @@ public class ProductType {
   @Version
   private Integer version;
 
+  /**
+   * 名称。
+   */
   private String name;
 
+  /**
+   * 产品类别的介绍。
+   */
   private String description;
+
+  /**
+   * 产品类别的分组，如大家电，厨电。
+   */
+  private String groupName;
 
   /**
    * 该类设备预先定义好的设备功能.
@@ -72,6 +83,4 @@ public class ProductType {
    */
   @ElementCollection
   private List<String> dataIds;
-
-
 }
