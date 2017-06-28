@@ -23,10 +23,10 @@ import javax.persistence.Version;
  * 用于系统预先定义好的一些设备类型，不同设备类型拥有不同的功能，以及数据定义.
  */
 @Entity
-@Table(name = "device_type")
+@Table(name = "product_type")
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class DeviceType {
+public class ProductType {
 
   /**
    * id.
@@ -71,7 +71,7 @@ public class DeviceType {
    * 该累设备预先定义好的数据功能.
    */
   @ElementCollection
-  private List<String> dataIs;
+  private List<String> dataIds;
 
 
 }

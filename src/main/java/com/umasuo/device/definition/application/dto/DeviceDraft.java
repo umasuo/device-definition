@@ -1,7 +1,6 @@
 package com.umasuo.device.definition.application.dto;
 
-import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
-import com.umasuo.device.definition.infrastructure.enums.DeviceType;
+import com.umasuo.device.definition.infrastructure.enums.CommunicationType;
 import lombok.Data;
 
 import java.util.List;
@@ -32,9 +31,9 @@ public class DeviceDraft {
   private List<String> dataDefineIds;
 
   /**
-   * device type, identify by how the communicate with other services(app, cloud)
+   * device communicationType, identify by how the communicate with other services(app, cloud)
    */
-  private DeviceType type;
+  private CommunicationType type;
 
   /**
    * Open status about this device.

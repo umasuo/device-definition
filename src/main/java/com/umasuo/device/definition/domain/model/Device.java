@@ -1,8 +1,10 @@
 package com.umasuo.device.definition.domain.model;
 
+import com.umasuo.device.definition.infrastructure.enums.CommunicationType;
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
-import com.umasuo.device.definition.infrastructure.enums.DeviceType;
+
 import lombok.Data;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -69,6 +71,7 @@ public class Device {
   /**
    * name of the device.
    */
+  @Column(nullable = false)
   private String name;
 
   /**
@@ -77,19 +80,49 @@ public class Device {
   private String icon;
 
   /**
+   * 产品类型，新建产品时选择的系统预设产品类型，或者是自定义的类型。
+   */
+  private String productType;
+
+  /**
+   * 开发者自定义的设备型号。
+   */
+  private String model;
+
+  /**
+   * 产品的详细介绍。
+   * 长度限制为65535。
+   */
+  @Column(length = 65535)
+  private String description;
+
+  /**
+   * 产品的固件版本信息。
+   */
+  private String firmwareVersion;
+
+  /**
    * 数据定义ID，需要提前定义好不同的数据类型.
    */
   @ElementCollection
   private List<String> dataDefineIds;
 
+  /**
+   * 产品的功能列表。
+   */
   @OneToMany
   @OrderBy("functionId")
   private List<DeviceFunction> deviceFunctions;
 
   /**
-   * device type, identify by how the communicate with other services(app, cloud)
+   * device communicationType, identify by how the communicate with other services(app, cloud)
    */
-  private DeviceType type;
+  private CommunicationType communicationType;
+
+  /**
+   * wifi模组型号。
+   */
+  private String wifiModule;
 
   /**
    * Open status about this device.

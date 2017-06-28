@@ -50,6 +50,16 @@ public class CommonFunction {
   private String functionId;
 
   /**
+   * 功能名字，用于展示，同一个产品唯一。
+   */
+  private String name;
+
+  /**
+   * 功能具体介绍。
+   */
+  private String description;
+
+  /**
    * the command send to device.
    */
   private String command;

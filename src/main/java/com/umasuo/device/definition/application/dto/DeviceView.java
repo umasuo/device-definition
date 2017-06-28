@@ -1,7 +1,8 @@
 package com.umasuo.device.definition.application.dto;
 
+import com.umasuo.device.definition.infrastructure.enums.CommunicationType;
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
-import com.umasuo.device.definition.infrastructure.enums.DeviceType;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -59,9 +60,9 @@ public class DeviceView implements Serializable {
   private List<String> dataDefineIds;
 
   /**
-   * device type, identify by how the communicate with other services(app, cloud)
+   * device communicationType, identify by how the communicate with other services(app, cloud)
    */
-  private DeviceType type;
+  private CommunicationType type;
 
   /**
    * Open status about this device.

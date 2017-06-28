@@ -1,6 +1,6 @@
 package com.umasuo.device.definition.application.dto.action;
 
-import com.umasuo.device.definition.infrastructure.enums.DeviceType;
+import com.umasuo.device.definition.infrastructure.enums.CommunicationType;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
 
@@ -37,10 +37,10 @@ public class UpdateDevice implements UpdateAction, Serializable {
   private Boolean openable;
 
   /**
-   * device type, identify by how the communicate with other services(app, cloud)
+   * device communicationType, identify by how the communicate with other services(app, cloud)
    */
   @NotNull
-  private DeviceType type;
+  private CommunicationType type;
 
   @Override
   public String getActionName() {
