@@ -3,7 +3,7 @@ package com.umasuo.device.definition.application.rest;
 import static com.umasuo.device.definition.infrastructure.Router.PRODUCT_TYPE_ROOT;
 
 import com.umasuo.device.definition.application.dto.ProductTypeView;
-import com.umasuo.device.definition.domain.service.ProductTypeService;
+import com.umasuo.device.definition.application.service.ProductTypeApplication;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class ProductTypeController {
   private static final Logger LOG = LoggerFactory.getLogger(ProductTypeController.class);
 
   @Autowired
-  private transient ProductTypeService productTypeService;
+  private transient ProductTypeApplication productTypeApplication;
 
   /**
    * 新增产品类别接口，对平台维护者开放。
@@ -62,7 +62,7 @@ public class ProductTypeController {
     // TODO: 17/6/28
     LOG.info("Enter.");
 
-    List<ProductTypeView> result = productTypeService.getAll();
+    List<ProductTypeView> result = productTypeApplication.getAll();
 
     LOG.info("Exit. productType size: {}.", result.size());
 

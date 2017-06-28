@@ -27,15 +27,14 @@ public class ProductTypeService {
   @Autowired
   private transient ProductTypeRepository repository;
 
-  public List<ProductTypeView> getAll() {
+  public List<ProductType> getAll() {
     LOG.debug("Enter.");
 
     List<ProductType> productTypes = repository.findAll();
 
-    List<ProductTypeView> result = ProductTypeMapper.toModel(productTypes);
 
-    LOG.debug("Exit. productType size: {}.", result.size());
+    LOG.debug("Exit. productType size: {}.", productTypes.size());
 
-    return result;
+    return productTypes;
   }
 }
