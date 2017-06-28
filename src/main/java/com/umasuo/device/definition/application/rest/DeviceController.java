@@ -10,6 +10,7 @@ import com.umasuo.device.definition.application.dto.FunctionDefinitionView;
 import com.umasuo.device.definition.application.service.DeviceApplication;
 import com.umasuo.device.definition.infrastructure.Router;
 import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +68,8 @@ public class DeviceController {
    */
   @PutMapping(Router.DEVICE_DEFINITION_WITH_ID)
   public DeviceView update(@PathVariable("id") String id,
-                           @RequestBody @Valid UpdateRequest updateRequest,
-                           @RequestHeader String developerId) {
+      @RequestBody @Valid UpdateRequest updateRequest,
+      @RequestHeader String developerId) {
     logger.info("Enter. deviceId: {}, updateRequest: {}, developerId: {}.", id, updateRequest,
         developerId);
 
@@ -145,13 +146,15 @@ public class DeviceController {
     return null;
   }
 
-  public List<DataDefinitionView> getBuiltinDataDefinition(@RequestHeader("developerId") String developerId,
+  public List<DataDefinitionView> getBuiltinDataDefinition(
+      @RequestHeader("developerId") String developerId,
       @RequestParam String productTypeId) {
     // TODO: 17/6/27 根据设备类型获取数据定义
     return null;
   }
 
-  public List<FunctionDefinitionView> getBuiltinFunctionDefinition(@RequestHeader("developerId") String developerId,
+  public List<FunctionDefinitionView> getBuiltinFunctionDefinition(
+      @RequestHeader("developerId") String developerId,
       @RequestParam String productTypeId) {
     // TODO: 17/6/27 根据设备类型获取功能定义
     return null;

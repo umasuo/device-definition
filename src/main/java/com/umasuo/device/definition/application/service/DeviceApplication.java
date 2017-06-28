@@ -58,7 +58,7 @@ public class DeviceApplication {
     }
 
     Device device = DeviceMapper.viewToModel(draft, developerId);
-    device.setStatus(DeviceStatus.UNPUBLISHED);
+    device.setStatus(DeviceStatus.DEVELOPING);
     Device deviceCreated = deviceService.save(device);
 
     DeviceView view = DeviceMapper.modelToView(deviceCreated);

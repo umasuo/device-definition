@@ -60,7 +60,7 @@ public class Device {
   private String developerId;
 
   /**
-   * device status: published, unpublished.
+   * device status: developing, published, revoked.
    */
   private DeviceStatus status;
 
