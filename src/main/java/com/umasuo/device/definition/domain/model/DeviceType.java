@@ -1,7 +1,5 @@
 package com.umasuo.device.definition.domain.model;
 
-import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
-import com.umasuo.device.definition.infrastructure.enums.DeviceType;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,19 +15,22 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
 /**
- * Created by umasuo on 17/3/7.
+ * Created by umasuo on 17/6/28.
+ * 用于系统预先定义好的一些设备类型，不同设备类型拥有不同的功能，以及数据定义.
  */
 @Entity
-@Table(name = "device_definition")
+@Table(name = "device_type")
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class Device {
+public class DeviceType {
 
+  /**
+   * id.
+   */
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -56,44 +57,21 @@ public class Device {
   @Version
   private Integer version;
 
-  /**
-   * which developer this kind of device belong to.
-   */
-  private String developerId;
-
-  /**
-   * device status: published, unpublished.
-   */
-  private DeviceStatus status;
-
-  /**
-   * name of the device.
-   */
   private String name;
 
-  /**
-   * device icon.
-   */
-  private String icon;
+  private String description;
 
   /**
-   * 数据定义ID，需要提前定义好不同的数据类型.
+   * 该类设备预先定义好的设备功能.
+   */
+  @OneToMany
+  private List<CommonFunction> functions;
+
+  /**
+   * 该累设备预先定义好的数据功能.
    */
   @ElementCollection
-  private List<String> dataDefineIds;
+  private List<String> dataIs;
 
-  @OneToMany
-  @OrderBy("functionId")
-  private List<DeviceFunction> deviceFunctions;
 
-  /**
-   * device type, identify by how the communicate with other services(app, cloud)
-   */
-  private DeviceType type;
-
-  /**
-   * Open status about this device.
-   * True means this device can be find by other developers and false means not.
-   */
-  private Boolean openable = false;
 }
