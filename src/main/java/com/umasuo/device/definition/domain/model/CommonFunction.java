@@ -1,18 +1,28 @@
 package com.umasuo.device.definition.domain.model;
 
+import lombok.Data;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 /**
  * Created by umasuo on 17/6/28.
  * 预先定义好的设备功能.
  */
+@Entity
+@Table(name = "common_function")
+@Data
+@EntityListeners(AuditingEntityListener.class)
 public class CommonFunction {
 
   /**

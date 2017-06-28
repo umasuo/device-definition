@@ -11,6 +11,5 @@ public class Router {
 
   public static final String OPEN_DEVICE_DEFINITION = DEVICE_DEFINITION_ROOT + "/open";
 
-  public static final String BUILTIN_DEVICE_TYPE = DEVICE_DEFINITION_ROOT + "builtin";
-
+  public static final String PRODUCT_TYPE_ROOT = DEVICE_DEFINITION_ROOT + "/types";
 }

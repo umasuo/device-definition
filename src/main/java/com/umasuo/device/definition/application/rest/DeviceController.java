@@ -1,12 +1,7 @@
 package com.umasuo.device.definition.application.rest;
 
-import static com.umasuo.device.definition.infrastructure.Router.BUILTIN_DEVICE_TYPE;
-
-import com.umasuo.device.definition.application.dto.DataDefinitionView;
 import com.umasuo.device.definition.application.dto.DeviceDraft;
-import com.umasuo.device.definition.application.dto.DeviceTypeView;
 import com.umasuo.device.definition.application.dto.DeviceView;
-import com.umasuo.device.definition.application.dto.FunctionDefinitionView;
 import com.umasuo.device.definition.application.service.DeviceApplication;
 import com.umasuo.device.definition.infrastructure.Router;
 import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
@@ -131,32 +126,5 @@ public class DeviceController {
     logger.info("Exit. viewsSize: {}.", views.size());
     logger.trace("views: {}.", views);
     return views;
-  }
-
-  /**
-   * 获取预设的设备类型.
-   *
-   * @param developerId the developer id
-   * @return build in device type
-   */
-  @GetMapping(BUILTIN_DEVICE_TYPE)
-  public List<DeviceTypeView> getBuiltInDeviceType(
-      @RequestHeader("developerId") String developerId) {
-    // TODO: 17/6/27 获取预设的设备类型
-    return null;
-  }
-
-  public List<DataDefinitionView> getBuiltinDataDefinition(
-      @RequestHeader("developerId") String developerId,
-      @RequestParam String productTypeId) {
-    // TODO: 17/6/27 根据设备类型获取数据定义
-    return null;
-  }
-
-  public List<FunctionDefinitionView> getBuiltinFunctionDefinition(
-      @RequestHeader("developerId") String developerId,
-      @RequestParam String productTypeId) {
-    // TODO: 17/6/27 根据设备类型获取功能定义
-    return null;
   }
 }

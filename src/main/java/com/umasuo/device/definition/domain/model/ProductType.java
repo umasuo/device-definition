@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -75,7 +76,7 @@ public class ProductType {
   /**
    * 该类设备预先定义好的设备功能.
    */
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   private List<CommonFunction> functions;
 
   /**
