@@ -19,4 +19,6 @@ public class ProductTypeView {
   private String groupName;
 
   private List<CommonFunctionView> functions;
+
+  private List<CommonDataView> data;
 }
