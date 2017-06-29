@@ -1,5 +1,6 @@
 package com.umasuo.device.definition.application.service;
 
+import com.umasuo.device.definition.application.dto.CopyRequest;
 import com.umasuo.device.definition.application.dto.DeviceDraft;
 import com.umasuo.device.definition.application.dto.DeviceView;
 import com.umasuo.device.definition.application.dto.mapper.CommonFunctionMapper;
@@ -187,8 +188,13 @@ public class DeviceApplication {
   private void copyDataDefinitions(DeviceDraft draft, String developerId, ProductType productType,
       Device device) {
     DeviceValidator.validateDataDefinition(draft.getDataDefineIds(), productType);
+
+    CopyRequest copyRequest = new CopyRequest();
+    copyRequest.setDeviceDefinitionId(device.getId());
+    copyRequest.setPlatformDataDefinitionIds(draft.getDataDefineIds());
+
     List<String> newDataDefinitionIds =
-        restClient.copyDataDefinitions(developerId, draft.getDataDefineIds());
+        restClient.copyDataDefinitions(developerId, copyRequest);
     device.setDataDefineIds(newDataDefinitionIds);
   }
 

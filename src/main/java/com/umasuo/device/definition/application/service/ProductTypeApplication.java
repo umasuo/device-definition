@@ -47,7 +47,7 @@ public class ProductTypeApplication {
     List<CommonDataView> dataDefinitionViews = Lists.newArrayList();
 
     if (!dataDefinitionIds.isEmpty()) {
-      dataDefinitionViews = restClient.getDataDefinitions(dataDefinitionIds);
+      dataDefinitionViews = restClient.getPlatformDataDefinition(dataDefinitionIds);
     }
 
     List<ProductTypeView> result = ProductTypeMapper.toModel(productTypes, dataDefinitionViews);

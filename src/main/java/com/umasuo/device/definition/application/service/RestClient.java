@@ -2,6 +2,7 @@ package com.umasuo.device.definition.application.service;
 
 import com.google.common.collect.Lists;
 import com.umasuo.device.definition.application.dto.CommonDataView;
+import com.umasuo.device.definition.application.dto.CopyRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,12 +86,12 @@ public class RestClient {
     return result;
   }
 
-  public List<CommonDataView> getDataDefinitions(List<String> dataDefinitionIds) {
+  public List<CommonDataView> getPlatformDataDefinition(List<String> dataDefinitionIds) {
     logger.debug("Enter. dataDefinitionIds: {}.", dataDefinitionIds);
 
     List<CommonDataView> result = Lists.newArrayList();
 
-    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(definitionUrl)
+    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(definitionUrl + "/platform")
         .queryParam("dataDefinitionIds", String.join(",", dataDefinitionIds));
 
     String url = builder.build().encode().toUriString();
@@ -103,7 +104,7 @@ public class RestClient {
     return result;
   }
 
-  public List<String> copyDataDefinitions(String developerId, List<String> dataDefinitionIds) {
+  public List<String> copyDataDefinitions(String developerId, CopyRequest dataDefinitionIds) {
     logger.debug("Enter. developerId: {}, dataDefinitionIds: {}.", developerId, dataDefinitionIds);
     HttpHeaders headers = new HttpHeaders();
     headers.set("developerId", developerId);
