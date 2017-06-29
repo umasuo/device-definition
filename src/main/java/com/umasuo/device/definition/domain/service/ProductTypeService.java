@@ -1,8 +1,5 @@
 package com.umasuo.device.definition.domain.service;
 
-import com.google.common.collect.Lists;
-import com.umasuo.device.definition.application.dto.ProductTypeView;
-import com.umasuo.device.definition.application.dto.mapper.ProductTypeMapper;
 import com.umasuo.device.definition.domain.model.ProductType;
 import com.umasuo.device.definition.infrastructure.repository.ProductTypeRepository;
 
@@ -41,5 +38,20 @@ public class ProductTypeService {
     LOG.debug("Exit. productType size: {}.", productTypes.size());
 
     return productTypes;
+  }
+
+  /**
+   * 根据id查询产品类型
+   *
+   * @param id
+   * @return
+   */
+  public ProductType getById(String id) {
+    LOG.debug("Enter. id: {}.", id);
+    ProductType result = repository.findOne(id);
+
+    LOG.debug("Exit. productType: {}.", result);
+
+    return result;
   }
 }

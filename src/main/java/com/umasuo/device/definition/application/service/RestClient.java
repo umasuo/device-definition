@@ -6,6 +6,9 @@ import com.umasuo.device.definition.application.dto.CommonDataView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -98,5 +101,17 @@ public class RestClient {
 
     logger.debug("Exit. result size: {}.", result.size());
     return result;
+  }
+
+  public List<String> copyDataDefinitions(String developerId, List<String> dataDefinitionIds) {
+    logger.debug("Enter. developerId: {}, dataDefinitionIds: {}.", developerId, dataDefinitionIds);
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("developerId", developerId);
+    HttpEntity entity = new HttpEntity(dataDefinitionIds, headers);
+
+    HttpEntity<String[]> response =
+        restTemplate.exchange(definitionUrl + "/copy", HttpMethod.POST, entity, String[].class);
+
+    return Lists.newArrayList(response.getBody());
   }
 }

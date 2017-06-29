@@ -1,20 +1,22 @@
 package com.umasuo.device.definition.application.dto.mapper;
 
-import com.google.api.client.util.Lists;
+import com.google.common.collect.Lists;
 import com.umasuo.device.definition.application.dto.CommonFunctionView;
+import com.umasuo.device.definition.application.dto.DeviceFunctionView;
 import com.umasuo.device.definition.domain.model.CommonFunction;
+import com.umasuo.device.definition.domain.model.DeviceFunction;
 
 import java.util.List;
 
 /**
  * Created by Davis on 17/6/28.
  */
-public final class FunctionMapper {
+public final class DeviceFunctionMapper {
 
   /**
    * Instantiates a new Function mapper.
    */
-  private FunctionMapper() {
+  private DeviceFunctionMapper() {
   }
 
   /**
@@ -23,8 +25,8 @@ public final class FunctionMapper {
    * @param entities the entities
    * @return the list
    */
-  public static List<CommonFunctionView> toModel(List<CommonFunction> entities) {
-    List<CommonFunctionView> models = Lists.newArrayList();
+  public static List<DeviceFunctionView> toModel(List<DeviceFunction> entities) {
+    List<DeviceFunctionView> models = Lists.newArrayList();
 
     entities.stream().forEach(
         entity -> models.add(toModel(entity))
@@ -33,9 +35,10 @@ public final class FunctionMapper {
     return models;
   }
 
-  public static CommonFunctionView toModel(CommonFunction entity) {
-    CommonFunctionView model = new CommonFunctionView();
+  public static DeviceFunctionView toModel(DeviceFunction entity) {
+    DeviceFunctionView model = new DeviceFunctionView();
 
+    model.setId(entity.getId());
     model.setFunctionId(entity.getFunctionId());
     model.setName(entity.getName());
     model.setDescription(entity.getDescription());
@@ -43,4 +46,5 @@ public final class FunctionMapper {
 
     return model;
   }
+
 }

@@ -1,5 +1,6 @@
 package com.umasuo.device.definition.application.dto;
 
+import com.umasuo.device.definition.domain.model.DeviceFunction;
 import com.umasuo.device.definition.infrastructure.enums.CommunicationType;
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 
@@ -58,6 +59,11 @@ public class DeviceView implements Serializable {
    * TODO 替换成 data definition model.
    */
   private List<String> dataDefineIds;
+
+  /**
+   * 功能定义。
+   */
+  private List<DeviceFunctionView> functions;
 
   /**
    * device communicationType, identify by how the communicate with other services(app, cloud)

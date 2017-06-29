@@ -3,11 +3,16 @@ package com.umasuo.device.definition.application.service;
 import com.umasuo.device.definition.application.dto.DeviceDraft;
 import com.umasuo.device.definition.application.dto.DeviceView;
 import com.umasuo.device.definition.application.dto.mapper.DeviceMapper;
+import com.umasuo.device.definition.application.dto.mapper.CommonFunctionMapper;
 import com.umasuo.device.definition.domain.model.Device;
+import com.umasuo.device.definition.domain.model.DeviceFunction;
+import com.umasuo.device.definition.domain.model.ProductType;
 import com.umasuo.device.definition.domain.service.DeviceService;
+import com.umasuo.device.definition.domain.service.ProductTypeService;
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdaterService;
+import com.umasuo.device.definition.infrastructure.validator.DeviceValidator;
 import com.umasuo.exception.AlreadyExistException;
 import com.umasuo.exception.ConflictException;
 import com.umasuo.exception.ParametersException;
@@ -33,6 +38,12 @@ public class DeviceApplication {
   @Autowired
   private transient UpdaterService updaterService;
 
+  @Autowired
+  private transient ProductTypeService productTypeService;
+
+  @Autowired
+  private transient RestClient restClient;
+
   /**
    * The DataDefinitionValidator.
    */
@@ -46,19 +57,40 @@ public class DeviceApplication {
    * @return device view
    */
   public DeviceView create(DeviceDraft draft, String developerId) {
-    logger.debug("Enter. draft: {}.", draft);
+    logger.debug("Enter. developerId: {}, draft: {}.", developerId, draft);
 
-    if (draft.getDataDefineIds() != null && !draft.getDataDefineIds().isEmpty()) {
-      dataDefinitionValidator.checkDataDefinitionExist(developerId, draft.getDataDefineIds());
-    }
-
+    // 1. 检查名字是否重复
     if (deviceService.isExistName(developerId, draft.getName())) {
       logger.debug("Device name: {} has existed in developer: {}.", draft.getName(), developerId);
       throw new AlreadyExistException("Device name has existed");
     }
 
+    // 2. 检查类型是否存在
+    String productTypeId = draft.getProductTypeId();
+
+    ProductType productType = productTypeService.getById(productTypeId);
+
+    DeviceValidator.validateProductType(draft, productType);
+
+    // 生成实体对象
     Device device = DeviceMapper.viewToModel(draft, developerId);
     device.setStatus(DeviceStatus.DEVELOPING);
+
+    // 3. 拷贝功能, 同时检查功能是否属于该类型的（在创建阶段不允许添加新的功能和数据，只能在新建之后添加）
+    if (draft.getFunctionIds() != null && !draft.getFunctionIds().isEmpty()) {
+      DeviceValidator.validateFunction(draft.getFunctionIds(), productType);
+      List<DeviceFunction> functions = CommonFunctionMapper.copy(productType.getFunctions());
+      device.setDeviceFunctions(functions);
+    }
+
+    // 4. 调用数据服务拷贝数据, 检测数据是否属于该类型的, 如果有event bus，可以把这个工作交给event bus
+    if (draft.getDataDefineIds() != null && !draft.getDataDefineIds().isEmpty()) {
+      DeviceValidator.validateDataDefinition(draft.getDataDefineIds(), productType);
+      List<String> newDataDefinitionIds =
+          restClient.copyDataDefinitions(developerId, draft.getDataDefineIds());
+      device.setDataDefineIds(newDataDefinitionIds);
+    }
+
     Device deviceCreated = deviceService.save(device);
 
     DeviceView view = DeviceMapper.modelToView(deviceCreated);

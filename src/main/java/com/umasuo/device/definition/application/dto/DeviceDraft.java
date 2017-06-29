@@ -16,7 +16,7 @@ public class DeviceDraft {
   /**
    * name of the device.
    */
-  @NotNull
+  @NotNull(message = "Name can not be null")
   private String name;
 
   /**
@@ -26,6 +26,17 @@ public class DeviceDraft {
   private String icon;
 
   /**
+   * 产品类型的ID
+   */
+  @NotNull(message = "ProductType can not be null")
+  private String productTypeId;
+
+  /**
+   * 选择的功能定义ID
+   */
+  private List<String> functionIds;
+
+  /**
    * 数据定义ID，需要提前定义好不同的数据类型.
    */
   private List<String> dataDefineIds;
@@ -33,6 +44,7 @@ public class DeviceDraft {
   /**
    * device communicationType, identify by how the communicate with other services(app, cloud)
    */
+  @NotNull(message = "CommunicationType can not be null")
   private CommunicationType type;
 
   /**

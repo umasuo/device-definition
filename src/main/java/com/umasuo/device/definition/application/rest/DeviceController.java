@@ -43,9 +43,9 @@ public class DeviceController {
    * @return device view
    */
   @PostMapping(Router.DEVICE_DEFINITION_ROOT)
-  public DeviceView create(@RequestBody @Valid DeviceDraft draft, @RequestHeader String
-      developerId) {
-    logger.info("Enter. deviceDraft: {}.", draft);
+  public DeviceView create(@RequestHeader("developerId") String developerId,
+      @RequestBody @Valid DeviceDraft draft) {
+    logger.info("Enter. developerId: {}, deviceDraft: {}.", developerId, draft);
 
     DeviceView view = deviceApplication.create(draft, developerId);
 

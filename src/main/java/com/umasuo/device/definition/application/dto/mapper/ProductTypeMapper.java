@@ -38,7 +38,7 @@ public final class ProductTypeMapper {
     model.setName(entity.getName());
     model.setGroupName(entity.getGroupName());
     model.setId(entity.getId());
-    model.setFunctions(FunctionMapper.toModel(entity.getFunctions()));
+    model.setFunctions(CommonFunctionMapper.toModel(entity.getFunctions()));
 
     List<CommonDataView> modelDataDefinitions = dataDefinitionViews.stream().filter(
         view -> entity.getDataIds().contains(view.getId())

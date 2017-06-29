@@ -48,6 +48,9 @@ public final class DeviceMapper {
     view.setDataDefineIds(device.getDataDefineIds());
     view.setType(device.getCommunicationType());
     view.setOpenable(device.getOpenable());
+
+    view.setFunctions(DeviceFunctionMapper.toModel(device.getDeviceFunctions()));
+
     return view;
   }
 
