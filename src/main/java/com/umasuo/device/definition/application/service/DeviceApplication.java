@@ -2,8 +2,8 @@ package com.umasuo.device.definition.application.service;
 
 import com.umasuo.device.definition.application.dto.DeviceDraft;
 import com.umasuo.device.definition.application.dto.DeviceView;
-import com.umasuo.device.definition.application.dto.mapper.DeviceMapper;
 import com.umasuo.device.definition.application.dto.mapper.CommonFunctionMapper;
+import com.umasuo.device.definition.application.dto.mapper.DeviceMapper;
 import com.umasuo.device.definition.domain.model.Device;
 import com.umasuo.device.definition.domain.model.DeviceFunction;
 import com.umasuo.device.definition.domain.model.ProductType;
@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,17 +46,12 @@ public class DeviceApplication {
   private transient RestClient restClient;
 
   /**
-   * The DataDefinitionValidator.
-   */
-  @Autowired
-  private transient DataDefinitionValidator dataDefinitionValidator;
-
-  /**
    * save new device view.
    *
    * @param draft device draft
    * @return device view
    */
+  @Transactional
   public DeviceView create(DeviceDraft draft, String developerId) {
     logger.debug("Enter. developerId: {}, draft: {}.", developerId, draft);
 
@@ -77,23 +73,17 @@ public class DeviceApplication {
     device.setStatus(DeviceStatus.DEVELOPING);
 
     // 3. 拷贝功能, 同时检查功能是否属于该类型的（在创建阶段不允许添加新的功能和数据，只能在新建之后添加）
-    if (draft.getFunctionIds() != null && !draft.getFunctionIds().isEmpty()) {
-      DeviceValidator.validateFunction(draft.getFunctionIds(), productType);
-      List<DeviceFunction> functions = CommonFunctionMapper.copy(productType.getFunctions());
-      device.setDeviceFunctions(functions);
-    }
+    copyFunctions(draft, productType, device);
+
+    deviceService.save(device);
 
     // 4. 调用数据服务拷贝数据, 检测数据是否属于该类型的, 如果有event bus，可以把这个工作交给event bus
     if (draft.getDataDefineIds() != null && !draft.getDataDefineIds().isEmpty()) {
-      DeviceValidator.validateDataDefinition(draft.getDataDefineIds(), productType);
-      List<String> newDataDefinitionIds =
-          restClient.copyDataDefinitions(developerId, draft.getDataDefineIds());
-      device.setDataDefineIds(newDataDefinitionIds);
+      copyDataDefinitions(draft, developerId, productType, device);
+      deviceService.save(device);
     }
 
-    Device deviceCreated = deviceService.save(device);
-
-    DeviceView view = DeviceMapper.modelToView(deviceCreated);
+    DeviceView view = DeviceMapper.modelToView(device);
 
     logger.debug("Exit. deviceCreatedView: {}.", view);
     return view;
@@ -188,6 +178,28 @@ public class DeviceApplication {
     if (!inputVersion.equals(existVersion)) {
       logger.debug("Device definition version is not correct.");
       throw new ConflictException("Device definition version is not correct.");
+    }
+  }
+
+  /**
+   * 把产品类别中定义的数据定义拷贝到新增的设备定义中。
+   */
+  private void copyDataDefinitions(DeviceDraft draft, String developerId, ProductType productType,
+      Device device) {
+    DeviceValidator.validateDataDefinition(draft.getDataDefineIds(), productType);
+    List<String> newDataDefinitionIds =
+        restClient.copyDataDefinitions(developerId, draft.getDataDefineIds());
+    device.setDataDefineIds(newDataDefinitionIds);
+  }
+
+  /**
+   * 把产品类别中定义的功能拷贝到新增的设备定义中。
+   */
+  private void copyFunctions(DeviceDraft draft, ProductType productType, Device device) {
+    if (draft.getFunctionIds() != null && !draft.getFunctionIds().isEmpty()) {
+      DeviceValidator.validateFunction(draft.getFunctionIds(), productType);
+      List<DeviceFunction> functions = CommonFunctionMapper.copy(productType.getFunctions());
+      device.setDeviceFunctions(functions);
     }
   }
 }
