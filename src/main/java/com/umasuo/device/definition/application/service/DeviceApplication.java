@@ -32,17 +32,32 @@ import java.util.List;
 @Service
 public class DeviceApplication {
 
+  /**
+   * Logger.
+   */
   private final static Logger logger = LoggerFactory.getLogger(DeviceApplication.class);
 
+  /**
+   * DeviceService.
+   */
   @Autowired
   private transient DeviceService deviceService;
 
+  /**
+   * UpdaterService.
+   */
   @Autowired
   private transient UpdaterService updaterService;
 
+  /**
+   * ProductType service.
+   */
   @Autowired
   private transient ProductTypeService productTypeService;
 
+  /**
+   * RestClient.
+   */
   @Autowired
   private transient RestClient restClient;
 
@@ -63,9 +78,7 @@ public class DeviceApplication {
     }
 
     // 2. 检查类型是否存在
-    String productTypeId = draft.getProductTypeId();
-
-    ProductType productType = productTypeService.getById(productTypeId);
+    ProductType productType = productTypeService.getById(draft.getProductTypeId());
 
     DeviceValidator.validateProductType(draft, productType);
 
@@ -74,7 +87,9 @@ public class DeviceApplication {
     device.setStatus(DeviceStatus.DEVELOPING);
 
     // 3. 拷贝功能, 同时检查功能是否属于该类型的（在创建阶段不允许添加新的功能和数据，只能在新建之后添加）
-    copyFunctions(draft, productType, device);
+    if (draft.getFunctionIds() != null && !draft.getFunctionIds().isEmpty()) {
+      copyFunctions(draft, productType, device);
+    }
 
     deviceService.save(device);
 
@@ -189,12 +204,11 @@ public class DeviceApplication {
       Device device) {
     DeviceValidator.validateDataDefinition(draft.getDataDefineIds(), productType);
 
-    CopyRequest copyRequest = new CopyRequest();
-    copyRequest.setDeviceDefinitionId(device.getId());
-    copyRequest.setPlatformDataDefinitionIds(draft.getDataDefineIds());
+    CopyRequest copyRequest = CopyRequest.build(device.getId(), draft.getDataDefineIds(), null);
 
-    List<String> newDataDefinitionIds =
-        restClient.copyDataDefinitions(developerId, copyRequest);
+    // 调用Data-Definition的API，接收的是拷贝之后生成的id列表
+    List<String> newDataDefinitionIds = restClient.copyDataDefinitions(developerId, copyRequest);
+
     device.setDataDefineIds(newDataDefinitionIds);
   }
 
@@ -202,10 +216,8 @@ public class DeviceApplication {
    * 把产品类别中定义的功能拷贝到新增的设备定义中。
    */
   private void copyFunctions(DeviceDraft draft, ProductType productType, Device device) {
-    if (draft.getFunctionIds() != null && !draft.getFunctionIds().isEmpty()) {
-      DeviceValidator.validateFunction(draft.getFunctionIds(), productType);
-      List<DeviceFunction> functions = CommonFunctionMapper.copy(productType.getFunctions());
-      device.setDeviceFunctions(functions);
-    }
+    DeviceValidator.validateFunction(draft.getFunctionIds(), productType);
+    List<DeviceFunction> functions = CommonFunctionMapper.copy(productType.getFunctions());
+    device.setDeviceFunctions(functions);
   }
 }

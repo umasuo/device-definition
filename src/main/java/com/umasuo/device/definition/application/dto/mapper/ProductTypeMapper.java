@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * 该类用于转换ProductType与ProductTypeView。
+ *
  * Created by Davis on 17/6/28.
  */
 public final class ProductTypeMapper {
@@ -19,20 +21,33 @@ public final class ProductTypeMapper {
   private ProductTypeMapper() {
   }
 
-
+  /**
+   * 把ProductType列表转换为ProductTypeView列表，并且加上对应的CommonDataView。
+   *
+   * @param entities ProductType list
+   * @param commonDataViews CommonDataView list
+   * @return list of ProductTypeView
+   */
   public static List<ProductTypeView> toModel(List<ProductType> entities,
-      List<CommonDataView> dataDefinitionViews) {
+      List<CommonDataView> commonDataViews) {
     List<ProductTypeView> models = Lists.newArrayList();
 
     entities.stream().forEach(
-        entity -> models.add(toModel(entity, dataDefinitionViews))
+        entity -> models.add(toModel(entity, commonDataViews))
     );
 
     return models;
   }
 
+  /**
+   * 把ProductType转换为ProductTypeView，并且加上对应的CommonDataView。
+   *
+   * @param entity ProductType
+   * @param commonDataViews CommonDataView list
+   * @return ProductTypeView
+   */
   public static ProductTypeView toModel(ProductType entity,
-      List<CommonDataView> dataDefinitionViews) {
+      List<CommonDataView> commonDataViews) {
     ProductTypeView model = new ProductTypeView();
 
     model.setName(entity.getName());
@@ -40,7 +55,7 @@ public final class ProductTypeMapper {
     model.setId(entity.getId());
     model.setFunctions(CommonFunctionMapper.toModel(entity.getFunctions()));
 
-    List<CommonDataView> modelDataDefinitions = dataDefinitionViews.stream().filter(
+    List<CommonDataView> modelDataDefinitions = commonDataViews.stream().filter(
         view -> entity.getDataIds().contains(view.getId())
     ).collect(Collectors.toList());
 

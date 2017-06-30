@@ -19,10 +19,10 @@ public final class CommonFunctionMapper {
   }
 
   /**
-   * To model list.
+   * 把CommonFunction列表转换为CommonFunctionView列表。
    *
-   * @param entities the entities
-   * @return the list
+   * @param entities CommonFunction list
+   * @return CommonFunctionView list
    */
   public static List<CommonFunctionView> toModel(List<CommonFunction> entities) {
     List<CommonFunctionView> models = Lists.newArrayList();
@@ -34,6 +34,12 @@ public final class CommonFunctionMapper {
     return models;
   }
 
+  /**
+   * 把CommonFunction转换为CommonFunctionView。
+   *
+   * @param entity CommonFunction
+   * @return CommonFunctionView
+   */
   public static CommonFunctionView toModel(CommonFunction entity) {
     CommonFunctionView model = new CommonFunctionView();
 
@@ -45,6 +51,12 @@ public final class CommonFunctionMapper {
     return model;
   }
 
+  /**
+   * 拷贝一份新的CommonFunction列表。
+   *
+   * @param functions 原始的CommonFunction列表
+   * @return 新拷贝的CommonFunction列表
+   */
   public static List<DeviceFunction> copy(List<CommonFunction> functions) {
     List<DeviceFunction> deviceFunctions = Lists.newArrayList();
 
@@ -53,6 +65,12 @@ public final class CommonFunctionMapper {
     return deviceFunctions;
   }
 
+  /**
+   * 拷贝一份新的CommonFunction实体。
+   *
+   * @param function CommonFunction实体
+   * @return 新拷贝的CommonFunction实体
+   */
   public static DeviceFunction copy(CommonFunction function) {
     DeviceFunction deviceFunction = new DeviceFunction();
 

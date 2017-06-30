@@ -25,28 +25,33 @@ public class ProductTypeApplication {
    */
   private static final Logger LOG = LoggerFactory.getLogger(ProductTypeApplication.class);
 
+  /**
+   * ProductType service.
+   */
   @Autowired
   private transient ProductTypeService productTypeService;
 
+  /**
+   * RestClient.
+   * 用于访问data-definition，获取产品类别对应的数据定义。
+   */
   @Autowired
   private transient RestClient restClient;
 
   /**
    * 查询所有的产品类型。
-   *
-   * @return
    */
   public List<ProductTypeView> getAll() {
     LOG.debug("Enter.");
 
     List<ProductType> productTypes = productTypeService.getAll();
 
-
     List<String> dataDefinitionIds = getDataDefinitionIds(productTypes);
 
     List<CommonDataView> dataDefinitionViews = Lists.newArrayList();
 
     if (!dataDefinitionIds.isEmpty()) {
+      // 调用data-definition的api获取对应id的CommonDataView
       dataDefinitionViews = restClient.getPlatformDataDefinition(dataDefinitionIds);
     }
 
@@ -59,9 +64,6 @@ public class ProductTypeApplication {
 
   /**
    * 获取所有的data definition id，用于查询具体的data definition view。
-   *
-   * @param productTypes
-   * @return
    */
   private List<String> getDataDefinitionIds(List<ProductType> productTypes) {
     List<String> dataDefinitionIds = Lists.newArrayList();

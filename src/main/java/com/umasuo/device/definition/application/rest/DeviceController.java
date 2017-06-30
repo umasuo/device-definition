@@ -26,12 +26,18 @@ import javax.validation.Valid;
 /**
  * Created by umasuo on 17/6/1.
  */
-@RestController
 @CrossOrigin
+@RestController
 public class DeviceController {
 
+  /**
+   * Logger.
+   */
   private final static Logger logger = LoggerFactory.getLogger(DeviceController.class);
 
+  /**
+   * DeviceApplication.
+   */
   @Autowired
   private transient DeviceApplication deviceApplication;
 
@@ -50,6 +56,7 @@ public class DeviceController {
     DeviceView view = deviceApplication.create(draft, developerId);
 
     logger.info("Exit. deviceView: {}.", view);
+
     return view;
   }
 
@@ -62,18 +69,17 @@ public class DeviceController {
    * @return the DeviceView
    */
   @PutMapping(Router.DEVICE_DEFINITION_WITH_ID)
-  public DeviceView update(@PathVariable("id") String id,
-      @RequestBody @Valid UpdateRequest updateRequest,
-      @RequestHeader String developerId) {
-    logger.info("Enter. deviceId: {}, updateRequest: {}, developerId: {}.", id, updateRequest,
-        developerId);
+  public DeviceView update(@PathVariable("id") String id, @RequestHeader String developerId,
+      @RequestBody @Valid UpdateRequest updateRequest) {
+    logger.info("Enter. deviceId: {}, updateRequest: {}, developerId: {}.",
+        id, updateRequest, developerId);
 
-    DeviceView result =
-        deviceApplication.update(id, developerId, updateRequest.getVersion(), updateRequest
-            .getActions());
+    DeviceView result = deviceApplication
+        .update(id, developerId, updateRequest.getVersion(), updateRequest.getActions());
 
     logger.trace("Updated device: {}.", result);
     logger.info("Exit.");
+
     return result;
   }
 
@@ -125,6 +131,7 @@ public class DeviceController {
 
     logger.info("Exit. viewsSize: {}.", views.size());
     logger.trace("views: {}.", views);
+
     return views;
   }
 }
