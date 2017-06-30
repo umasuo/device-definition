@@ -41,7 +41,8 @@ public class CopyRequest {
       List<String> developerDataDefinitionIds) {
     CopyRequest request = new CopyRequest();
 
-    Assert.isTrue(StringUtils.isBlank(deviceDefinitionId), "deviceDefinitionId can not be blank");
+    Assert
+        .isTrue(StringUtils.isNotBlank(deviceDefinitionId), "deviceDefinitionId can not be blank");
 
     request.setDeviceDefinitionId(deviceDefinitionId);
 
@@ -51,7 +52,7 @@ public class CopyRequest {
     boolean copyFromDeveloper =
         developerDataDefinitionIds != null && !developerDataDefinitionIds.isEmpty();
 
-    Assert.isTrue(!copyFromPlatform && !copyFromDeveloper,
+    Assert.isTrue(copyFromPlatform || copyFromDeveloper,
         "Can not build CopyRequest with null request");
 
     if (copyFromPlatform) {
