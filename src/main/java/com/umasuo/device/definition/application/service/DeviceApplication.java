@@ -79,17 +79,18 @@ public class DeviceApplication {
 
     // 2. 检查类型是否存在
     ProductType productType = productTypeService.getById(draft.getProductTypeId());
-
     DeviceValidator.validateProductType(draft, productType);
 
     // 生成实体对象
     Device device = DeviceMapper.viewToModel(draft, developerId);
-    device.setStatus(DeviceStatus.DEVELOPING);
+
 
     // 3. 拷贝功能, 同时检查功能是否属于该类型的（在创建阶段不允许添加新的功能和数据，只能在新建之后添加）
     if (draft.getFunctionIds() != null && !draft.getFunctionIds().isEmpty()) {
       copyFunctions(draft, productType, device);
     }
+
+    //TODO 检查数据是否存在
 
     deviceService.save(device);
 

@@ -1,7 +1,6 @@
 package com.umasuo.device.definition.application.dto;
 
-import com.umasuo.device.definition.domain.model.DeviceFunction;
-import com.umasuo.device.definition.infrastructure.enums.CommunicationType;
+import com.umasuo.device.definition.infrastructure.enums.NetType;
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 
 import lombok.Data;
@@ -68,7 +67,7 @@ public class DeviceView implements Serializable {
   /**
    * device communicationType, identify by how the communicate with other services(app, cloud)
    */
-  private CommunicationType type;
+  private NetType type;
 
   /**
    * Open status about this device.

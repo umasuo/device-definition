@@ -42,7 +42,7 @@ public class CopyRequest {
     CopyRequest request = new CopyRequest();
 
     Assert
-        .isTrue(StringUtils.isNotBlank(deviceDefinitionId), "deviceDefinitionId can not be blank");
+        .isTrue(StringUtils.isNotBlank(deviceDefinitionId), "productId can not be blank");
 
     request.setDeviceDefinitionId(deviceDefinitionId);
 
