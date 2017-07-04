@@ -5,11 +5,9 @@ package com.umasuo.device.definition.infrastructure;
  */
 public class Router {
 
-  public static final String DEVICE_DEFINITION_ROOT = "/device-definitions";
+  public static final String PRODUCT_ROOT = "/products";
 
-  public static final String DEVICE_DEFINITION_WITH_ID = DEVICE_DEFINITION_ROOT + "/{id}";
+  public static final String PRODUCT_WITH_ID = PRODUCT_ROOT + "/{id}";
 
-  public static final String OPEN_DEVICE_DEFINITION = DEVICE_DEFINITION_ROOT + "/open";
-
-  public static final String PRODUCT_TYPE_ROOT = DEVICE_DEFINITION_ROOT + "/types";
+  public static final String PRODUCT_TYPE_ROOT = PRODUCT_ROOT + "/types";
 }

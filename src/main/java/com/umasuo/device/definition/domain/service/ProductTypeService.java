@@ -48,10 +48,10 @@ public class ProductTypeService {
    */
   public ProductType getById(String id) {
     LOG.debug("Enter. id: {}.", id);
+
     ProductType result = repository.findOne(id);
 
     LOG.debug("Exit. productType: {}.", result);
-
     return result;
   }
 }

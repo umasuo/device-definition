@@ -1,6 +1,6 @@
 package com.umasuo.device.definition.domain.model;
 
-import com.umasuo.device.definition.infrastructure.enums.CommunicationType;
+import com.umasuo.device.definition.infrastructure.enums.NetType;
 import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
 
 import lombok.Data;
@@ -118,7 +118,7 @@ public class Device {
   /**
    * device communicationType, identify by how the communicate with other services(app, cloud)
    */
-  private CommunicationType communicationType;
+  private NetType communicationType;
 
   /**
    * wifi模组型号。

@@ -1,9 +1,8 @@
 package com.umasuo.device.definition.application.dto.action;
 
-import com.umasuo.device.definition.infrastructure.enums.CommunicationType;
+import com.umasuo.device.definition.infrastructure.enums.NetType;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
-
 import lombok.Data;
 
 import java.io.Serializable;
@@ -37,10 +36,10 @@ public class UpdateDevice implements UpdateAction, Serializable {
   private Boolean openable;
 
   /**
-   * device communicationType, identify by how the communicate with other services(app, cloud)
+   * device NetType, identify by how the communicate with other services(app, cloud)
    */
   @NotNull
-  private CommunicationType type;
+  private NetType type;
 
   @Override
   public String getActionName() {

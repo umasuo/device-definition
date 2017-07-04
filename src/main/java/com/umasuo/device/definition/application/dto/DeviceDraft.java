@@ -1,6 +1,6 @@
 package com.umasuo.device.definition.application.dto;
 
-import com.umasuo.device.definition.infrastructure.enums.CommunicationType;
+import com.umasuo.device.definition.infrastructure.enums.NetType;
 import lombok.Data;
 
 import java.util.List;
@@ -20,6 +20,11 @@ public class DeviceDraft {
   private String name;
 
   /**
+   * description of the device.
+   */
+  private String description;
+
+  /**
    * device icon.
    */
   @NotNull
@@ -32,20 +37,20 @@ public class DeviceDraft {
   private String productTypeId;
 
   /**
-   * 选择的功能定义ID
+   * 选择的功能定义ID，系统中的uuid
    */
   private List<String> functionIds;
 
   /**
-   * 数据定义ID，需要提前定义好不同的数据类型.
+   * 数据定义ID，需要提前定义好不同的数据类型.系统中的uuid.
    */
   private List<String> dataDefineIds;
 
   /**
-   * device communicationType, identify by how the communicate with other services(app, cloud)
+   * device net type, identify by how the device connect to the internet.
    */
-  @NotNull(message = "CommunicationType can not be null")
-  private CommunicationType type;
+  @NotNull(message = "NetType can not be null")
+  private NetType type;
 
   /**
    * Open status about this device.
