@@ -3,7 +3,7 @@ package com.umasuo.device.definition.infrastructure.enums;
 /**
  * Created by umasuo on 17/3/7.
  */
-public enum DeviceStatus {
+public enum ProductStatus {
   /**
    * 开发中，新建产品处于该状态，可以修改产品的任何属性。
    */

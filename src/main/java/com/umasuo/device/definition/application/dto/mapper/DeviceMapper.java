@@ -3,7 +3,7 @@ package com.umasuo.device.definition.application.dto.mapper;
 import com.umasuo.device.definition.application.dto.DeviceDraft;
 import com.umasuo.device.definition.application.dto.DeviceView;
 import com.umasuo.device.definition.domain.model.Device;
-import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
+import com.umasuo.device.definition.infrastructure.enums.ProductStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public final class DeviceMapper {
       device.setOpenable(draft.getOpenable());
     }
 
-    device.setStatus(DeviceStatus.DEVELOPING);
+    device.setStatus(ProductStatus.DEVELOPING);
 
     return device;
   }

@@ -1,6 +1,7 @@
 package com.umasuo.device.definition.application.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.umasuo.device.definition.application.dto.CommonDataView;
 import com.umasuo.device.definition.application.dto.CopyRequest;
 import org.slf4j.Logger;
@@ -87,26 +88,20 @@ public class RestClient {
     return result;
   }
 
-  public List<CommonDataView> getPlatformDataDefinition(List<String> dataDefinitionIds) {
-    logger.debug("Enter. dataDefinitionIds: {}.", dataDefinitionIds);
+  public Map<String, List<CommonDataView>> getPlatformDataDefinition() {
+    logger.debug("Enter.");
+    String url = definitionUrl + "/platform";
 
-    List<CommonDataView> result = Lists.newArrayList();
-
-    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(definitionUrl + "/platform")
-        .queryParam("dataDefinitionIds", String.join(",", dataDefinitionIds));
-
-    String url = builder.build().encode().toUriString();
+    Map<String, List<CommonDataView>> result = Maps.newHashMap();
 
     try {
-      CommonDataView[] dataViews = restTemplate.getForObject(url, CommonDataView[].class);
-
-      result = Lists.newArrayList(dataViews);
-    } catch (RestClientException ex) {
-      logger.warn("Fetch data definition failed.", ex);
-      result = new ArrayList<>();
+      result = restTemplate.getForObject(url, Map.class);
+    } catch (Exception e) {
+      logger.warn("Fetch data definition failed.", e);
     }
 
     logger.debug("Exit. result size: {}.", result.size());
+
     return result;
   }
 

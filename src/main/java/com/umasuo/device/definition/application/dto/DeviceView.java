@@ -1,7 +1,7 @@
 package com.umasuo.device.definition.application.dto;
 
 import com.umasuo.device.definition.infrastructure.enums.NetType;
-import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
+import com.umasuo.device.definition.infrastructure.enums.ProductStatus;
 
 import lombok.Data;
 
@@ -41,7 +41,7 @@ public class DeviceView implements Serializable {
   /**
    * device status: published, unpublished.
    */
-  private DeviceStatus status;
+  private ProductStatus status;
 
   /**
    * name of the device.

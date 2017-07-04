@@ -10,7 +10,7 @@ import com.umasuo.device.definition.domain.model.DeviceFunction;
 import com.umasuo.device.definition.domain.model.ProductType;
 import com.umasuo.device.definition.domain.service.DeviceService;
 import com.umasuo.device.definition.domain.service.ProductTypeService;
-import com.umasuo.device.definition.infrastructure.enums.DeviceStatus;
+import com.umasuo.device.definition.infrastructure.enums.ProductStatus;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdaterService;
 import com.umasuo.device.definition.infrastructure.validator.DeviceValidator;
@@ -61,6 +61,9 @@ public class DeviceApplication {
   @Autowired
   private transient RestClient restClient;
 
+  @Autowired
+  private transient CacheApplication cacheApplication;
+
   /**
    * save new device view.
    *
@@ -84,7 +87,6 @@ public class DeviceApplication {
     // 生成实体对象
     Device device = DeviceMapper.viewToModel(draft, developerId);
 
-
     // 3. 拷贝功能, 同时检查功能是否属于该类型的（在创建阶段不允许添加新的功能和数据，只能在新建之后添加）
     if (draft.getFunctionIds() != null && !draft.getFunctionIds().isEmpty()) {
       copyFunctions(draft, productType, device);
@@ -100,6 +102,8 @@ public class DeviceApplication {
       deviceService.save(device);
     }
 
+    cacheApplication.deleteDeveloperProducts(developerId);
+
     DeviceView view = DeviceMapper.modelToView(device);
 
     logger.debug("Exit. deviceView: {}.", view);
@@ -114,16 +118,20 @@ public class DeviceApplication {
   public DeviceView get(String id, String developerId) {
     logger.debug("Enter. id: {}, developerId: {}.", id, developerId);
 
-    Device device = deviceService.get(id);
-    if (!device.getDeveloperId().equals(developerId)) {
-      logger.debug("Device: {} not belong to developer: {}.", id, developerId);
-      throw new ParametersException("Device not belong to developer: " + developerId + ", " +
-          "deviceId: " + id);
-    }
-    DeviceView view = DeviceMapper.modelToView(device);
+    DeviceView result = cacheApplication.getProductById(developerId, id);
 
-    logger.debug("Exit. deviceView: {}.", view);
-    return view;
+    if (result == null) {
+      logger.debug("Cache fail, get from database.");
+
+      List<Device> products = deviceService.getAllOpenDevice(developerId);
+      List<DeviceView> productViews = DeviceMapper.modelToView(products);
+      cacheApplication.batchCacheProduct(developerId, productViews);
+
+      result = productViews.stream().filter(view -> view.getId().equals(id)).findAny().get();
+    }
+
+    logger.debug("Exit. deviceView: {}.", result);
+    return result;
   }
 
   /**
@@ -135,16 +143,22 @@ public class DeviceApplication {
   public List<DeviceView> getAllByDeveloperId(String developerId) {
     logger.debug("Enter. developerId: {}.", developerId);
 
-    List<Device> devices = deviceService.getByDeveloperId(developerId);
-    List<DeviceView> views = DeviceMapper.modelToView(devices);
+    List<DeviceView> result = cacheApplication.getDeveloperProduct(developerId);
+    if (result.isEmpty()) {
+      logger.debug("Cache fail, get from database.");
+      List<Device> devices = deviceService.getByDeveloperId(developerId);
+      result = DeviceMapper.modelToView(devices);
+      cacheApplication.batchCacheProduct(developerId, result);
+    }
 
-    logger.debug("Exit. devicesSize: {}.", views.size());
-    logger.trace("Devices: {}.", views);
-    return views;
+    logger.trace("Devices: {}.", result);
+    logger.debug("Exit. devicesSize: {}.", result.size());
+    return result;
   }
 
-  /**
+  /**estClient
    * get all open device define by developer id.
+   * 接口比较少用，暂时不需要使用缓存。
    *
    * @param id developer id
    * @return list of device view
@@ -174,11 +188,20 @@ public class DeviceApplication {
           " deviceId: " + id);
     }
     logger.debug("Data in db: {}", valueInDb);
+
+    if (valueInDb.getStatus().equals(ProductStatus.PUBLISHED)){
+      logger.debug("Can not update a published product");
+      throw new ParametersException("Can not update a published product");
+    }
+
     checkVersion(version, valueInDb.getVersion());
 
     actions.stream().forEach(action -> updaterService.handle(valueInDb, action));
 
     Device savedDevice = deviceService.save(valueInDb);
+
+    cacheApplication.deleteDeveloperProducts(developerId);
+
     DeviceView updatedDevice = DeviceMapper.modelToView(savedDevice);
 
     logger.debug("Exit: updated device: {}", updatedDevice);
