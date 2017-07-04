@@ -43,7 +43,7 @@ public class ProductTypeApplication {
   private transient RestClient restClient;
 
   @Autowired
-  private transient RedisTemplate redisTemplate;
+  private transient CacheApplication cacheApplication;
 
   /**
    * 查询所有的产品类型。
@@ -52,14 +52,10 @@ public class ProductTypeApplication {
     LOG.debug("Enter.");
 
     // 1. get from redis
-    Map<String, Object> cacheProductTypes =
-        redisTemplate.opsForHash().entries(RedisUtils.PRODUCT_TYPE_KEY);
+    List<ProductTypeView> cacheProductTypes = cacheApplication.getAll();
 
-    if (cacheProductTypes == null || cacheProductTypes.isEmpty()) {
-      // 2.1 get from db
-
-      // 2.2 insert into redis
-
+    if (cacheProductTypes.isEmpty()) {
+      LOG.debug("Cache fail. Get from database.");
       List<ProductType> productTypes = productTypeService.getAll();
 
       List<String> dataDefinitionIds = getDataDefinitionIds(productTypes);
@@ -71,22 +67,14 @@ public class ProductTypeApplication {
         dataDefinitionViews = restClient.getPlatformDataDefinition(dataDefinitionIds);
       }
 
-      List<ProductTypeView> result = ProductTypeMapper.toModel(productTypes, dataDefinitionViews);
+      cacheProductTypes = ProductTypeMapper.toModel(productTypes, dataDefinitionViews);
 
-      cacheProductTypes = Maps.newHashMap();
+      cacheApplication.batchCacheProductType(cacheProductTypes);
 
-      Map<String, Object> finalCacheProductTypes = cacheProductTypes;
-      result.stream().forEach(view -> finalCacheProductTypes.put(view.getId(), view));
-      redisTemplate.opsForHash().putAll(RedisUtils.PRODUCT_TYPE_KEY, finalCacheProductTypes);
-
-      LOG.debug("Exit. productType size: {}.", result.size());
-
-      return result;
-    } else {
-      List<ProductTypeView> result = Lists.newArrayList();
-      cacheProductTypes.entrySet().stream().forEach( entrySet -> result.add((ProductTypeView) entrySet.getValue()));
-      return result;
     }
+
+    LOG.debug("Exit. productType size: {}.", cacheProductTypes.size());
+    return cacheProductTypes;
   }
 
   /**
