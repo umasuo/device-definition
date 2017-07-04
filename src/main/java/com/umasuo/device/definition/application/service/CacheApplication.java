@@ -31,9 +31,13 @@ public class CacheApplication {
   public List<ProductTypeView> getAll() {
     List<ProductTypeView> result = Lists.newArrayList();
 
-
     Map<String, Object> cacheProductTypes =
         redisTemplate.opsForHash().entries(RedisUtils.PRODUCT_TYPE_KEY);
+
+    if (cacheProductTypes != null && !cacheProductTypes.isEmpty()) {
+      cacheProductTypes.entrySet().stream().forEach(
+          entry -> result.add((ProductTypeView) entry.getValue()));
+    }
 
     return result;
   }
