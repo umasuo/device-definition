@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -95,8 +96,8 @@ public class RestClient {
 
     try {
       result = restTemplate.getForObject(url, Map.class);
-    } catch (Exception e) {
-      logger.debug("Exception: ", e);
+    } catch (InvalidMediaTypeException ex) {
+      logger.debug("Something wrong when call api: ", ex);
     }
 
     logger.debug("Exit. result size: {}.", result.size());
