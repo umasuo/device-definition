@@ -6,7 +6,7 @@ import com.umasuo.device.definition.application.dto.ProductTypeView;
 import com.umasuo.device.definition.domain.model.ProductType;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 /**
  * 该类用于转换ProductType与ProductTypeView。
@@ -29,7 +29,7 @@ public final class ProductTypeMapper {
    * @return list of ProductTypeView
    */
   public static List<ProductTypeView> toModel(List<ProductType> entities,
-      List<CommonDataView> commonDataViews) {
+      Map<String, List<CommonDataView>> commonDataViews) {
     List<ProductTypeView> models = Lists.newArrayList();
 
     entities.stream().forEach(
@@ -47,7 +47,7 @@ public final class ProductTypeMapper {
    * @return ProductTypeView
    */
   public static ProductTypeView toModel(ProductType entity,
-      List<CommonDataView> commonDataViews) {
+      Map<String, List<CommonDataView>> commonDataViews) {
     ProductTypeView model = new ProductTypeView();
 
     model.setName(entity.getName());
@@ -55,11 +55,8 @@ public final class ProductTypeMapper {
     model.setId(entity.getId());
     model.setFunctions(CommonFunctionMapper.toModel(entity.getFunctions()));
 
-    List<CommonDataView> modelDataDefinitions = commonDataViews.stream().filter(
-        view -> entity.getDataIds().contains(view.getId())
-    ).collect(Collectors.toList());
-
-    model.setData(modelDataDefinitions);
+    List<CommonDataView> dataViews = commonDataViews.get(entity.getId());
+    model.setData(dataViews);
 
     return model;
   }

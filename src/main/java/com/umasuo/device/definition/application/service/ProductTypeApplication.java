@@ -1,6 +1,5 @@
 package com.umasuo.device.definition.application.service;
 
-import com.google.common.collect.Lists;
 import com.umasuo.device.definition.application.dto.CommonDataView;
 import com.umasuo.device.definition.application.dto.ProductTypeView;
 import com.umasuo.device.definition.application.dto.mapper.ProductTypeMapper;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Davis on 17/6/28.
@@ -54,35 +54,15 @@ public class ProductTypeApplication {
       LOG.debug("Cache fail. Get from database.");
       List<ProductType> productTypes = productTypeService.getAll();
 
-      List<String> dataDefinitionIds = getDataDefinitionIds(productTypes);
-
-      List<CommonDataView> dataDefinitionViews = Lists.newArrayList();
-
-      if (!dataDefinitionIds.isEmpty()) {
-        // 调用data-definition的api获取对应id的CommonDataView
-        dataDefinitionViews = restClient.getPlatformDataDefinition(dataDefinitionIds);
-      }
+      // 调用data-definition的api获取对应id的CommonDataView
+      Map<String, List<CommonDataView>> dataDefinitionViews = restClient.getPlatformDataDefinition();
 
       cacheProductTypes = ProductTypeMapper.toModel(productTypes, dataDefinitionViews);
 
       cacheApplication.batchCacheProductType(cacheProductTypes);
-
     }
 
     LOG.debug("Exit. productType size: {}.", cacheProductTypes.size());
     return cacheProductTypes;
-  }
-
-  /**
-   * 获取所有的data definition id，用于查询具体的data definition view。
-   */
-  private List<String> getDataDefinitionIds(List<ProductType> productTypes) {
-    List<String> dataDefinitionIds = Lists.newArrayList();
-
-    productTypes.stream().forEach(
-        productType -> dataDefinitionIds.addAll(productType.getDataIds())
-    );
-
-    return dataDefinitionIds;
   }
 }

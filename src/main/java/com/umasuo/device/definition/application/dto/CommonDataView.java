@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class CommonDataView implements Serializable{
 
   private static final long serialVersionUID = -8861282658167694700L;
+
   private String id;
 
   private String dataId;

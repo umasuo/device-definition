@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by Davis on 17/7/4.
@@ -33,12 +35,12 @@ public class CacheApplication {
     LOG.debug("Enter.");
     List<ProductTypeView> result = Lists.newArrayList();
 
-    Map<String, Object> cacheProductTypes =
+    Map<String, ProductTypeView> cacheProductTypes =
         redisTemplate.opsForHash().entries(RedisUtils.PRODUCT_TYPE_KEY);
 
     if (cacheProductTypes != null && !cacheProductTypes.isEmpty()) {
-      cacheProductTypes.entrySet().stream().forEach(
-          entry -> result.add((ProductTypeView) entry.getValue()));
+
+      result = cacheProductTypes.values().stream().collect(Collectors.toList());
     }
 
     LOG.trace("ProductType: {}.", result);
