@@ -3,6 +3,7 @@ package com.umasuo.device.definition.application.dto.mapper;
 import com.google.common.collect.Lists;
 import com.umasuo.device.definition.application.dto.CommonFunctionView;
 import com.umasuo.device.definition.application.dto.DeviceFunctionView;
+import com.umasuo.device.definition.application.dto.action.AddFunction;
 import com.umasuo.device.definition.domain.model.CommonFunction;
 import com.umasuo.device.definition.domain.model.DeviceFunction;
 
@@ -47,4 +48,14 @@ public final class DeviceFunctionMapper {
     return model;
   }
 
+  public static DeviceFunction build(AddFunction action) {
+    DeviceFunction function = new DeviceFunction();
+
+    function.setFunctionId(action.getFunctionId());
+    function.setName(action.getName());
+    function.setDescription(action.getDescription());
+    function.setCommand(action.getCommand());
+
+    return function;
+  }
 }

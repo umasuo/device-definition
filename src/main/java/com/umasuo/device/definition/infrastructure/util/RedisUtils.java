@@ -6,4 +6,6 @@ package com.umasuo.device.definition.infrastructure.util;
 public class RedisUtils {
 
   public static final String PRODUCT_TYPE_KEY = "product:producttype";
+
+  public static final String PRODUCT_KEY_FORMAT = "product:%s";
 }

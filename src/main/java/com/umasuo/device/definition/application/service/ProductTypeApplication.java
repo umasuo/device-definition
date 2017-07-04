@@ -1,22 +1,18 @@
 package com.umasuo.device.definition.application.service;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.umasuo.device.definition.application.dto.CommonDataView;
 import com.umasuo.device.definition.application.dto.ProductTypeView;
 import com.umasuo.device.definition.application.dto.mapper.ProductTypeMapper;
 import com.umasuo.device.definition.domain.model.ProductType;
 import com.umasuo.device.definition.domain.service.ProductTypeService;
-import com.umasuo.device.definition.infrastructure.util.RedisUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Davis on 17/6/28.
@@ -52,7 +48,7 @@ public class ProductTypeApplication {
     LOG.debug("Enter.");
 
     // 1. get from redis
-    List<ProductTypeView> cacheProductTypes = cacheApplication.getAll();
+    List<ProductTypeView> cacheProductTypes = cacheApplication.getAllProductType();
 
     if (cacheProductTypes.isEmpty()) {
       LOG.debug("Cache fail. Get from database.");

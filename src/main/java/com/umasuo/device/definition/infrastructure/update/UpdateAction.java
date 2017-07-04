@@ -3,7 +3,11 @@ package com.umasuo.device.definition.infrastructure.update;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.umasuo.device.definition.application.dto.action.AddDataDefinition;
+import com.umasuo.device.definition.application.dto.action.AddFunction;
+import com.umasuo.device.definition.application.dto.action.CopyFunction;
 import com.umasuo.device.definition.application.dto.action.RemoveDataDefinition;
+import com.umasuo.device.definition.application.dto.action.RemoveFunction;
+import com.umasuo.device.definition.application.dto.action.SetStatus;
 import com.umasuo.device.definition.application.dto.action.UpdateDevice;
 
 import java.io.Serializable;
@@ -12,16 +16,19 @@ import java.io.Serializable;
  * configurations for common update actions that will be used in more thant one service
  * and this action also extends other action configure in each service.
  */
-// TODO: 17/6/27 添加功能，移除功能，修改发售状态
+// TODO: 17/6/27 编辑功能，编辑数据，创建数据，拷贝数据
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property =
     "action")
 @JsonSubTypes( {
-    @JsonSubTypes.Type(value = AddDataDefinition.class, name = UpdateActionUtils
-        .ADD_DATA_DEFINITION),
-    @JsonSubTypes.Type(value = RemoveDataDefinition.class, name = UpdateActionUtils
-        .REMOVE_DATA_DEFINITION),
-    @JsonSubTypes.Type(value = UpdateDevice.class, name = UpdateActionUtils
-        .UPDATE_DATA_DEFINITION)
+    @JsonSubTypes.Type(value = AddDataDefinition.class,
+        name = UpdateActionUtils.ADD_DATA_DEFINITION),
+    @JsonSubTypes.Type(value = RemoveDataDefinition.class,
+        name = UpdateActionUtils.REMOVE_DATA_DEFINITION),
+    @JsonSubTypes.Type(value = UpdateDevice.class, name = UpdateActionUtils.UPDATE_DATA_DEFINITION),
+    @JsonSubTypes.Type(value = SetStatus.class, name = UpdateActionUtils.SET_STATUS),
+    @JsonSubTypes.Type(value = CopyFunction.class, name = UpdateActionUtils.COPY_FUNCTION),
+    @JsonSubTypes.Type(value = RemoveFunction.class, name = UpdateActionUtils.REMOVE_FUNCTION),
+    @JsonSubTypes.Type(value = AddFunction.class, name = UpdateActionUtils.ADD_FUNCTION)
 })
 public interface UpdateAction extends Serializable {
   /**
