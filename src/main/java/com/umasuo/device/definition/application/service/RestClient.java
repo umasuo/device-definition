@@ -3,7 +3,6 @@ package com.umasuo.device.definition.application.service;
 import com.google.common.collect.Lists;
 import com.umasuo.device.definition.application.dto.CommonDataView;
 import com.umasuo.device.definition.application.dto.CopyRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,9 +10,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,13 +32,13 @@ public class RestClient {
   /**
    * developer service uri
    */
-  @Value("${developer.service.uri:http://developer/}")
+  @Value("${developer.service.uri:http://developer}")
   private transient String developerUrl;
 
   /**
    * Data-definition service uri.
    */
-  @Value("${datadefinition.service.uri:http://data-definition/}")
+  @Value("${datadefinition.service.uri:http://data-definition}")
   private transient String definitionUrl;
 
   /**
@@ -51,7 +52,7 @@ public class RestClient {
    * @param developerId 开发者ID
    * @return boolean boolean
    */
-  public boolean isDeveloperExist(String developerId){
+  public boolean isDeveloperExist(String developerId) {
     logger.debug("Enter. developerId: {}.", developerId);
 
     String url = developerUrl + developerId;
@@ -66,11 +67,11 @@ public class RestClient {
   /**
    * Check definition exist.
    *
-   * @param developerId the developer id
+   * @param developerId   the developer id
    * @param definitionIds the definition ids
    * @return the map
    */
-  public Map<String, Boolean> checkDefinitionExist(String developerId, List<String> definitionIds){
+  public Map<String, Boolean> checkDefinitionExist(String developerId, List<String> definitionIds) {
     logger.debug("Enter. developerId: {}, definitionIds: {}.", developerId, definitionIds);
 
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(definitionUrl)
@@ -96,23 +97,43 @@ public class RestClient {
 
     String url = builder.build().encode().toUriString();
 
-    CommonDataView[] dataViews = restTemplate.getForObject(url, CommonDataView[].class);
+    try {
+      CommonDataView[] dataViews = restTemplate.getForObject(url, CommonDataView[].class);
 
-    result = Lists.newArrayList(dataViews);
+      result = Lists.newArrayList(dataViews);
+    } catch (RestClientException ex) {
+      logger.warn("Fetch data definition failed.", ex);
+      result = new ArrayList<>();
+    }
 
     logger.debug("Exit. result size: {}.", result.size());
     return result;
   }
 
-  public List<String> copyDataDefinitions(String developerId, CopyRequest dataDefinitionIds) {
-    logger.debug("Enter. developerId: {}, dataDefinitionIds: {}.", developerId, dataDefinitionIds);
+  /**
+   * 设备创建时调用, 将定义好的数据定义复制一分到新定义的设备名下，如果复制出错，返回空的，待后面重新添加，不妨碍设备创建.
+   *
+   * @param developerId 开发者ID
+   * @param request
+   * @return
+   */
+  public List<String> copyDataDefinitions(String developerId, CopyRequest request) {
+    logger.debug("Enter. developerId: {}, dataDefinitionIds: {}.", developerId, request);
     HttpHeaders headers = new HttpHeaders();
     headers.set("developerId", developerId);
-    HttpEntity entity = new HttpEntity(dataDefinitionIds, headers);
+    headers.set("Content-Type", "application/json");
+    HttpEntity entity = new HttpEntity(request, headers);
 
-    HttpEntity<String[]> response =
-        restTemplate.exchange(definitionUrl + "/copy", HttpMethod.POST, entity, String[].class);
+    try {
+      HttpEntity<String[]> response =
+          restTemplate.exchange(definitionUrl + "/copy", HttpMethod.POST, entity, String[].class);
+      return Lists.newArrayList(response.getBody());
+    } catch (RestClientException ex) {
+      logger.warn("Fetch data definition failed.", ex);
+      //todo add message or retry
+      return new ArrayList<>();
+    }
 
-    return Lists.newArrayList(response.getBody());
+
   }
 }

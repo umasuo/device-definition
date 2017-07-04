@@ -40,7 +40,7 @@ public final class DeviceValidator {
 
   public static void validateFunction(List<String> functionIds, ProductType productType) {
     List<String> productTypeFunctionIds =
-        productType.getFunctions().stream().map(CommonFunction::getId).collect(Collectors.toList());
+        productType.getFunctions().stream().map(CommonFunction::getFunctionId).collect(Collectors.toList());
 
     if (!productTypeFunctionIds.containsAll(functionIds)) {
       logger.debug("Should use function defined in this product type: {}.", productType.getId());

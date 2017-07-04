@@ -92,7 +92,7 @@ public class DeviceApplication {
 
     //TODO 检查数据是否存在
 
-    deviceService.save(device);
+    device = deviceService.save(device);
 
     // 4. 调用数据服务拷贝数据, 检测数据是否属于该类型的, 如果有event bus，可以把这个工作交给event bus
     if (draft.getDataDefineIds() != null && !draft.getDataDefineIds().isEmpty()) {
@@ -102,7 +102,7 @@ public class DeviceApplication {
 
     DeviceView view = DeviceMapper.modelToView(device);
 
-    logger.debug("Exit. deviceCreatedView: {}.", view);
+    logger.debug("Exit. deviceView: {}.", view);
     return view;
   }
 
@@ -122,7 +122,7 @@ public class DeviceApplication {
     }
     DeviceView view = DeviceMapper.modelToView(device);
 
-    logger.debug("Exit. device: {}.", view);
+    logger.debug("Exit. deviceView: {}.", view);
     return view;
   }
 
@@ -202,12 +202,12 @@ public class DeviceApplication {
    * 把产品类别中定义的数据定义拷贝到新增的设备定义中。
    */
   private void copyDataDefinitions(DeviceDraft draft, String developerId, ProductType productType,
-      Device device) {
+                                   Device device) {
     DeviceValidator.validateDataDefinition(draft.getDataDefineIds(), productType);
 
     CopyRequest copyRequest = CopyRequest.build(device.getId(), draft.getDataDefineIds(), null);
 
-    // 调用Data-Definition的API，接收的是拷贝之后生成的id列表
+    // 调用Data-Definition的API，接收的是拷贝之后生成的id列表，这一步失败，不影响设备创建是否成功
     List<String> newDataDefinitionIds = restClient.copyDataDefinitions(developerId, copyRequest);
 
     device.setDataDefineIds(newDataDefinitionIds);
