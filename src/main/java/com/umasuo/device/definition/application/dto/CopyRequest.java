@@ -5,6 +5,7 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,8 +13,9 @@ import java.util.List;
  * platformDataDefinitionIds and developerDataDefinitionIds can not be null both.
  */
 @Data
-public class CopyRequest {
+public class CopyRequest implements Serializable{
 
+  private static final long serialVersionUID = -4281998744354349294L;
   /**
    * DeviceDefinition id.
    */
