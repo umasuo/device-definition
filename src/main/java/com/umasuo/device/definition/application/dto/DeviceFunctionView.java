@@ -17,4 +17,6 @@ public class DeviceFunctionView {
   private String description;
 
   private String command;
+
+  private FunctionDataType dataType;
 }

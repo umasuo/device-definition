@@ -1,5 +1,7 @@
 package com.umasuo.device.definition.application.dto.action;
 
+import com.umasuo.device.definition.application.dto.FunctionDataType;
+import com.umasuo.device.definition.infrastructure.enums.TransferType;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
 
@@ -23,6 +25,12 @@ public class AddFunction implements UpdateAction {
 
   @NotNull
   private String command;
+
+  @NotNull
+  private TransferType transferType;
+
+  @NotNull
+  private FunctionDataType dataType;
 
 
   @Override
