@@ -2,10 +2,14 @@ package com.umasuo.device.definition.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import java.io.Serializable;
+
 /**
  * Created by Davis on 17/7/5.
  */
-public class BooleanType implements FunctionDataType{
+public class BooleanType implements FunctionDataType, Serializable {
+
+  private static final long serialVersionUID = -4939166400519284908L;
 
   private String type;
 

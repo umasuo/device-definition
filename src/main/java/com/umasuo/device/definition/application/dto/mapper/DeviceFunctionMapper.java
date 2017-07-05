@@ -44,6 +44,8 @@ public final class DeviceFunctionMapper {
     model.setName(entity.getName());
     model.setDescription(entity.getDescription());
     model.setCommand(entity.getCommand());
+    model.setDataType(entity.getDataType());
+    model.setTransferType(entity.getTransferType());
 
     return model;
   }
@@ -55,6 +57,8 @@ public final class DeviceFunctionMapper {
     function.setName(action.getName());
     function.setDescription(action.getDescription());
     function.setCommand(action.getCommand());
+    function.setTransferType(action.getTransferType());
+    function.setDataType(action.getDataType());
 
     return function;
   }

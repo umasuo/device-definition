@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -31,8 +32,9 @@ import javax.persistence.Version;
 @Table(name = "device_definition")
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class Device {
+public class Device implements Serializable {
 
+  private static final long serialVersionUID = -6085138635403490262L;
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")

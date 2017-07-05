@@ -2,13 +2,16 @@ package com.umasuo.device.definition.application.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Davis on 17/7/5.
  */
 @Data
-public class EnumType implements FunctionDataType {
+public class EnumType implements FunctionDataType, Serializable {
+
+  private static final long serialVersionUID = -5630734731563581589L;
 
   private String type;
 

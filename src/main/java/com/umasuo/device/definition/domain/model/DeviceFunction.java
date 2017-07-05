@@ -1,10 +1,19 @@
 package com.umasuo.device.definition.domain.model;
 
+import com.umasuo.database.dialect.JSONBUserType;
+import com.umasuo.device.definition.application.dto.FunctionDataType;
+import com.umasuo.device.definition.infrastructure.enums.TransferType;
+
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,8 +33,12 @@ import javax.persistence.Version;
 @Table(name = "device_function")
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class DeviceFunction {
+@TypeDef(name = "dataType", typeClass = JSONBUserType.class, parameters = {
+    @Parameter(name = JSONBUserType.CLASS,
+        value = "com.umasuo.device.definition.application.dto.FunctionDataType")})
+public class DeviceFunction implements Serializable{
 
+  private static final long serialVersionUID = -1741012173485432837L;
   /**
    * id.
    */
@@ -75,4 +88,9 @@ public class DeviceFunction {
    */
   private String command;
 
+
+  @Type(type = "dataType")
+  private FunctionDataType dataType;
+
+  private TransferType transferType;
 }
