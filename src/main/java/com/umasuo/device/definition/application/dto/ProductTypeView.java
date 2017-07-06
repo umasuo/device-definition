@@ -1,7 +1,5 @@
 package com.umasuo.device.definition.application.dto;
 
-import com.umasuo.device.definition.domain.model.CommonFunction;
-
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,7 +9,7 @@ import java.util.List;
  * Created by Davis on 17/6/28.
  */
 @Data
-public class ProductTypeView implements Serializable{
+public class ProductTypeView implements Serializable {
 
   private static final long serialVersionUID = 8675853413590870401L;
 

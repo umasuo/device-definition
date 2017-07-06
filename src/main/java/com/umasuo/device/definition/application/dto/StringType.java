@@ -14,7 +14,7 @@ public class StringType implements FunctionDataType, Serializable {
 
   private String type;
 
-  private StringType() {
+  public StringType() {
     this.type = STRING_TYPE;
   }
 }

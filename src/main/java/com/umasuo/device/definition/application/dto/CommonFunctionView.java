@@ -1,5 +1,7 @@
 package com.umasuo.device.definition.application.dto;
 
+import com.umasuo.device.definition.infrastructure.enums.TransferType;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -31,4 +33,7 @@ public class CommonFunctionView implements Serializable{
    */
   private String command;
 
+  private TransferType transferType;
+
+  private FunctionDataType dataType;
 }

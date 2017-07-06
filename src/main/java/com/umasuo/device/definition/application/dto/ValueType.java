@@ -22,7 +22,7 @@ public class ValueType implements FunctionDataType, Serializable {
 
   private Integer multiple;
 
-  private ValueType() {
+  public ValueType() {
     this.type = VALUE_TYPE;
   }
 }

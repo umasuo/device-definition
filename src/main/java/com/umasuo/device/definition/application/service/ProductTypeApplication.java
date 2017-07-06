@@ -55,7 +55,8 @@ public class ProductTypeApplication {
       List<ProductType> productTypes = productTypeService.getAll();
 
       // 调用data-definition的api获取对应id的CommonDataView
-      Map<String, List<CommonDataView>> dataDefinitionViews = restClient.getPlatformDataDefinition();
+      Map<String, List<CommonDataView>> dataDefinitionViews = restClient
+          .getPlatformDataDefinition();
 
       cacheProductTypes = ProductTypeMapper.toModel(productTypes, dataDefinitionViews);
 

@@ -47,6 +47,8 @@ public final class CommonFunctionMapper {
     model.setName(entity.getName());
     model.setDescription(entity.getDescription());
     model.setCommand(entity.getCommand());
+    model.setTransferType(entity.getTransferType());
+    model.setDataType(entity.getDataType());
 
     return model;
   }
