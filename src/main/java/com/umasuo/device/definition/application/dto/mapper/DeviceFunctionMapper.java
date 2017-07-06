@@ -1,10 +1,8 @@
 package com.umasuo.device.definition.application.dto.mapper;
 
 import com.google.common.collect.Lists;
-import com.umasuo.device.definition.application.dto.CommonFunctionView;
 import com.umasuo.device.definition.application.dto.DeviceFunctionView;
 import com.umasuo.device.definition.application.dto.action.AddFunction;
-import com.umasuo.device.definition.domain.model.CommonFunction;
 import com.umasuo.device.definition.domain.model.DeviceFunction;
 
 import java.util.List;
@@ -29,9 +27,11 @@ public final class DeviceFunctionMapper {
   public static List<DeviceFunctionView> toModel(List<DeviceFunction> entities) {
     List<DeviceFunctionView> models = Lists.newArrayList();
 
-    entities.stream().forEach(
-        entity -> models.add(toModel(entity))
-    );
+    if (entities != null) {
+      entities.stream().forEach(
+          entity -> models.add(toModel(entity))
+      );
+    }
 
     return models;
   }

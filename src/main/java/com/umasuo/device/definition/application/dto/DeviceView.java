@@ -48,6 +48,8 @@ public class DeviceView implements Serializable {
    */
   private String name;
 
+  private String productTypeId;
+
   /**
    * device icon.
    */

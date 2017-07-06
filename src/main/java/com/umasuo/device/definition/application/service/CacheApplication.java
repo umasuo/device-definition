@@ -88,7 +88,9 @@ public class CacheApplication {
   public DeviceView getProductById(String developerId, String productId) {
     LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 
-    DeviceView result = (DeviceView)redisTemplate.opsForHash().get(developerId, productId);
+    String key = String.format(RedisUtils.PRODUCT_KEY_FORMAT, developerId);
+
+    DeviceView result = (DeviceView)redisTemplate.opsForHash().get(key, productId);
 
     LOG.debug("Exit. product: {}.", result);
     return result;

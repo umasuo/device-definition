@@ -127,7 +127,7 @@ public class DeviceApplication {
       List<DeviceView> productViews = DeviceMapper.modelToView(products);
       cacheApplication.batchCacheProduct(developerId, productViews);
 
-      result = productViews.stream().filter(view -> id.equals(view.getId())).findAny().get();
+      result = productViews.stream().filter(view -> id.equals(view.getId())).findAny().orElse(null);
     }
 
     logger.debug("Exit. deviceView: {}.", result);
