@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -115,5 +116,13 @@ public class DeviceService {
     logger.debug("Exit. name: {} exist: {}.", name, result);
 
     return result;
+  }
+
+  public void delete(String id) {
+    logger.debug("Enter. id: {}.", id);
+
+    deviceRepository.delete(id);
+
+    logger.debug("Exit.");
   }
 }

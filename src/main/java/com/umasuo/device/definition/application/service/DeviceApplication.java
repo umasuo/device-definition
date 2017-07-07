@@ -245,4 +245,29 @@ public class DeviceApplication {
     List<DeviceFunction> functions = CommonFunctionMapper.copy(productType.getFunctions());
     device.setDeviceFunctions(functions);
   }
+
+  public void delete(String id, String developerId, Integer version) {
+    logger.debug("Enter. id: {}, developerId: {}, version: {}.", id, developerId, version);
+
+    Device valueInDb = deviceService.get(id);
+
+    if (!valueInDb.getDeveloperId().equals(developerId)) {
+      logger.debug("Device: {} not belong to developer: {}.", id, developerId);
+      throw new ParametersException("The device not belong to the developer: " + developerId + "," +
+          " deviceId: " + id);
+    }
+
+    logger.debug("Data in db: {}", valueInDb);
+
+    if (valueInDb.getStatus().equals(ProductStatus.PUBLISHED)) {
+      logger.debug("Can not delete a published product");
+      throw new ParametersException("Can not delete a published product");
+    }
+
+    checkVersion(version, valueInDb.getVersion());
+
+    deviceService.delete(id);
+
+    logger.debug("Exit.");
+  }
 }
