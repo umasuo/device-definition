@@ -5,6 +5,7 @@ import com.umasuo.device.definition.application.dto.DeviceView;
 import com.umasuo.device.definition.application.service.DeviceApplication;
 import com.umasuo.device.definition.infrastructure.Router;
 import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +45,13 @@ public class DeviceController {
   /**
    * create new device.
    *
-   * @param draft       Device draft
+   * @param draft Device draft
    * @param developerId the developer id
    * @return device view
    */
   @PostMapping(Router.PRODUCT_ROOT)
   public DeviceView create(@RequestHeader("developerId") String developerId,
-                           @RequestBody @Valid DeviceDraft draft) {
+      @RequestBody @Valid DeviceDraft draft) {
     logger.info("Enter. developerId: {}, deviceDraft: {}.", developerId, draft);
 
     DeviceView view = deviceApplication.create(draft, developerId);
@@ -73,14 +74,14 @@ public class DeviceController {
   /**
    * Update Device view.
    *
-   * @param id            the Device id
+   * @param id the Device id
    * @param updateRequest the update request
-   * @param developerId   the developer id
+   * @param developerId the developer id
    * @return the DeviceView
    */
   @PutMapping(Router.PRODUCT_WITH_ID)
   public DeviceView update(@PathVariable("id") String id, @RequestHeader String developerId,
-                           @RequestBody @Valid UpdateRequest updateRequest) {
+      @RequestBody @Valid UpdateRequest updateRequest) {
     logger.info("Enter. deviceId: {}, updateRequest: {}, developerId: {}.",
         id, updateRequest, developerId);
 
@@ -96,7 +97,7 @@ public class DeviceController {
   /**
    * get device definition by device id.
    *
-   * @param id          String
+   * @param id String
    * @param developerId the developer id
    * @return DeviceView device view
    */

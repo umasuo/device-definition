@@ -10,13 +10,10 @@ import com.umasuo.device.definition.domain.model.DeviceFunction;
 import com.umasuo.device.definition.domain.model.ProductType;
 import com.umasuo.device.definition.domain.service.DeviceService;
 import com.umasuo.device.definition.domain.service.ProductTypeService;
-import com.umasuo.device.definition.infrastructure.enums.ProductStatus;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdaterService;
 import com.umasuo.device.definition.infrastructure.validator.DeviceValidator;
 import com.umasuo.exception.AlreadyExistException;
-import com.umasuo.exception.ConflictException;
-import com.umasuo.exception.ParametersException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,19 +180,14 @@ public class DeviceApplication {
     logger.debug("Enter: id: {}, version: {}, actions: {}", id, version, actions);
 
     Device valueInDb = deviceService.get(id);
-    if (!valueInDb.getDeveloperId().equals(developerId)) {
-      logger.debug("Device: {} not belong to developer: {}.", id, developerId);
-      throw new ParametersException("The device not belong to the developer: " + developerId + "," +
-          " deviceId: " + id);
-    }
+
+    DeviceValidator.checkDeveloper(developerId, valueInDb);
+
     logger.debug("Data in db: {}", valueInDb);
 
-    if (valueInDb.getStatus().equals(ProductStatus.PUBLISHED)) {
-      logger.debug("Can not update a published product");
-      throw new ParametersException("Can not update a published product");
-    }
+    DeviceValidator.checkStatus(valueInDb);
 
-    checkVersion(version, valueInDb.getVersion());
+    DeviceValidator.checkVersion(version, valueInDb.getVersion());
 
     actions.stream().forEach(action -> updaterService.handle(valueInDb, action));
 
@@ -207,19 +199,6 @@ public class DeviceApplication {
 
     logger.debug("Exit: updated device: {}", updatedDevice);
     return updatedDevice;
-  }
-
-  /**
-   * check the version.
-   *
-   * @param inputVersion Integer
-   * @param existVersion Integer
-   */
-  private void checkVersion(Integer inputVersion, Integer existVersion) {
-    if (!inputVersion.equals(existVersion)) {
-      logger.debug("Device definition version is not correct.");
-      throw new ConflictException("Device definition version is not correct.");
-    }
   }
 
   /**
@@ -251,23 +230,17 @@ public class DeviceApplication {
 
     Device valueInDb = deviceService.get(id);
 
-    if (!valueInDb.getDeveloperId().equals(developerId)) {
-      logger.debug("Device: {} not belong to developer: {}.", id, developerId);
-      throw new ParametersException("The device not belong to the developer: " + developerId + "," +
-          " deviceId: " + id);
-    }
+    DeviceValidator.checkDeveloper(developerId, valueInDb);
 
     logger.debug("Data in db: {}", valueInDb);
 
-    if (valueInDb.getStatus().equals(ProductStatus.PUBLISHED)) {
-      logger.debug("Can not delete a published product");
-      throw new ParametersException("Can not delete a published product");
-    }
+    DeviceValidator.checkStatus(valueInDb);
 
-    checkVersion(version, valueInDb.getVersion());
+    DeviceValidator.checkVersion(version, valueInDb.getVersion());
 
     deviceService.delete(id);
 
     logger.debug("Exit.");
   }
+
 }

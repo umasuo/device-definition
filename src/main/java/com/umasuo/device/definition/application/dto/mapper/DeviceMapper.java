@@ -7,7 +7,6 @@ import com.umasuo.device.definition.domain.model.Device;
 import com.umasuo.device.definition.infrastructure.enums.ProductStatus;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,7 +15,6 @@ import java.util.List;
 public final class DeviceMapper {
 
   private DeviceMapper() {
-
   }
 
   /**
