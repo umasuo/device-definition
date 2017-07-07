@@ -7,6 +7,8 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by umasuo on 17/6/1.
  */
@@ -15,6 +17,7 @@ public class RemoveDataDefinition implements UpdateAction, Serializable {
 
   private static final long serialVersionUID = 2863847844677656573L;
 
+  @NotNull
   private List<String> dataDefinitionIds;
 
   @Override

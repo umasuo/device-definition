@@ -131,4 +131,8 @@ public class RestClient {
 
 
   }
+
+  public void deleteDataDefinition(List<String> removeIds) {
+    // TODO: 17/7/7
+  }
 }
