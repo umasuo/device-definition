@@ -2,8 +2,9 @@ package com.umasuo.device.definition.infrastructure.update;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.umasuo.device.definition.application.dto.action.CopyDataDefinition;
+import com.umasuo.device.definition.application.dto.action.AddDataDefinition;
 import com.umasuo.device.definition.application.dto.action.AddFunction;
+import com.umasuo.device.definition.application.dto.action.CopyDataDefinition;
 import com.umasuo.device.definition.application.dto.action.CopyFunction;
 import com.umasuo.device.definition.application.dto.action.RemoveDataDefinition;
 import com.umasuo.device.definition.application.dto.action.RemoveFunction;
@@ -17,12 +18,14 @@ import java.io.Serializable;
  * configurations for common update actions that will be used in more thant one service
  * and this action also extends other action configure in each service.
  */
-// TODO: 17/6/27 编辑数据，创建数据
+// TODO: 17/6/27 编辑数据暂时还在DataDefinition服务上
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property =
     "action")
-@JsonSubTypes( {
+@JsonSubTypes({
     @JsonSubTypes.Type(value = CopyDataDefinition.class,
         name = UpdateActionUtils.COPY_DATA_DEFINITION),
+    @JsonSubTypes.Type(value = AddDataDefinition.class,
+        name = UpdateActionUtils.ADD_DATA_DEFINITION),
     @JsonSubTypes.Type(value = RemoveDataDefinition.class,
         name = UpdateActionUtils.REMOVE_DATA_DEFINITION),
     @JsonSubTypes.Type(value = UpdateDevice.class, name = UpdateActionUtils.UPDATE_DATA_DEFINITION),
@@ -33,6 +36,7 @@ import java.io.Serializable;
     @JsonSubTypes.Type(value = UpdateFunction.class, name = UpdateActionUtils.UPDATE_FUNCTION)
 })
 public interface UpdateAction extends Serializable {
+
   /**
    * get action name.
    *

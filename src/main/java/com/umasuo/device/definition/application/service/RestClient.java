@@ -7,18 +7,21 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.umasuo.device.definition.application.dto.CommonDataView;
 import com.umasuo.device.definition.application.dto.CopyRequest;
+import com.umasuo.device.definition.application.dto.action.AddDataDefinition;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,7 +74,7 @@ public class RestClient {
   /**
    * Check definition exist.
    *
-   * @param developerId   the developer id
+   * @param developerId the developer id
    * @param definitionIds the definition ids
    * @return the map
    */
@@ -112,8 +115,6 @@ public class RestClient {
    * 设备创建时调用, 将定义好的数据定义复制一分到新定义的设备名下，如果复制出错，返回空的，待后面重新添加，不妨碍设备创建.
    *
    * @param developerId 开发者ID
-   * @param request
-   * @return
    */
   public List<String> copyDataDefinitions(String developerId, CopyRequest request) {
     logger.debug("Enter. developerId: {}, dataDefinitionIds: {}.", developerId, request);
@@ -152,5 +153,17 @@ public class RestClient {
       logger.debug("Something wrong when delete dataDefinition.", ex);
     }
 
+  }
+
+  public String createDataDefinition(String developerId, AddDataDefinition action) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("developerId", developerId);
+    headers.set("Content-Type", "application/json");
+    HttpEntity entity = new HttpEntity(action, headers);
+
+    ResponseEntity response =
+        restTemplate.exchange(definitionUrl, POST, entity, Map.class);
+
+    return ((LinkedHashMap) response.getBody()).get("id").toString();
   }
 }
