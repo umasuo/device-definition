@@ -5,7 +5,6 @@ import com.umasuo.device.definition.application.service.RestClient;
 import com.umasuo.device.definition.domain.model.Device;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
-import com.umasuo.exception.NotExistException;
 import com.umasuo.exception.ParametersException;
 import com.umasuo.model.Updater;
 
@@ -32,7 +31,7 @@ public class RemoveDataDefinitionService implements Updater<Device, UpdateAction
 
   @Override
   public void handle(Device entity, UpdateAction updateAction) {
-    List<String> removeIds = ((RemoveDataDefinition) updateAction).getDataDefinitionIds();
+    String removeId = ((RemoveDataDefinition) updateAction).getDataDefinitionId();
 
     List<String> dataDefinitions = entity.getDataDefineIds();
 
@@ -41,13 +40,13 @@ public class RemoveDataDefinitionService implements Updater<Device, UpdateAction
       throw new ParametersException("Can not remove dataDefinition from null list");
     }
 
-    if (!dataDefinitions.containsAll(removeIds)) {
-      LOG.debug("dataDefinition: {} is not belong device: {} all.", removeIds, entity.getId());
+    if (!dataDefinitions.contains(removeId)) {
+      LOG.debug("dataDefinition: {} is not belong device: {} all.", removeId, entity.getId());
     }
 
-    entity.getDataDefineIds().removeAll(removeIds);
+    entity.getDataDefineIds().remove(removeId);
 
-    restClient.deleteDataDefinition(removeIds);
+    restClient.deleteDataDefinition(entity.getDeveloperId(), entity.getId(), removeId);
   }
 
 }

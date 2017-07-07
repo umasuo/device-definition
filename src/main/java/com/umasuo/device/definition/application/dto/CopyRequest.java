@@ -34,19 +34,19 @@ public class CopyRequest implements Serializable{
   /**
    * CopyRequest build 方法。
    *
-   * @param deviceDefinitionId DeviceDefinition id
+   * @param productId DeviceDefinition id
    * @param platformDataDefinitionIds PlatformDataDefinition id list
    * @param developerDataDefinitionIds DeveloperDataDefinition id list
    * @return CopyRequest
    */
-  public static CopyRequest build(String deviceDefinitionId, List<String> platformDataDefinitionIds,
+  public static CopyRequest build(String productId, List<String> platformDataDefinitionIds,
       List<String> developerDataDefinitionIds) {
     CopyRequest request = new CopyRequest();
 
     Assert
-        .isTrue(StringUtils.isNotBlank(deviceDefinitionId), "productId can not be blank");
+        .isTrue(StringUtils.isNotBlank(productId), "productId can not be blank");
 
-    request.setDeviceDefinitionId(deviceDefinitionId);
+    request.setDeviceDefinitionId(productId);
 
     boolean copyFromPlatform =
         platformDataDefinitionIds != null && !platformDataDefinitionIds.isEmpty();

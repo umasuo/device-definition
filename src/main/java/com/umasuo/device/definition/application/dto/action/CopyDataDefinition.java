@@ -2,6 +2,7 @@ package com.umasuo.device.definition.application.dto.action;
 
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
+
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.util.List;
  * Created by umasuo on 17/6/1.
  */
 @Data
-public class AddDataDefinition implements UpdateAction, Serializable {
+public class CopyDataDefinition implements UpdateAction, Serializable {
 
   private static final long serialVersionUID = 2863847844677656573L;
 
@@ -19,6 +20,6 @@ public class AddDataDefinition implements UpdateAction, Serializable {
 
   @Override
   public String getActionName() {
-    return UpdateActionUtils.ADD_DATA_DEFINITION;
+    return UpdateActionUtils.COPY_DATA_DEFINITION;
   }
 }

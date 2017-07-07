@@ -1,15 +1,18 @@
 package com.umasuo.device.definition.application.service;
 
+import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.POST;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.umasuo.device.definition.application.dto.CommonDataView;
 import com.umasuo.device.definition.application.dto.CopyRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -121,18 +124,33 @@ public class RestClient {
 
     try {
       HttpEntity<String[]> response =
-          restTemplate.exchange(definitionUrl + "/copy", HttpMethod.POST, entity, String[].class);
+          restTemplate.exchange(definitionUrl + "/copy", POST, entity, String[].class);
       return Lists.newArrayList(response.getBody());
     } catch (RestClientException ex) {
       logger.warn("Fetch data definition failed.", ex);
       //todo add message or retry
       return new ArrayList<>();
     }
-
-
   }
 
-  public void deleteDataDefinition(List<String> removeIds) {
-    // TODO: 17/7/7
+  public void deleteDataDefinition(String developerId, String productId, String removeId) {
+    logger.debug("Enter. developerId: {}, productId: {}, removed dataDefinition: {}.",
+        developerId, productId, removeId);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("developerId", developerId);
+    headers.set("Content-Type", "application/json");
+    HttpEntity entity = new HttpEntity(headers);
+
+    String url = UriComponentsBuilder.fromHttpUrl(definitionUrl + "/" + removeId)
+        .queryParam("productId", productId).toUriString();
+
+    try {
+      restTemplate.exchange(url, DELETE, entity, Void.class);
+
+    } catch (Exception ex) {
+      logger.debug("Something wrong when delete dataDefinition.", ex);
+    }
+
   }
 }
