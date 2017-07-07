@@ -43,6 +43,7 @@ public final class CommonFunctionMapper {
   public static CommonFunctionView toModel(CommonFunction entity) {
     CommonFunctionView model = new CommonFunctionView();
 
+    model.setId(entity.getId());
     model.setFunctionId(entity.getFunctionId());
     model.setName(entity.getName());
     model.setDescription(entity.getDescription());
@@ -80,6 +81,8 @@ public final class CommonFunctionMapper {
     deviceFunction.setName(function.getName());
     deviceFunction.setDescription(function.getDescription());
     deviceFunction.setCommand(function.getCommand());
+    deviceFunction.setTransferType(function.getTransferType());
+    deviceFunction.setDataType(function.getDataType());
 
     return deviceFunction;
   }

@@ -9,6 +9,7 @@ import com.umasuo.device.definition.application.dto.action.RemoveDataDefinition;
 import com.umasuo.device.definition.application.dto.action.RemoveFunction;
 import com.umasuo.device.definition.application.dto.action.SetStatus;
 import com.umasuo.device.definition.application.dto.action.UpdateDevice;
+import com.umasuo.device.definition.application.dto.action.UpdateFunction;
 
 import java.io.Serializable;
 
@@ -16,7 +17,7 @@ import java.io.Serializable;
  * configurations for common update actions that will be used in more thant one service
  * and this action also extends other action configure in each service.
  */
-// TODO: 17/6/27 编辑功能，编辑数据，创建数据，拷贝数据
+// TODO: 17/6/27 编辑数据，创建数据，拷贝数据
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property =
     "action")
 @JsonSubTypes( {
@@ -28,7 +29,8 @@ import java.io.Serializable;
     @JsonSubTypes.Type(value = SetStatus.class, name = UpdateActionUtils.SET_STATUS),
     @JsonSubTypes.Type(value = CopyFunction.class, name = UpdateActionUtils.COPY_FUNCTION),
     @JsonSubTypes.Type(value = RemoveFunction.class, name = UpdateActionUtils.REMOVE_FUNCTION),
-    @JsonSubTypes.Type(value = AddFunction.class, name = UpdateActionUtils.ADD_FUNCTION)
+    @JsonSubTypes.Type(value = AddFunction.class, name = UpdateActionUtils.ADD_FUNCTION),
+    @JsonSubTypes.Type(value = UpdateFunction.class, name = UpdateActionUtils.UPDATE_FUNCTION)
 })
 public interface UpdateAction extends Serializable {
   /**

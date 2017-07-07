@@ -13,6 +13,12 @@ import java.io.Serializable;
 public class CommonFunctionView implements Serializable{
 
   private static final long serialVersionUID = 7869266662203116465L;
+
+  /**
+   * 系统唯一ID
+   */
+  private String id;
+
   /**
    * 短功能ID, 每种设备对应的功能ID唯一.
    */

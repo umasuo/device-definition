@@ -21,4 +21,6 @@ public class UpdateActionUtils {
   public static final String REMOVE_FUNCTION = "removeFunction";
 
   public static final String ADD_FUNCTION = "addFunction";
+
+  public static final String UPDATE_FUNCTION = "updateFunction";
 }

@@ -112,8 +112,9 @@ public class Device implements Serializable {
 
   /**
    * 产品的功能列表。
+   * 使用orphanRemoval是为了可以在Device这边把function删除。
    */
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
   @OrderBy("functionId")
   private List<DeviceFunction> deviceFunctions;
 

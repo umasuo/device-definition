@@ -3,6 +3,7 @@ package com.umasuo.device.definition.application.dto.mapper;
 import com.google.common.collect.Lists;
 import com.umasuo.device.definition.application.dto.DeviceFunctionView;
 import com.umasuo.device.definition.application.dto.action.AddFunction;
+import com.umasuo.device.definition.application.dto.action.UpdateFunction;
 import com.umasuo.device.definition.domain.model.DeviceFunction;
 
 import java.util.List;
@@ -61,5 +62,14 @@ public final class DeviceFunctionMapper {
     function.setDataType(action.getDataType());
 
     return function;
+  }
+
+  public static void merge(DeviceFunction function, UpdateFunction action) {
+    function.setCommand(action.getCommand());
+    function.setDescription(action.getDescription());
+    function.setTransferType(action.getTransferType());
+    function.setName(action.getName());
+    function.setFunctionId(action.getFunctionId());
+    function.setDataType(action.getDataType());
   }
 }

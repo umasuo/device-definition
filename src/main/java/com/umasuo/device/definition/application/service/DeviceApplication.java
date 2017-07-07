@@ -156,7 +156,8 @@ public class DeviceApplication {
     return result;
   }
 
-  /**estClient
+  /**
+   * estClient
    * get all open device define by developer id.
    * 接口比较少用，暂时不需要使用缓存。
    *
@@ -189,7 +190,7 @@ public class DeviceApplication {
     }
     logger.debug("Data in db: {}", valueInDb);
 
-    if (valueInDb.getStatus().equals(ProductStatus.PUBLISHED)){
+    if (valueInDb.getStatus().equals(ProductStatus.PUBLISHED)) {
       logger.debug("Can not update a published product");
       throw new ParametersException("Can not update a published product");
     }
@@ -225,7 +226,7 @@ public class DeviceApplication {
    * 把产品类别中定义的数据定义拷贝到新增的设备定义中。
    */
   private void copyDataDefinitions(DeviceDraft draft, String developerId, ProductType productType,
-                                   Device device) {
+      Device device) {
     DeviceValidator.validateDataDefinition(draft.getDataDefineIds(), productType);
 
     CopyRequest copyRequest = CopyRequest.build(device.getId(), draft.getDataDefineIds(), null);
