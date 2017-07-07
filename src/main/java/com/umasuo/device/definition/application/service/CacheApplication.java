@@ -48,7 +48,7 @@ public class CacheApplication {
     return result;
   }
 
-  public void batchCacheProductType(List<ProductTypeView> productTypeViews) {
+  public void cacheProductType(List<ProductTypeView> productTypeViews) {
     LOG.debug("Enter. productType size: {}.", productTypeViews.size());
 
     Map<String, ProductTypeView> cacheProductTypes = Maps.newHashMap();
@@ -76,7 +76,7 @@ public class CacheApplication {
     return result;
   }
 
-  public void batchCacheProduct(String developerId, List<DeviceView> products) {
+  public void cacheProduct(String developerId, List<DeviceView> products) {
     LOG.debug("Enter. products size: {}.", products.size());
 
     Map<String, DeviceView> cacheProducts = Maps.newHashMap();

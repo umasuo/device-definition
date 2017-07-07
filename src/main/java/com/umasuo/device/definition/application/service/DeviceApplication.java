@@ -125,7 +125,7 @@ public class DeviceApplication {
 
       List<Device> products = deviceService.getByDeveloperId(developerId);
       List<DeviceView> productViews = DeviceMapper.modelToView(products);
-      cacheApplication.batchCacheProduct(developerId, productViews);
+      cacheApplication.cacheProduct(developerId, productViews);
 
       result = productViews.stream().filter(view -> id.equals(view.getId())).findAny().orElse(null);
     }
@@ -148,7 +148,7 @@ public class DeviceApplication {
       logger.debug("Cache fail, get from database.");
       List<Device> devices = deviceService.getByDeveloperId(developerId);
       result = DeviceMapper.modelToView(devices);
-      cacheApplication.batchCacheProduct(developerId, result);
+      cacheApplication.cacheProduct(developerId, result);
     }
 
     logger.trace("Devices: {}.", result);

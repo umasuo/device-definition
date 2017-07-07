@@ -60,7 +60,7 @@ public class ProductTypeApplication {
 
       cacheProductTypes = ProductTypeMapper.toModel(productTypes, dataDefinitionViews);
 
-      cacheApplication.batchCacheProductType(cacheProductTypes);
+      cacheApplication.cacheProductType(cacheProductTypes);
     }
 
     LOG.debug("Exit. productType size: {}.", cacheProductTypes.size());

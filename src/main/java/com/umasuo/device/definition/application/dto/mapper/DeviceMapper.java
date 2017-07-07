@@ -7,6 +7,7 @@ import com.umasuo.device.definition.domain.model.Device;
 import com.umasuo.device.definition.infrastructure.enums.ProductStatus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -52,7 +53,9 @@ public final class DeviceMapper {
     view.setIcon(device.getIcon());
     view.setStatus(device.getStatus());
     view.setName(device.getName());
-    view.setDataDefineIds(Lists.newArrayList(device.getDataDefineIds()));
+    if (device.getDataDefineIds() != null) {
+      view.setDataDefineIds(Lists.newArrayList(device.getDataDefineIds()));
+    }
     view.setType(device.getCommunicationType());
     view.setOpenable(device.getOpenable());
 
