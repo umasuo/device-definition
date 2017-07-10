@@ -9,7 +9,7 @@ import com.umasuo.device.definition.application.dto.action.CopyFunction;
 import com.umasuo.device.definition.application.dto.action.RemoveDataDefinition;
 import com.umasuo.device.definition.application.dto.action.RemoveFunction;
 import com.umasuo.device.definition.application.dto.action.SetStatus;
-import com.umasuo.device.definition.application.dto.action.UpdateDevice;
+import com.umasuo.device.definition.application.dto.action.UpdateProduct;
 import com.umasuo.device.definition.application.dto.action.UpdateFunction;
 
 import java.io.Serializable;
@@ -28,7 +28,7 @@ import java.io.Serializable;
         name = UpdateActionUtils.ADD_DATA_DEFINITION),
     @JsonSubTypes.Type(value = RemoveDataDefinition.class,
         name = UpdateActionUtils.REMOVE_DATA_DEFINITION),
-    @JsonSubTypes.Type(value = UpdateDevice.class, name = UpdateActionUtils.UPDATE_DATA_DEFINITION),
+    @JsonSubTypes.Type(value = UpdateProduct.class, name = UpdateActionUtils.UPDATE_PRODUCT),
     @JsonSubTypes.Type(value = SetStatus.class, name = UpdateActionUtils.SET_STATUS),
     @JsonSubTypes.Type(value = CopyFunction.class, name = UpdateActionUtils.COPY_FUNCTION),
     @JsonSubTypes.Type(value = RemoveFunction.class, name = UpdateActionUtils.REMOVE_FUNCTION),

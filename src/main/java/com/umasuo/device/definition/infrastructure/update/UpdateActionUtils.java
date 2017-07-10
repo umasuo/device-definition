@@ -14,6 +14,7 @@ public class UpdateActionUtils {
 
   public static final String REMOVE_DATA_DEFINITION = "removeDataDefinition";
 
+  // TODO: 17/7/7 暂时在data definition实现
   public static final String UPDATE_DATA_DEFINITION = "updateDataDefinition";
 
   public static final String COPY_FUNCTION = "copyFunction";
@@ -24,7 +25,6 @@ public class UpdateActionUtils {
 
   public static final String UPDATE_FUNCTION = "updateFunction";
 
-  // TODO: 17/7/7 待实现
   public static final String UPDATE_PRODUCT = "updateProduct";
 
   // TODO: 17/7/7 去掉这个，修改产品发布状态是有平台来做的

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  * Created by umasuo on 17/6/1.
  */
 @Data
-public class UpdateDevice implements UpdateAction, Serializable {
+public class UpdateProduct implements UpdateAction, Serializable {
 
   private static final long serialVersionUID = -8600039731763078261L;
 
@@ -41,8 +41,25 @@ public class UpdateDevice implements UpdateAction, Serializable {
   @NotNull
   private NetType type;
 
+  /**
+   * 产品的固件版本信息。
+   */
+  private String firmwareVersion;
+
+  /**
+   * 开发者自定义的设备型号。
+   */
+  private String model;
+
+  /**
+   * wifi模组型号。
+   */
+  private String wifiModule;
+
+  private String description;
+
   @Override
   public String getActionName() {
-    return UpdateActionUtils.UPDATE_DATA_DEFINITION;
+    return UpdateActionUtils.UPDATE_PRODUCT;
   }
 }
