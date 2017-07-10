@@ -57,6 +57,12 @@ public final class DeviceMapper {
     view.setType(device.getCommunicationType());
     view.setOpenable(device.getOpenable());
 
+    view.setModel(device.getModel());
+    view.setFirmwareVersion(device.getFirmwareVersion());
+    view.setWifiModule(device.getWifiModule());
+    view.setDescription(device.getDescription());
+
+
     view.setFunctions(DeviceFunctionMapper.toModel(device.getDeviceFunctions()));
 
     return view;

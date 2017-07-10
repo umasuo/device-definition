@@ -1,5 +1,9 @@
 package com.umasuo.device.definition.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize.Inclusion;
 import com.umasuo.device.definition.infrastructure.enums.NetType;
 import com.umasuo.device.definition.infrastructure.enums.ProductStatus;
 
@@ -12,6 +16,7 @@ import java.util.List;
  * Created by umasuo on 17/6/1.
  */
 @Data
+@JsonInclude(Include.ALWAYS)
 public class DeviceView implements Serializable {
 
   private static final long serialVersionUID = -8662294173374891858L;
@@ -76,4 +81,21 @@ public class DeviceView implements Serializable {
    * True means this device can be find by other developers and false means not.
    */
   private Boolean openable = false;
+
+  /**
+   * 产品的固件版本信息。
+   */
+  private String firmwareVersion;
+
+  /**
+   * 开发者自定义的设备型号。
+   */
+  private String model;
+
+  /**
+   * wifi模组型号。
+   */
+  private String wifiModule;
+
+  private String description;
 }
