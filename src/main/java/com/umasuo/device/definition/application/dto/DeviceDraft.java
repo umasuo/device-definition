@@ -27,7 +27,6 @@ public class DeviceDraft {
   /**
    * device icon.
    */
-  @NotNull
   private String icon;
 
   /**
