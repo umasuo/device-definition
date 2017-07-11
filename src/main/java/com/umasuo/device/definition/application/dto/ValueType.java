@@ -22,6 +22,8 @@ public class ValueType implements FunctionDataType, Serializable {
 
   private Integer multiple;
 
+  private String unit;
+
   public ValueType() {
     this.type = VALUE_TYPE;
   }
