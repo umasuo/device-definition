@@ -2,6 +2,7 @@ package com.umasuo.device.definition.domain.model;
 
 import com.umasuo.database.dialect.JSONBUserType;
 import com.umasuo.device.definition.application.dto.FunctionDataType;
+import com.umasuo.device.definition.infrastructure.enums.Category;
 import com.umasuo.device.definition.infrastructure.enums.TransferType;
 
 import lombok.Data;
@@ -93,4 +94,6 @@ public class DeviceFunction implements Serializable{
   private FunctionDataType dataType;
 
   private TransferType transferType;
+
+  private Category category;
 }

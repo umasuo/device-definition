@@ -1,5 +1,6 @@
 package com.umasuo.device.definition.application.dto;
 
+import com.umasuo.device.definition.infrastructure.enums.Category;
 import com.umasuo.device.definition.infrastructure.enums.TransferType;
 
 import lombok.Data;
@@ -27,4 +28,6 @@ public class DeviceFunctionView implements Serializable{
   private TransferType transferType;
 
   private FunctionDataType dataType;
+
+  private Category category;
 }

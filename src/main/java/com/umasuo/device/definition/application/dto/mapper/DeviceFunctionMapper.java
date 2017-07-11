@@ -5,6 +5,7 @@ import com.umasuo.device.definition.application.dto.DeviceFunctionView;
 import com.umasuo.device.definition.application.dto.action.AddFunction;
 import com.umasuo.device.definition.application.dto.action.UpdateFunction;
 import com.umasuo.device.definition.domain.model.DeviceFunction;
+import com.umasuo.device.definition.infrastructure.enums.Category;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public final class DeviceFunctionMapper {
     model.setCommand(entity.getCommand());
     model.setDataType(entity.getDataType());
     model.setTransferType(entity.getTransferType());
+    model.setCategory(entity.getCategory());
 
     return model;
   }
@@ -60,6 +62,7 @@ public final class DeviceFunctionMapper {
     function.setCommand(action.getCommand());
     function.setTransferType(action.getTransferType());
     function.setDataType(action.getDataType());
+    function.setCategory(Category.PRODUCT);
 
     return function;
   }

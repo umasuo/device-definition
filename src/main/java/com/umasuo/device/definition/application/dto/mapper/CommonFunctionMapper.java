@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.umasuo.device.definition.application.dto.CommonFunctionView;
 import com.umasuo.device.definition.domain.model.CommonFunction;
 import com.umasuo.device.definition.domain.model.DeviceFunction;
+import com.umasuo.device.definition.infrastructure.enums.Category;
 
 import java.util.List;
 
@@ -83,6 +84,7 @@ public final class CommonFunctionMapper {
     deviceFunction.setCommand(function.getCommand());
     deviceFunction.setTransferType(function.getTransferType());
     deviceFunction.setDataType(function.getDataType());
+    deviceFunction.setCategory(Category.PLATFORM);
 
     return deviceFunction;
   }

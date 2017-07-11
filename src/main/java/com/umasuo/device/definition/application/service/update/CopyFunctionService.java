@@ -9,6 +9,7 @@ import com.umasuo.device.definition.domain.model.ProductType;
 import com.umasuo.device.definition.domain.service.ProductTypeService;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
+import com.umasuo.exception.AlreadyExistException;
 import com.umasuo.exception.ParametersException;
 import com.umasuo.model.Updater;
 
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -45,6 +47,8 @@ public class CopyFunctionService implements Updater<Device, UpdateAction>{
 
     List<CommonFunction> commonFunctions = getFunctions(productType, functionIds);
 
+    checkExistFunction(commonFunctions, device);
+
     List<DeviceFunction> functions = CommonFunctionMapper.copy(commonFunctions);
 
     device.getDeviceFunctions().addAll(functions);
@@ -52,9 +56,23 @@ public class CopyFunctionService implements Updater<Device, UpdateAction>{
     LOG.debug("Exit.");
   }
 
+  private void checkExistFunction(List<CommonFunction> commonFunctions, Device device) {
+    List<String> functionIds = commonFunctions.stream().map(
+        function -> function.getFunctionId()
+    ).collect(Collectors.toList());
+
+    Predicate<DeviceFunction> predicate =
+        function -> functionIds.contains(function.getFunctionId());
+    boolean existFunctionId = device.getDeviceFunctions().stream().anyMatch(predicate);
+    if (existFunctionId) {
+      LOG.debug("Function has been exist.");
+      throw new AlreadyExistException("Function has bean exist");
+    }
+  }
+
   private List<CommonFunction> getFunctions(ProductType productType, List<String> functionIds) {
-    List<String> existFunctionIds = productType.getFunctions().stream().map(function -> function.getId())
-        .collect(Collectors.toList());
+    List<String> existFunctionIds = productType.getFunctions().stream().map(
+        function -> function.getId()).collect(Collectors.toList());
 
     if (!existFunctionIds.containsAll(functionIds)) {
       LOG.debug("Function: {} is not all in productType: {}.", functionIds, productType.getId());
