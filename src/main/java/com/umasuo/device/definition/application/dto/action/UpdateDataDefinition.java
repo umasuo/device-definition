@@ -1,5 +1,6 @@
 package com.umasuo.device.definition.application.dto.action;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
 
@@ -23,13 +24,16 @@ public class UpdateDataDefinition implements UpdateAction{
   private String name;
 
   @NotNull
-  private String schema;
+  private JsonNode dataSchema;
 
   @NotNull
   private String description;
 
   @NotNull
   private Boolean openable;
+
+  @NotNull
+  private Integer version;
 
   @Override
   public String getActionName() {

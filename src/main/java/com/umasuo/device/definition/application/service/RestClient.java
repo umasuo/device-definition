@@ -3,6 +3,7 @@ package com.umasuo.device.definition.application.service;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -10,6 +11,7 @@ import com.umasuo.device.definition.application.dto.CommonDataView;
 import com.umasuo.device.definition.application.dto.CopyRequest;
 import com.umasuo.device.definition.application.dto.ProductDataView;
 import com.umasuo.device.definition.application.dto.action.AddDataDefinition;
+import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -223,4 +225,18 @@ public class RestClient {
     return result;
   }
 
+  public void updateDataDefinition(String dataDefinitionId, String developerId,
+      UpdateRequest request) {
+    logger.debug("Enter. developerId: {}.", developerId);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("developerId", developerId);
+    headers.set("Content-Type", "application/json");
+
+    HttpEntity entity = new HttpEntity(request, headers);
+
+    String url = definitionUrl + "/" + dataDefinitionId;
+
+    restTemplate.exchange(url, PUT, entity, Void.class);
+  }
 }
