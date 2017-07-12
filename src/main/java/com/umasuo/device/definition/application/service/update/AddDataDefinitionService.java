@@ -38,7 +38,7 @@ public class AddDataDefinitionService implements Updater<Device, UpdateAction>{
     LOG.debug("Enter.");
     AddDataDefinition action = (AddDataDefinition) updateAction;
 
-    checkDataId(device.getProductType(), action.getDataId());
+    checkDataId(action.getDataId(), device);
 
     action.setProductId(device.getId());
 
@@ -48,9 +48,9 @@ public class AddDataDefinitionService implements Updater<Device, UpdateAction>{
     LOG.debug("Exit.");
   }
 
-  private void checkDataId(String productTypeId, String dataId) {
+  private void checkDataId(String dataId, Device device) {
     LOG.debug("Enter.");
-    ProductTypeView productType = productTypeApplication.get(productTypeId);
+    ProductTypeView productType = productTypeApplication.get(device.getProductType());
 
     boolean existDataId =
         productType.getData().stream().anyMatch(data -> dataId.equals(data.getDataId()));

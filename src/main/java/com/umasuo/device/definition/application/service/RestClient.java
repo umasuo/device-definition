@@ -106,7 +106,11 @@ public class RestClient {
     Map<String, List<CommonDataView>> result = Maps.newHashMap();
 
     try {
-      result = restTemplate.getForObject(url, Map.class);
+      Map<String, List<CommonDataView>> test = restTemplate.getForObject(url, Map.class);
+
+      test.entrySet().stream().forEach(
+          entey -> result.put(entey.getKey(), CommonDataView.build(entey.getValue())));
+
     } catch (Exception e) {
       logger.warn("Fetch data definition failed.", e);
     }

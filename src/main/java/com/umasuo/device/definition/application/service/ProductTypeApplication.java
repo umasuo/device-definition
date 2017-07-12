@@ -81,6 +81,7 @@ public class ProductTypeApplication {
       throw new NotExistException("ProductType not exist");
     }
 
+    LOG.debug("Exit. productType: {}.", result);
     return result;
   }
 }
