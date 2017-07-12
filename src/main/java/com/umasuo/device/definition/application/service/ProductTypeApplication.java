@@ -5,6 +5,7 @@ import com.umasuo.device.definition.application.dto.ProductTypeView;
 import com.umasuo.device.definition.application.dto.mapper.ProductTypeMapper;
 import com.umasuo.device.definition.domain.model.ProductType;
 import com.umasuo.device.definition.domain.service.ProductTypeService;
+import com.umasuo.exception.NotExistException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,5 +66,21 @@ public class ProductTypeApplication {
 
     LOG.debug("Exit. productType size: {}.", cacheProductTypes.size());
     return cacheProductTypes;
+  }
+
+  public ProductTypeView get(String id) {
+    LOG.debug("Enter. id: {}.", id);
+    List<ProductTypeView> productTypeViews = getAll();
+
+    ProductTypeView result =
+        productTypeViews.stream().filter(productTypeView -> id.equals(productTypeView.getId()))
+            .findAny().orElse(null);
+
+    if (result == null) {
+      LOG.debug("Can not find productType: {}.", id);
+      throw new NotExistException("ProductType not exist");
+    }
+
+    return result;
   }
 }

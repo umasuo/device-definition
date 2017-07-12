@@ -12,6 +12,7 @@ import com.umasuo.device.definition.application.dto.CopyRequest;
 import com.umasuo.device.definition.application.dto.ProductDataView;
 import com.umasuo.device.definition.application.dto.action.AddDataDefinition;
 import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
+import com.umasuo.exception.ParametersException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -166,12 +167,20 @@ public class RestClient {
     headers.set("Content-Type", "application/json");
     HttpEntity entity = new HttpEntity(action, headers);
 
-    ResponseEntity response =
-        restTemplate.exchange(definitionUrl, POST, entity, Map.class);
+    String newDataDefinitionId = null;
 
+    try {
+
+      ResponseEntity response =
+          restTemplate.exchange(definitionUrl, POST, entity, Map.class);
+      newDataDefinitionId = ((LinkedHashMap) response.getBody()).get("id").toString();
+    } catch (Exception ex) {
+      logger.debug("Wrong when create dataDefinition.", ex);
+      throw new ParametersException("Something wrong when create dataDefinition");
+    }
     logger.debug("Exit.");
 
-    return ((LinkedHashMap) response.getBody()).get("id").toString();
+    return newDataDefinitionId;
   }
 
   public Map<String, List<ProductDataView>> getProductData(String developerId,
