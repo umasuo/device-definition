@@ -1,7 +1,7 @@
 package com.umasuo.device.definition.application.rest;
 
 import com.umasuo.device.definition.application.dto.DeviceDraft;
-import com.umasuo.device.definition.application.dto.DeviceView;
+import com.umasuo.device.definition.application.dto.ProductView;
 import com.umasuo.device.definition.application.service.DeviceApplication;
 import com.umasuo.device.definition.infrastructure.Router;
 import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
@@ -50,11 +50,11 @@ public class DeviceController {
    * @return device view
    */
   @PostMapping(Router.PRODUCT_ROOT)
-  public DeviceView create(@RequestHeader("developerId") String developerId,
+  public ProductView create(@RequestHeader("developerId") String developerId,
       @RequestBody @Valid DeviceDraft draft) {
     logger.info("Enter. developerId: {}, deviceDraft: {}.", developerId, draft);
 
-    DeviceView view = deviceApplication.create(draft, developerId);
+    ProductView view = deviceApplication.create(draft, developerId);
 
     logger.info("Exit. deviceView: {}.", view);
 
@@ -77,15 +77,15 @@ public class DeviceController {
    * @param id the Device id
    * @param updateRequest the update request
    * @param developerId the developer id
-   * @return the DeviceView
+   * @return the ProductView
    */
   @PutMapping(Router.PRODUCT_WITH_ID)
-  public DeviceView update(@PathVariable("id") String id, @RequestHeader String developerId,
+  public ProductView update(@PathVariable("id") String id, @RequestHeader String developerId,
       @RequestBody @Valid UpdateRequest updateRequest) {
     logger.info("Enter. deviceId: {}, updateRequest: {}, developerId: {}.",
         id, updateRequest, developerId);
 
-    DeviceView result = deviceApplication
+    ProductView result = deviceApplication
         .update(id, developerId, updateRequest.getVersion(), updateRequest.getActions());
 
     logger.trace("Updated device: {}.", result);
@@ -99,13 +99,13 @@ public class DeviceController {
    *
    * @param id String
    * @param developerId the developer id
-   * @return DeviceView device view
+   * @return ProductView device view
    */
   @GetMapping(Router.PRODUCT_WITH_ID)
-  public DeviceView get(@PathVariable String id, @RequestHeader String developerId) {
+  public ProductView get(@PathVariable String id, @RequestHeader String developerId) {
     logger.info("Enter. id: {}.", id);
 
-    DeviceView view = deviceApplication.get(id, developerId);
+    ProductView view = deviceApplication.get(id, developerId);
 
     logger.info("Exit. view: {}.", view);
     return view;
@@ -118,10 +118,10 @@ public class DeviceController {
    * @return list of device view
    */
   @GetMapping(Router.PRODUCT_ROOT)
-  public List<DeviceView> getByDeveloperId(@RequestHeader String developerId) {
+  public List<ProductView> getByDeveloperId(@RequestHeader String developerId) {
     logger.info("Enter. developerId: {}.", developerId);
 
-    List<DeviceView> views = deviceApplication.getAllByDeveloperId(developerId);
+    List<ProductView> views = deviceApplication.getAllByDeveloperId(developerId);
 
     logger.info("Exit. viewsSize: {}.", views.size());
     logger.trace("views: {}.", views);
@@ -136,11 +136,11 @@ public class DeviceController {
    */
 
   @GetMapping(value = Router.PRODUCT_ROOT, params = {"isOpen", "developerId"})
-  public List<DeviceView> getAllOpenDevice(@RequestParam String developerId, @RequestParam
+  public List<ProductView> getAllOpenDevice(@RequestParam String developerId, @RequestParam
       Boolean isOpen) {
     logger.info("Enter. developerId: {}.", developerId);
     //todo
-    List<DeviceView> views = deviceApplication.getAllOpenDevice(developerId);
+    List<ProductView> views = deviceApplication.getAllOpenDevice(developerId);
 
     logger.info("Exit. viewsSize: {}.", views.size());
     logger.trace("views: {}.", views);

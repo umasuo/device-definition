@@ -1,12 +1,14 @@
 package com.umasuo.device.definition.application.service;
 
 import static org.springframework.http.HttpMethod.DELETE;
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.umasuo.device.definition.application.dto.CommonDataView;
 import com.umasuo.device.definition.application.dto.CopyRequest;
+import com.umasuo.device.definition.application.dto.ProductDataView;
 import com.umasuo.device.definition.application.dto.action.AddDataDefinition;
 
 import org.slf4j.Logger;
@@ -24,6 +26,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.text.html.parser.Entity;
 
 /**
  * Created by umasuo on 17/5/22.
@@ -165,5 +169,25 @@ public class RestClient {
         restTemplate.exchange(definitionUrl, POST, entity, Map.class);
 
     return ((LinkedHashMap) response.getBody()).get("id").toString();
+  }
+
+  public Map<String, List<ProductDataView>> getProductData(String developerId,
+      List<String> productIds) {
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("developerId", developerId);
+    headers.set("Content-Type", "application/json");
+
+    HttpEntity entity = new HttpEntity(headers);
+
+    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(definitionUrl)
+        .queryParam("productIds", String.join(",", productIds));
+
+    String url = builder.build().encode().toUriString();
+
+    ResponseEntity<Map> responseEntity =
+        restTemplate.exchange(url, GET, entity, Map.class);
+
+    return responseEntity.getBody();
   }
 }

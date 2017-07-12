@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Data
 @JsonInclude(Include.ALWAYS)
-public class DeviceView implements Serializable {
+public class ProductView implements Serializable {
 
   private static final long serialVersionUID = -8662294173374891858L;
 
@@ -61,10 +61,9 @@ public class DeviceView implements Serializable {
   private String icon;
 
   /**
-   * 数据定义ID，需要提前定义好不同的数据类型.
-   * TODO 替换成 data definition model.
+   * 数据定义，需要提前定义好不同的数据类型.
    */
-  private List<String> dataDefineIds;
+  private List<ProductDataView> dataDefinitions;
 
   /**
    * 功能定义。

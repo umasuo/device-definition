@@ -2,7 +2,8 @@ package com.umasuo.device.definition.application.service;
 
 import com.umasuo.device.definition.application.dto.CopyRequest;
 import com.umasuo.device.definition.application.dto.DeviceDraft;
-import com.umasuo.device.definition.application.dto.DeviceView;
+import com.umasuo.device.definition.application.dto.ProductView;
+import com.umasuo.device.definition.application.dto.ProductDataView;
 import com.umasuo.device.definition.application.dto.mapper.CommonFunctionMapper;
 import com.umasuo.device.definition.application.dto.mapper.DeviceMapper;
 import com.umasuo.device.definition.domain.model.Device;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by umasuo on 17/6/1.
@@ -68,7 +71,7 @@ public class DeviceApplication {
    * @return device view
    */
   @Transactional
-  public DeviceView create(DeviceDraft draft, String developerId) {
+  public ProductView create(DeviceDraft draft, String developerId) {
     logger.debug("Enter. developerId: {}, draft: {}.", developerId, draft);
 
     // 1. 检查名字是否重复
@@ -101,7 +104,7 @@ public class DeviceApplication {
 
     cacheApplication.deleteDeveloperProducts(developerId);
 
-    DeviceView view = DeviceMapper.modelToView(device);
+    ProductView view = DeviceMapper.modelToView(device);
 
     logger.debug("Exit. deviceView: {}.", view);
     return view;
@@ -112,16 +115,24 @@ public class DeviceApplication {
    *
    * @param id String
    */
-  public DeviceView get(String id, String developerId) {
+  public ProductView get(String id, String developerId) {
     logger.debug("Enter. id: {}, developerId: {}.", id, developerId);
 
-    DeviceView result = cacheApplication.getProductById(developerId, id);
+    ProductView result = cacheApplication.getProductById(developerId, id);
 
     if (result == null) {
       logger.debug("Cache fail, get from database.");
 
       List<Device> products = deviceService.getByDeveloperId(developerId);
-      List<DeviceView> productViews = DeviceMapper.modelToView(products);
+      List<ProductView> productViews = DeviceMapper.modelToView(products);
+
+      List<String> productIds = products.stream().map(Device::getId).collect(Collectors.toList());
+
+      Map<String, List<ProductDataView>> productDataViews =
+          restClient.getProductData(developerId, productIds);
+
+      mergeProductData(productViews, productDataViews);
+
       cacheApplication.cacheProduct(developerId, productViews);
 
       result = productViews.stream().filter(view -> id.equals(view.getId())).findAny().orElse(null);
@@ -131,16 +142,24 @@ public class DeviceApplication {
     return result;
   }
 
+  private void mergeProductData(List<ProductView> productViews,
+      Map<String, List<ProductDataView>> productDataViews) {
+
+    productViews.stream().forEach(
+        product -> product.setDataDefinitions(productDataViews.get(product.getId())));
+
+  }
+
   /**
    * get all device define by developer id.
    *
    * @param developerId developer id
    * @return list of device view
    */
-  public List<DeviceView> getAllByDeveloperId(String developerId) {
+  public List<ProductView> getAllByDeveloperId(String developerId) {
     logger.debug("Enter. developerId: {}.", developerId);
 
-    List<DeviceView> result = cacheApplication.getDeveloperProduct(developerId);
+    List<ProductView> result = cacheApplication.getDeveloperProduct(developerId);
     if (result.isEmpty()) {
       logger.debug("Cache fail, get from database.");
       List<Device> devices = deviceService.getByDeveloperId(developerId);
@@ -161,11 +180,11 @@ public class DeviceApplication {
    * @param id developer id
    * @return list of device view
    */
-  public List<DeviceView> getAllOpenDevice(String id) {
+  public List<ProductView> getAllOpenDevice(String id) {
     logger.debug("Enter. developerId: {}.", id);
 
     List<Device> devices = deviceService.getAllOpenDevice(id);
-    List<DeviceView> views = DeviceMapper.modelToView(devices);
+    List<ProductView> views = DeviceMapper.modelToView(devices);
 
     logger.debug("Exit. devicesSize: {}.", views.size());
     logger.trace("Devices: {}.", views);
@@ -175,7 +194,7 @@ public class DeviceApplication {
   /**
    * update device with actions.
    */
-  public DeviceView update(String id, String developerId, Integer version, List<UpdateAction>
+  public ProductView update(String id, String developerId, Integer version, List<UpdateAction>
       actions) {
     logger.debug("Enter: id: {}, version: {}, actions: {}", id, version, actions);
 
@@ -195,7 +214,7 @@ public class DeviceApplication {
 
     cacheApplication.deleteDeveloperProducts(developerId);
 
-    DeviceView updatedDevice = DeviceMapper.modelToView(savedDevice);
+    ProductView updatedDevice = DeviceMapper.modelToView(savedDevice);
 
     logger.debug("Exit: updated device: {}", updatedDevice);
     return updatedDevice;

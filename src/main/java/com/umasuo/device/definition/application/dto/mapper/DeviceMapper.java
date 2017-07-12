@@ -1,8 +1,7 @@
 package com.umasuo.device.definition.application.dto.mapper;
 
-import com.google.common.collect.Lists;
 import com.umasuo.device.definition.application.dto.DeviceDraft;
-import com.umasuo.device.definition.application.dto.DeviceView;
+import com.umasuo.device.definition.application.dto.ProductView;
 import com.umasuo.device.definition.domain.model.Device;
 import com.umasuo.device.definition.infrastructure.enums.ProductStatus;
 
@@ -40,8 +39,8 @@ public final class DeviceMapper {
   /**
    * convert domain model to view.
    */
-  public static DeviceView modelToView(Device device) {
-    DeviceView view = new DeviceView();
+  public static ProductView modelToView(Device device) {
+    ProductView view = new ProductView();
     view.setId(device.getId());
     view.setProductTypeId(device.getProductType());
     view.setCreatedAt(device.getCreatedAt());
@@ -51,9 +50,6 @@ public final class DeviceMapper {
     view.setIcon(device.getIcon());
     view.setStatus(device.getStatus());
     view.setName(device.getName());
-    if (device.getDataDefineIds() != null) {
-      view.setDataDefineIds(Lists.newArrayList(device.getDataDefineIds()));
-    }
     view.setType(device.getCommunicationType());
     view.setOpenable(device.getOpenable());
 
@@ -71,8 +67,8 @@ public final class DeviceMapper {
   /**
    * convert list of model to list of views.
    */
-  public static List<DeviceView> modelToView(List<Device> deviceList) {
-    List<DeviceView> views = new ArrayList<>();
+  public static List<ProductView> modelToView(List<Device> deviceList) {
+    List<ProductView> views = new ArrayList<>();
     deviceList.stream().forEach(
         device -> views.add(modelToView(device))
     );
