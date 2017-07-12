@@ -164,6 +164,15 @@ public class DeviceApplication {
       logger.debug("Cache fail, get from database.");
       List<Device> devices = deviceService.getByDeveloperId(developerId);
       result = DeviceMapper.modelToView(devices);
+
+      // TODO: 17/7/12 待重构
+      List<String> productIds = devices.stream().map(Device::getId).collect(Collectors.toList());
+
+      Map<String, List<ProductDataView>> productDataViews =
+          restClient.getProductData(developerId, productIds);
+
+      mergeProductData(result, productDataViews);
+
       cacheApplication.cacheProduct(developerId, result);
     }
 

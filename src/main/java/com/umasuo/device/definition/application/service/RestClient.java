@@ -27,8 +27,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.text.html.parser.Entity;
-
 /**
  * Created by umasuo on 17/5/22.
  */
@@ -160,6 +158,7 @@ public class RestClient {
   }
 
   public String createDataDefinition(String developerId, AddDataDefinition action) {
+    logger.debug("Enter.");
     HttpHeaders headers = new HttpHeaders();
     headers.set("developerId", developerId);
     headers.set("Content-Type", "application/json");
@@ -168,11 +167,15 @@ public class RestClient {
     ResponseEntity response =
         restTemplate.exchange(definitionUrl, POST, entity, Map.class);
 
+    logger.debug("Exit.");
+
     return ((LinkedHashMap) response.getBody()).get("id").toString();
   }
 
   public Map<String, List<ProductDataView>> getProductData(String developerId,
       List<String> productIds) {
+
+    logger.debug("Enter. developerId: {}, productIds: {}.", developerId, productIds);
 
     HttpHeaders headers = new HttpHeaders();
     headers.set("developerId", developerId);
@@ -188,10 +191,16 @@ public class RestClient {
     ResponseEntity<Map> responseEntity =
         restTemplate.exchange(url, GET, entity, Map.class);
 
-    return responseEntity.getBody();
+    Map<String, List<ProductDataView>> result = responseEntity.getBody();
+
+    logger.debug("Exit. productData size: {}.", result.size());
+
+    return result;
   }
 
   public List<ProductDataView> getProductData(String developerId, String productId) {
+
+    logger.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 
     HttpHeaders headers = new HttpHeaders();
     headers.set("developerId", developerId);
@@ -207,7 +216,11 @@ public class RestClient {
     ResponseEntity<List> responseEntity =
         restTemplate.exchange(url, GET, entity, List.class);
 
-    return responseEntity.getBody();
+    List<ProductDataView> result = responseEntity.getBody();
+
+    logger.debug("Exit. productData size: {}.", result.size());
+
+    return result;
   }
 
 }
