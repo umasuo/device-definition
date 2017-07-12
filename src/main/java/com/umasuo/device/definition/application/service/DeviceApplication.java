@@ -214,7 +214,11 @@ public class DeviceApplication {
 
     cacheApplication.deleteDeveloperProducts(developerId);
 
+    List<ProductDataView> productDataViews = restClient.getProductData(developerId, id);
+
     ProductView updatedDevice = DeviceMapper.modelToView(savedDevice);
+
+    updatedDevice.setDataDefinitions(productDataViews);
 
     logger.debug("Exit: updated device: {}", updatedDevice);
     return updatedDevice;

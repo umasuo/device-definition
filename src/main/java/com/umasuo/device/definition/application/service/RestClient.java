@@ -190,4 +190,24 @@ public class RestClient {
 
     return responseEntity.getBody();
   }
+
+  public List<ProductDataView> getProductData(String developerId, String productId) {
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("developerId", developerId);
+    headers.set("Content-Type", "application/json");
+
+    HttpEntity entity = new HttpEntity(headers);
+
+    UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(definitionUrl)
+        .queryParam("productId", productId);
+
+    String url = builder.build().encode().toUriString();
+
+    ResponseEntity<List> responseEntity =
+        restTemplate.exchange(url, GET, entity, List.class);
+
+    return responseEntity.getBody();
+  }
+
 }
