@@ -12,13 +12,13 @@ import com.umasuo.device.definition.application.dto.CopyRequest;
 import com.umasuo.device.definition.application.dto.ProductDataView;
 import com.umasuo.device.definition.application.dto.action.AddDataDefinition;
 import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
+import com.umasuo.device.definition.infrastructure.util.HttpEntityUtils;
 import com.umasuo.exception.ParametersException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -106,9 +106,9 @@ public class RestClient {
     Map<String, List<CommonDataView>> result = Maps.newHashMap();
 
     try {
-      Map<String, List<CommonDataView>> test = restTemplate.getForObject(url, Map.class);
+      Map<String, List<CommonDataView>> dataView = restTemplate.getForObject(url, Map.class);
 
-      test.entrySet().stream().forEach(
+      dataView.entrySet().stream().forEach(
           entey -> result.put(entey.getKey(), CommonDataView.build(entey.getValue())));
 
     } catch (Exception e) {
@@ -127,10 +127,8 @@ public class RestClient {
    */
   public List<String> copyDataDefinitions(String developerId, CopyRequest request) {
     logger.debug("Enter. developerId: {}, dataDefinitionIds: {}.", developerId, request);
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("developerId", developerId);
-    headers.set("Content-Type", "application/json");
-    HttpEntity entity = new HttpEntity(request, headers);
+
+    HttpEntity entity = HttpEntityUtils.build(developerId, request);
 
     try {
       HttpEntity<String[]> response =
@@ -147,10 +145,7 @@ public class RestClient {
     logger.debug("Enter. developerId: {}, productId: {}, removed dataDefinition: {}.",
         developerId, productId, removeId);
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("developerId", developerId);
-    headers.set("Content-Type", "application/json");
-    HttpEntity entity = new HttpEntity(headers);
+    HttpEntity entity = HttpEntityUtils.build(developerId);
 
     String url = UriComponentsBuilder.fromHttpUrl(definitionUrl + "/" + removeId)
         .queryParam("productId", productId).toUriString();
@@ -166,10 +161,8 @@ public class RestClient {
 
   public String createDataDefinition(String developerId, AddDataDefinition action) {
     logger.debug("Enter.");
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("developerId", developerId);
-    headers.set("Content-Type", "application/json");
-    HttpEntity entity = new HttpEntity(action, headers);
+
+    HttpEntity entity = HttpEntityUtils.build(developerId, action);
 
     String newDataDefinitionId = null;
 
@@ -192,11 +185,7 @@ public class RestClient {
 
     logger.debug("Enter. developerId: {}, productIds: {}.", developerId, productIds);
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("developerId", developerId);
-    headers.set("Content-Type", "application/json");
-
-    HttpEntity entity = new HttpEntity(headers);
+    HttpEntity entity = HttpEntityUtils.build(developerId);
 
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(definitionUrl)
         .queryParam("productIds", String.join(",", productIds));
@@ -217,11 +206,7 @@ public class RestClient {
 
     logger.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("developerId", developerId);
-    headers.set("Content-Type", "application/json");
-
-    HttpEntity entity = new HttpEntity(headers);
+    HttpEntity entity = HttpEntityUtils.build(developerId);
 
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(definitionUrl)
         .queryParam("productId", productId);
@@ -242,14 +227,11 @@ public class RestClient {
       UpdateRequest request) {
     logger.debug("Enter. developerId: {}.", developerId);
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.set("developerId", developerId);
-    headers.set("Content-Type", "application/json");
-
-    HttpEntity entity = new HttpEntity(request, headers);
+    HttpEntity entity = HttpEntityUtils.build(developerId, request);
 
     String url = definitionUrl + "/" + dataDefinitionId;
 
     restTemplate.exchange(url, PUT, entity, Void.class);
   }
+
 }
