@@ -272,6 +272,8 @@ public class DeviceApplication {
 
     deviceService.delete(id);
 
+    // TODO: 17/7/14 delete data definition
+
     logger.debug("Exit.");
   }
 
