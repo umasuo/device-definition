@@ -85,6 +85,21 @@ public class ProductQueryApplication {
     return result;
   }
 
+  public List<ProductDataView> getDataDefinitions(String developerId, String productId) {
+    logger.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
+
+    List<ProductDataView> dataViews = Lists.newArrayList();
+    ProductView product = get(productId, developerId);
+
+    if (product != null && product.getDataDefinitions() != null) {
+      dataViews = product.getDataDefinitions();
+    }
+
+    logger.debug("Exit. dataDefinition size: {}.", dataViews.size());
+
+    return dataViews;
+  }
+
   /**
    * Get all open device define by developer id.
    * 接口比较少用，暂时不需要使用缓存。
