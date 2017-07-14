@@ -182,8 +182,7 @@ public class DeviceApplication {
   }
 
   /**
-   * estClient
-   * get all open device define by developer id.
+   * Get all open device define by developer id.
    * 接口比较少用，暂时不需要使用缓存。
    *
    * @param id developer id
@@ -271,6 +270,8 @@ public class DeviceApplication {
     DeviceValidator.checkVersion(version, valueInDb.getVersion());
 
     deviceService.delete(id);
+
+    cacheApplication.deleteDeveloperProducts(developerId);
 
     // TODO: 17/7/14 delete data definition
 
