@@ -1,6 +1,6 @@
 package com.umasuo.device.definition.infrastructure.validator;
 
-import com.umasuo.device.definition.application.dto.DeviceDraft;
+import com.umasuo.device.definition.application.dto.ProductDraft;
 import com.umasuo.device.definition.domain.model.CommonFunction;
 import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.domain.model.ProductType;
@@ -18,20 +18,20 @@ import java.util.stream.Collectors;
 /**
  * Created by Davis on 17/6/29.
  */
-public final class DeviceValidator {
+public final class ProductValidator {
 
   /**
    * Logger.
    */
-  private static final Logger logger = LoggerFactory.getLogger(DeviceValidator.class);
+  private static final Logger logger = LoggerFactory.getLogger(ProductValidator.class);
 
   /**
    * Instantiates a new Product validator.
    */
-  private DeviceValidator() {
+  private ProductValidator() {
   }
 
-  public static void validateProductType(DeviceDraft draft, ProductType productType) {
+  public static void validateProductType(ProductDraft draft, ProductType productType) {
     String productTypeId = draft.getProductTypeId();
 
     if (productType == null) {

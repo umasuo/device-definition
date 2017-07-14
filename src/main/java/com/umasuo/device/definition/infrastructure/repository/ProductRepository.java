@@ -12,7 +12,7 @@ import java.util.List;
  * Created by umasuo on 17/2/10.
  */
 @Repository
-public interface DeviceRepository extends JpaRepository<Product, String>,
+public interface ProductRepository extends JpaRepository<Product, String>,
     QueryByExampleExecutor<Product> {
 
   /**

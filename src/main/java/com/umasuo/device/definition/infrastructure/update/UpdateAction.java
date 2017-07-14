@@ -8,7 +8,6 @@ import com.umasuo.device.definition.application.dto.action.CopyDataDefinition;
 import com.umasuo.device.definition.application.dto.action.CopyFunction;
 import com.umasuo.device.definition.application.dto.action.RemoveDataDefinition;
 import com.umasuo.device.definition.application.dto.action.RemoveFunction;
-import com.umasuo.device.definition.application.dto.action.SetStatus;
 import com.umasuo.device.definition.application.dto.action.UpdateDataDefinition;
 import com.umasuo.device.definition.application.dto.action.UpdateFunction;
 import com.umasuo.device.definition.application.dto.action.UpdateProduct;

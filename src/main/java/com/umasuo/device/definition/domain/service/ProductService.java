@@ -1,8 +1,9 @@
 package com.umasuo.device.definition.domain.service;
 
 import com.umasuo.device.definition.domain.model.Product;
-import com.umasuo.device.definition.infrastructure.repository.DeviceRepository;
+import com.umasuo.device.definition.infrastructure.repository.ProductRepository;
 import com.umasuo.exception.NotExistException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,12 @@ import java.util.List;
  * Created by umasuo on 17/5/31.
  */
 @Service
-public class DeviceService {
+public class ProductService {
 
-  private final static Logger logger = LoggerFactory.getLogger(DeviceService.class);
+  private final static Logger logger = LoggerFactory.getLogger(ProductService.class);
 
   @Autowired
-  private transient DeviceRepository deviceRepository;
+  private transient ProductRepository deviceRepository;
 
   /**
    * 新建device.
@@ -77,7 +78,7 @@ public class DeviceService {
    * @param developerId the developer id
    * @return the all openable device
    */
-  public List<Product> getAllOpenDevice(String developerId) {
+  public List<Product> getAllOpenProduct(String developerId) {
     logger.debug("Enter. developerId: {}.", developerId);
 
     Product sample = new Product();

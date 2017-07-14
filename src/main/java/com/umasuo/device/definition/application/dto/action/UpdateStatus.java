@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * Created by Davis on 17/7/4.
  */
 @Data
-public class SetStatus{
+public class UpdateStatus {
 
   @NotNull
   private ProductStatus status;

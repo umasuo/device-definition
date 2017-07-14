@@ -28,5 +28,5 @@ public class UpdateActionUtils {
   public static final String UPDATE_PRODUCT = "updateProduct";
 
   // TODO: 17/7/7 去掉这个，修改产品发布状态是有平台来做的
-  public static final String SET_STATUS = "setStatus";
+  public static final String SET_STATUS = "updateStatus";
 }

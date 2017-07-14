@@ -1,9 +1,9 @@
 package com.umasuo.device.definition.application.rest;
 
-import com.umasuo.device.definition.application.dto.DeviceDraft;
+import com.umasuo.device.definition.application.dto.ProductDraft;
 import com.umasuo.device.definition.application.dto.ProductView;
-import com.umasuo.device.definition.application.dto.action.SetStatus;
-import com.umasuo.device.definition.application.service.DeviceApplication;
+import com.umasuo.device.definition.application.dto.action.UpdateStatus;
+import com.umasuo.device.definition.application.service.ProductApplication;
 import com.umasuo.device.definition.infrastructure.Router;
 import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
 
@@ -30,18 +30,18 @@ import javax.validation.Valid;
  */
 @CrossOrigin
 @RestController
-public class DeviceController {
+public class ProductController {
 
   /**
    * Logger.
    */
-  private final static Logger logger = LoggerFactory.getLogger(DeviceController.class);
+  private final static Logger logger = LoggerFactory.getLogger(ProductController.class);
 
   /**
-   * DeviceApplication.
+   * ProductApplication.
    */
   @Autowired
-  private transient DeviceApplication deviceApplication;
+  private transient ProductApplication deviceApplication;
 
   /**
    * create new device.
@@ -52,7 +52,7 @@ public class DeviceController {
    */
   @PostMapping(Router.PRODUCT_ROOT)
   public ProductView create(@RequestHeader("developerId") String developerId,
-      @RequestBody @Valid DeviceDraft draft) {
+      @RequestBody @Valid ProductDraft draft) {
     logger.info("Enter. developerId: {}, deviceDraft: {}.", developerId, draft);
 
     ProductView view = deviceApplication.create(draft, developerId);
@@ -97,10 +97,10 @@ public class DeviceController {
 
   @PutMapping(Router.PRODUCT_STATUS)
   public ProductView updateStatus(@PathVariable("id") String id, @RequestHeader String developerId,
-      @RequestBody @Valid SetStatus status) {
+      @RequestBody @Valid UpdateStatus status) {
     logger.info("Enter. developerId: {}, productId: {}, status: {}.", developerId, id, status);
 
-    ProductView result = deviceApplication.setStatus(developerId, id, status);
+    ProductView result = deviceApplication.updateStatus(developerId, id, status);
 
     logger.trace("Updated product: {}.", result);
     logger.info("Exit.");

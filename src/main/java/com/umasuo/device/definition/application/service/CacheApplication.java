@@ -2,14 +2,15 @@ package com.umasuo.device.definition.application.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.umasuo.device.definition.application.dto.ProductView;
 import com.umasuo.device.definition.application.dto.ProductTypeView;
+import com.umasuo.device.definition.application.dto.ProductView;
 import com.umasuo.device.definition.infrastructure.util.RedisUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,6 +48,7 @@ public class CacheApplication {
     return result;
   }
 
+  @Async
   public void cacheProductType(List<ProductTypeView> productTypeViews) {
     LOG.debug("Enter. productType size: {}.", productTypeViews.size());
 
@@ -57,7 +59,7 @@ public class CacheApplication {
     LOG.debug("Exit.");
   }
 
-  public List<ProductView> getDeveloperProduct(String developerId) {
+  public List<ProductView> getProducts(String developerId) {
     LOG.debug("Enter. developerId: {}.", developerId);
 
     List<ProductView> result = Lists.newArrayList();
@@ -75,7 +77,8 @@ public class CacheApplication {
     return result;
   }
 
-  public void cacheProduct(String developerId, List<ProductView> products) {
+  @Async
+  public void cacheProducts(String developerId, List<ProductView> products) {
     LOG.debug("Enter. products size: {}.", products.size());
 
     Map<String, ProductView> cacheProducts = Maps.newHashMap();
@@ -89,16 +92,18 @@ public class CacheApplication {
 
     String key = String.format(RedisUtils.PRODUCT_KEY_FORMAT, developerId);
 
-    ProductView result = (ProductView)redisTemplate.opsForHash().get(key, productId);
+    ProductView result = (ProductView) redisTemplate.opsForHash().get(key, productId);
 
     LOG.debug("Exit. product: {}.", result);
     return result;
   }
 
-  public void deleteDeveloperProducts(String developerId) {
+  @Async
+  public void deleteProducts(String developerId) {
     LOG.debug("Enter. developerId: {}.", developerId);
 
     redisTemplate.delete(String.format(RedisUtils.PRODUCT_KEY_FORMAT, developerId));
 
+    LOG.debug("Exit.");
   }
 }

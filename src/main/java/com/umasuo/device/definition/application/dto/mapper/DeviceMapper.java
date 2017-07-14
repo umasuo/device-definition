@@ -1,6 +1,6 @@
 package com.umasuo.device.definition.application.dto.mapper;
 
-import com.umasuo.device.definition.application.dto.DeviceDraft;
+import com.umasuo.device.definition.application.dto.ProductDraft;
 import com.umasuo.device.definition.application.dto.ProductView;
 import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.infrastructure.enums.ProductStatus;
@@ -19,7 +19,7 @@ public final class DeviceMapper {
   /**
    * convert from view to domain model
    */
-  public static Product viewToModel(DeviceDraft draft, String developerId) {
+  public static Product viewToModel(ProductDraft draft, String developerId) {
     Product device = new Product();
     device.setDeveloperId(developerId);
     device.setIcon(draft.getIcon());

@@ -1,20 +1,20 @@
 package com.umasuo.device.definition.application.service;
 
 import com.umasuo.device.definition.application.dto.CopyRequest;
-import com.umasuo.device.definition.application.dto.DeviceDraft;
+import com.umasuo.device.definition.application.dto.ProductDraft;
 import com.umasuo.device.definition.application.dto.ProductView;
 import com.umasuo.device.definition.application.dto.ProductDataView;
-import com.umasuo.device.definition.application.dto.action.SetStatus;
+import com.umasuo.device.definition.application.dto.action.UpdateStatus;
 import com.umasuo.device.definition.application.dto.mapper.CommonFunctionMapper;
 import com.umasuo.device.definition.application.dto.mapper.DeviceMapper;
 import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.domain.model.DeviceFunction;
 import com.umasuo.device.definition.domain.model.ProductType;
-import com.umasuo.device.definition.domain.service.DeviceService;
+import com.umasuo.device.definition.domain.service.ProductService;
 import com.umasuo.device.definition.domain.service.ProductTypeService;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdaterService;
-import com.umasuo.device.definition.infrastructure.validator.DeviceValidator;
+import com.umasuo.device.definition.infrastructure.validator.ProductValidator;
 import com.umasuo.exception.AlreadyExistException;
 
 import org.slf4j.Logger;
@@ -31,18 +31,18 @@ import java.util.stream.Collectors;
  * Created by umasuo on 17/6/1.
  */
 @Service
-public class DeviceApplication {
+public class ProductApplication {
 
   /**
    * Logger.
    */
-  private final static Logger logger = LoggerFactory.getLogger(DeviceApplication.class);
+  private final static Logger logger = LoggerFactory.getLogger(ProductApplication.class);
 
   /**
-   * DeviceService.
+   * ProductService.
    */
   @Autowired
-  private transient DeviceService deviceService;
+  private transient ProductService deviceService;
 
   /**
    * UpdaterService.
@@ -72,7 +72,7 @@ public class DeviceApplication {
    * @return device view
    */
   @Transactional
-  public ProductView create(DeviceDraft draft, String developerId) {
+  public ProductView create(ProductDraft draft, String developerId) {
     logger.debug("Enter. developerId: {}, draft: {}.", developerId, draft);
 
     // 1. 检查名字是否重复
@@ -83,7 +83,7 @@ public class DeviceApplication {
 
     // 2. 检查类型是否存在
     ProductType productType = productTypeService.getById(draft.getProductTypeId());
-    DeviceValidator.validateProductType(draft, productType);
+    ProductValidator.validateProductType(draft, productType);
 
     // 生成实体对象
     Product device = DeviceMapper.viewToModel(draft, developerId);
@@ -103,7 +103,7 @@ public class DeviceApplication {
       deviceService.save(device);
     }
 
-    cacheApplication.deleteDeveloperProducts(developerId);
+    cacheApplication.deleteProducts(developerId);
 
     ProductView view = DeviceMapper.modelToView(device);
 
@@ -134,7 +134,7 @@ public class DeviceApplication {
 
       mergeProductData(productViews, productDataViews);
 
-      cacheApplication.cacheProduct(developerId, productViews);
+      cacheApplication.cacheProducts(developerId, productViews);
 
       result = productViews.stream().filter(view -> id.equals(view.getId())).findAny().orElse(null);
     }
@@ -160,7 +160,7 @@ public class DeviceApplication {
   public List<ProductView> getAllByDeveloperId(String developerId) {
     logger.debug("Enter. developerId: {}.", developerId);
 
-    List<ProductView> result = cacheApplication.getDeveloperProduct(developerId);
+    List<ProductView> result = cacheApplication.getProducts(developerId);
     if (result.isEmpty()) {
       logger.debug("Cache fail, get from database.");
       List<Product> devices = deviceService.getByDeveloperId(developerId);
@@ -174,7 +174,7 @@ public class DeviceApplication {
 
       mergeProductData(result, productDataViews);
 
-      cacheApplication.cacheProduct(developerId, result);
+      cacheApplication.cacheProducts(developerId, result);
     }
 
     logger.trace("Devices: {}.", result);
@@ -192,7 +192,7 @@ public class DeviceApplication {
   public List<ProductView> getAllOpenDevice(String id) {
     logger.debug("Enter. developerId: {}.", id);
 
-    List<Product> devices = deviceService.getAllOpenDevice(id);
+    List<Product> devices = deviceService.getAllOpenProduct(id);
     List<ProductView> views = DeviceMapper.modelToView(devices);
 
     logger.debug("Exit. devicesSize: {}.", views.size());
@@ -209,19 +209,19 @@ public class DeviceApplication {
 
     Product valueInDb = deviceService.get(id);
 
-    DeviceValidator.checkDeveloper(developerId, valueInDb);
+    ProductValidator.checkDeveloper(developerId, valueInDb);
 
     logger.debug("Data in db: {}", valueInDb);
 
-    DeviceValidator.checkStatus(valueInDb);
+    ProductValidator.checkStatus(valueInDb);
 
-    DeviceValidator.checkVersion(version, valueInDb.getVersion());
+    ProductValidator.checkVersion(version, valueInDb.getVersion());
 
     actions.stream().forEach(action -> updaterService.handle(valueInDb, action));
 
     Product savedDevice = deviceService.save(valueInDb);
 
-    cacheApplication.deleteDeveloperProducts(developerId);
+    cacheApplication.deleteProducts(developerId);
 
     List<ProductDataView> productDataViews = restClient.getProductData(developerId, id);
 
@@ -236,9 +236,9 @@ public class DeviceApplication {
   /**
    * 把产品类别中定义的数据定义拷贝到新增的设备定义中。
    */
-  private void copyDataDefinitions(DeviceDraft draft, String developerId, ProductType productType,
+  private void copyDataDefinitions(ProductDraft draft, String developerId, ProductType productType,
       Product device) {
-    DeviceValidator.validateDataDefinition(draft.getDataDefineIds(), productType);
+    ProductValidator.validateDataDefinition(draft.getDataDefineIds(), productType);
 
     CopyRequest copyRequest = CopyRequest.build(device.getId(), draft.getDataDefineIds(), null);
 
@@ -251,8 +251,8 @@ public class DeviceApplication {
   /**
    * 把产品类别中定义的功能拷贝到新增的设备定义中。
    */
-  private void copyFunctions(DeviceDraft draft, ProductType productType, Product device) {
-    DeviceValidator.validateFunction(draft.getFunctionIds(), productType);
+  private void copyFunctions(ProductDraft draft, ProductType productType, Product device) {
+    ProductValidator.validateFunction(draft.getFunctionIds(), productType);
     List<DeviceFunction> functions = CommonFunctionMapper.copy(productType.getFunctions());
     device.setDeviceFunctions(functions);
   }
@@ -262,35 +262,37 @@ public class DeviceApplication {
 
     Product valueInDb = deviceService.get(id);
 
-    DeviceValidator.checkDeveloper(developerId, valueInDb);
+    ProductValidator.checkDeveloper(developerId, valueInDb);
 
     logger.debug("Data in db: {}", valueInDb);
 
-    DeviceValidator.checkStatus(valueInDb);
+    ProductValidator.checkStatus(valueInDb);
 
-    DeviceValidator.checkVersion(version, valueInDb.getVersion());
+    ProductValidator.checkVersion(version, valueInDb.getVersion());
 
     deviceService.delete(id);
 
-    cacheApplication.deleteDeveloperProducts(developerId);
+    cacheApplication.deleteProducts(developerId);
 
     // TODO: 17/7/14 delete data definition
 
     logger.debug("Exit.");
   }
 
-  public ProductView setStatus(String developerId, String id, SetStatus request) {
+  public ProductView updateStatus(String developerId, String id, UpdateStatus request) {
     logger.debug("Enter. developerId: {}, productId: {}, status: {}.", developerId, id, request);
 
     Product product = deviceService.get(id);
 
-    DeviceValidator.checkVersion(request.getVersion(), product.getVersion());
+    ProductValidator.checkVersion(request.getVersion(), product.getVersion());
 
     product.setStatus(request.getStatus());
 
     deviceService.save(product);
 
     ProductView result = DeviceMapper.modelToView(product);
+
+    cacheApplication.deleteProducts(developerId);
 
     logger.trace("Updated product: {}.", result);
     logger.debug("Exit.");

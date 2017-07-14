@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * Created by umasuo on 17/6/1.
  */
 @Data
-public class DeviceDraft {
+public class ProductDraft {
 
   /**
    * name of the device.
