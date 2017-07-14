@@ -3,7 +3,8 @@ package com.umasuo.device.definition.application.rest;
 import com.umasuo.device.definition.application.dto.ProductDraft;
 import com.umasuo.device.definition.application.dto.ProductView;
 import com.umasuo.device.definition.application.dto.action.UpdateStatus;
-import com.umasuo.device.definition.application.service.ProductApplication;
+import com.umasuo.device.definition.application.service.ProductCommandApplication;
+import com.umasuo.device.definition.application.service.ProductQueryApplication;
 import com.umasuo.device.definition.infrastructure.Router;
 import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
 
@@ -38,10 +39,13 @@ public class ProductController {
   private final static Logger logger = LoggerFactory.getLogger(ProductController.class);
 
   /**
-   * ProductApplication.
+   * ProductCommandApplication.
    */
   @Autowired
-  private transient ProductApplication deviceApplication;
+  private transient ProductCommandApplication commandApplication;
+
+  @Autowired
+  private transient ProductQueryApplication queryApplication;
 
   /**
    * create new device.
@@ -55,7 +59,7 @@ public class ProductController {
       @RequestBody @Valid ProductDraft draft) {
     logger.info("Enter. developerId: {}, deviceDraft: {}.", developerId, draft);
 
-    ProductView view = deviceApplication.create(draft, developerId);
+    ProductView view = commandApplication.create(draft, developerId);
 
     logger.info("Exit. deviceView: {}.", view);
 
@@ -67,7 +71,7 @@ public class ProductController {
       @RequestParam("version") Integer version) {
     logger.info("Enter. id: {}, developerId: {}, version: {}.", id, developerId, version);
 
-    deviceApplication.delete(id, developerId, version);
+    commandApplication.delete(id, developerId, version);
 
     logger.info("Exit.");
   }
@@ -86,7 +90,7 @@ public class ProductController {
     logger.info("Enter. deviceId: {}, updateRequest: {}, developerId: {}.",
         id, updateRequest, developerId);
 
-    ProductView result = deviceApplication
+    ProductView result = commandApplication
         .update(id, developerId, updateRequest.getVersion(), updateRequest.getActions());
 
     logger.trace("Updated device: {}.", result);
@@ -100,7 +104,7 @@ public class ProductController {
       @RequestBody @Valid UpdateStatus status) {
     logger.info("Enter. developerId: {}, productId: {}, status: {}.", developerId, id, status);
 
-    ProductView result = deviceApplication.updateStatus(developerId, id, status);
+    ProductView result = commandApplication.updateStatus(developerId, id, status);
 
     logger.trace("Updated product: {}.", result);
     logger.info("Exit.");
@@ -119,7 +123,7 @@ public class ProductController {
   public ProductView get(@PathVariable String id, @RequestHeader String developerId) {
     logger.info("Enter. id: {}.", id);
 
-    ProductView view = deviceApplication.get(id, developerId);
+    ProductView view = queryApplication.get(id, developerId);
 
     logger.info("Exit. view: {}.", view);
     return view;
@@ -135,7 +139,7 @@ public class ProductController {
   public List<ProductView> getByDeveloperId(@RequestHeader String developerId) {
     logger.info("Enter. developerId: {}.", developerId);
 
-    List<ProductView> views = deviceApplication.getAllByDeveloperId(developerId);
+    List<ProductView> views = queryApplication.getAllByDeveloperId(developerId);
 
     logger.info("Exit. viewsSize: {}.", views.size());
     logger.trace("views: {}.", views);
@@ -154,7 +158,7 @@ public class ProductController {
       Boolean isOpen) {
     logger.info("Enter. developerId: {}.", developerId);
     //todo
-    List<ProductView> views = deviceApplication.getAllOpenDevice(developerId);
+    List<ProductView> views = queryApplication.getAllOpenDevice(developerId);
 
     logger.info("Exit. viewsSize: {}.", views.size());
     logger.trace("views: {}.", views);

@@ -1,14 +1,14 @@
 package com.umasuo.device.definition.application.service;
 
 import com.umasuo.device.definition.application.dto.CopyRequest;
+import com.umasuo.device.definition.application.dto.ProductDataView;
 import com.umasuo.device.definition.application.dto.ProductDraft;
 import com.umasuo.device.definition.application.dto.ProductView;
-import com.umasuo.device.definition.application.dto.ProductDataView;
 import com.umasuo.device.definition.application.dto.action.UpdateStatus;
 import com.umasuo.device.definition.application.dto.mapper.CommonFunctionMapper;
 import com.umasuo.device.definition.application.dto.mapper.DeviceMapper;
-import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.domain.model.DeviceFunction;
+import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.domain.model.ProductType;
 import com.umasuo.device.definition.domain.service.ProductService;
 import com.umasuo.device.definition.domain.service.ProductTypeService;
@@ -24,19 +24,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by umasuo on 17/6/1.
  */
 @Service
-public class ProductApplication {
+public class ProductCommandApplication {
 
   /**
    * Logger.
    */
-  private final static Logger logger = LoggerFactory.getLogger(ProductApplication.class);
+  private final static Logger logger = LoggerFactory.getLogger(ProductCommandApplication.class);
 
   /**
    * ProductService.
@@ -93,8 +91,6 @@ public class ProductApplication {
       copyFunctions(draft, productType, device);
     }
 
-    //TODO 检查数据是否存在
-
     device = deviceService.save(device);
 
     // 4. 调用数据服务拷贝数据, 检测数据是否属于该类型的, 如果有event bus，可以把这个工作交给event bus
@@ -109,95 +105,6 @@ public class ProductApplication {
 
     logger.debug("Exit. deviceView: {}.", view);
     return view;
-  }
-
-  /**
-   * get device by id.
-   *
-   * @param id String
-   */
-  public ProductView get(String id, String developerId) {
-    logger.debug("Enter. id: {}, developerId: {}.", id, developerId);
-
-    ProductView result = cacheApplication.getProductById(developerId, id);
-
-    if (result == null) {
-      logger.debug("Cache fail, get from database.");
-
-      List<Product> products = deviceService.getByDeveloperId(developerId);
-      List<ProductView> productViews = DeviceMapper.modelToView(products);
-
-      List<String> productIds = products.stream().map(Product::getId).collect(Collectors.toList());
-
-      Map<String, List<ProductDataView>> productDataViews =
-          restClient.getProductData(developerId, productIds);
-
-      mergeProductData(productViews, productDataViews);
-
-      cacheApplication.cacheProducts(developerId, productViews);
-
-      result = productViews.stream().filter(view -> id.equals(view.getId())).findAny().orElse(null);
-    }
-
-    logger.debug("Exit. deviceView: {}.", result);
-    return result;
-  }
-
-  private void mergeProductData(List<ProductView> productViews,
-      Map<String, List<ProductDataView>> productDataViews) {
-
-    productViews.stream().forEach(
-        product -> product.setDataDefinitions(productDataViews.get(product.getId())));
-
-  }
-
-  /**
-   * get all device define by developer id.
-   *
-   * @param developerId developer id
-   * @return list of device view
-   */
-  public List<ProductView> getAllByDeveloperId(String developerId) {
-    logger.debug("Enter. developerId: {}.", developerId);
-
-    List<ProductView> result = cacheApplication.getProducts(developerId);
-    if (result.isEmpty()) {
-      logger.debug("Cache fail, get from database.");
-      List<Product> devices = deviceService.getByDeveloperId(developerId);
-      result = DeviceMapper.modelToView(devices);
-
-      // TODO: 17/7/12 待重构
-      List<String> productIds = devices.stream().map(Product::getId).collect(Collectors.toList());
-
-      Map<String, List<ProductDataView>> productDataViews =
-          restClient.getProductData(developerId, productIds);
-
-      mergeProductData(result, productDataViews);
-
-      cacheApplication.cacheProducts(developerId, result);
-    }
-
-    logger.trace("Devices: {}.", result);
-    logger.debug("Exit. devicesSize: {}.", result.size());
-    return result;
-  }
-
-  /**
-   * Get all open device define by developer id.
-   * 接口比较少用，暂时不需要使用缓存。
-   *
-   * @param id developer id
-   * @return list of device view
-   */
-  public List<ProductView> getAllOpenDevice(String id) {
-    logger.debug("Enter. developerId: {}.", id);
-
-    List<Product> devices = deviceService.getAllOpenProduct(id);
-    List<ProductView> views = DeviceMapper.modelToView(devices);
-
-    logger.debug("Exit. devicesSize: {}.", views.size());
-    logger.trace("Devices: {}.", views);
-    return views;
   }
 
   /**

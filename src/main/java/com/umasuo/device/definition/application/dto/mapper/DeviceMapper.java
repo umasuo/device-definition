@@ -68,9 +68,11 @@ public final class DeviceMapper {
    */
   public static List<ProductView> modelToView(List<Product> deviceList) {
     List<ProductView> views = new ArrayList<>();
-    deviceList.stream().forEach(
-        device -> views.add(modelToView(device))
-    );
+    if (deviceList != null) {
+      deviceList.stream().forEach(
+          device -> views.add(modelToView(device))
+      );
+    }
     return views;
   }
 }
