@@ -167,21 +167,21 @@ public class ProductCommandApplication {
   public void delete(String id, String developerId, Integer version) {
     logger.debug("Enter. id: {}, developerId: {}, version: {}.", id, developerId, version);
 
-    Product valueInDb = deviceService.get(id);
+    Product product = deviceService.get(id);
 
-    ProductValidator.checkDeveloper(developerId, valueInDb);
+    ProductValidator.checkDeveloper(developerId, product);
 
-    logger.debug("Data in db: {}", valueInDb);
+    logger.debug("Data in db: {}", product);
 
-    ProductValidator.checkStatus(valueInDb);
+    ProductValidator.checkStatus(product);
 
-    ProductValidator.checkVersion(version, valueInDb.getVersion());
+    ProductValidator.checkVersion(version, product.getVersion());
 
     deviceService.delete(id);
 
     cacheApplication.deleteProducts(developerId);
 
-    // TODO: 17/7/14 delete data definition
+    restClient.deleteAllDataDefinition(developerId, product.getId());
 
     logger.debug("Exit.");
   }

@@ -159,6 +159,23 @@ public class RestClient {
 
   }
 
+  public void deleteAllDataDefinition(String developerId, String productId) {
+    logger.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
+
+    HttpEntity entity = HttpEntityUtils.build(developerId);
+
+    String url = UriComponentsBuilder.fromHttpUrl(definitionUrl)
+        .queryParam("productId", productId).toUriString();
+
+    try {
+      restTemplate.exchange(url, DELETE, entity, Void.class);
+    } catch (Exception ex) {
+      logger.debug("Something wrong when delete dataDefinition.", ex);
+    }
+
+    logger.debug("Exit.");
+  }
+
   public String createDataDefinition(String developerId, AddDataDefinition action) {
     logger.debug("Enter.");
 
