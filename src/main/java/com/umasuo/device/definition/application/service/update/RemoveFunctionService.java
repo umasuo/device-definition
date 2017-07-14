@@ -1,7 +1,7 @@
 package com.umasuo.device.definition.application.service.update;
 
 import com.umasuo.device.definition.application.dto.action.RemoveFunction;
-import com.umasuo.device.definition.domain.model.Device;
+import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
 import com.umasuo.exception.ParametersException;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * Created by Davis on 17/7/4.
  */
 @Service(UpdateActionUtils.REMOVE_FUNCTION)
-public class RemoveFunctionService implements Updater<Device, UpdateAction> {
+public class RemoveFunctionService implements Updater<Product, UpdateAction> {
 
   /**
    * Logger.
@@ -26,7 +26,7 @@ public class RemoveFunctionService implements Updater<Device, UpdateAction> {
   private static final Logger LOG = LoggerFactory.getLogger(RemoveFunctionService.class);
 
   @Override
-  public void handle(Device device, UpdateAction updateAction) {
+  public void handle(Product device, UpdateAction updateAction) {
     LOG.debug("Enter. device: {}, updateAction: {}.", device, updateAction);
 
     RemoveFunction action = (RemoveFunction) updateAction;
@@ -38,7 +38,7 @@ public class RemoveFunctionService implements Updater<Device, UpdateAction> {
     LOG.debug("Exit.");
   }
 
-  private void checkFunctionId(Device device, List<String> functionIds) {
+  private void checkFunctionId(Product device, List<String> functionIds) {
     LOG.debug("Enter.");
 
     List<String> existFunctionIds = device.getDeviceFunctions().stream()

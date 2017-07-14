@@ -3,7 +3,7 @@ package com.umasuo.device.definition.application.service.update;
 import com.google.common.collect.Lists;
 import com.umasuo.device.definition.application.dto.action.UpdateDataDefinition;
 import com.umasuo.device.definition.application.service.RestClient;
-import com.umasuo.device.definition.domain.model.Device;
+import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
 import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
@@ -20,7 +20,7 @@ import java.util.List;
  * Created by Davis on 17/7/12.
  */
 @Service(UpdateActionUtils.UPDATE_DATA_DEFINITION)
-public class UpdateDataService implements Updater<Device, UpdateAction>{
+public class UpdateDataService implements Updater<Product, UpdateAction>{
 
   /**
    * Logger.
@@ -31,7 +31,7 @@ public class UpdateDataService implements Updater<Device, UpdateAction>{
   private transient RestClient restClient;
 
   @Override
-  public void handle(Device device, UpdateAction updateAction) {
+  public void handle(Product device, UpdateAction updateAction) {
     LOG.debug("Enter.");
     UpdateDataDefinition action = (UpdateDataDefinition) updateAction;
     String dataDefinitionId = action.getDataDefinitionId();

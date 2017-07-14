@@ -12,13 +12,11 @@ import javax.validation.constraints.NotNull;
  * Created by Davis on 17/7/4.
  */
 @Data
-public class SetStatus implements UpdateAction {
+public class SetStatus{
 
   @NotNull
   private ProductStatus status;
 
-  @Override
-  public String getActionName() {
-    return UpdateActionUtils.SET_STATUS;
-  }
+  @NotNull
+  private Integer version;
 }

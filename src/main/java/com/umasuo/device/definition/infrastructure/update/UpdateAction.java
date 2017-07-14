@@ -31,7 +31,6 @@ import java.io.Serializable;
     @JsonSubTypes.Type(value = UpdateDataDefinition.class,
         name = UpdateActionUtils.UPDATE_DATA_DEFINITION),
     @JsonSubTypes.Type(value = UpdateProduct.class, name = UpdateActionUtils.UPDATE_PRODUCT),
-    @JsonSubTypes.Type(value = SetStatus.class, name = UpdateActionUtils.SET_STATUS),
     @JsonSubTypes.Type(value = CopyFunction.class, name = UpdateActionUtils.COPY_FUNCTION),
     @JsonSubTypes.Type(value = RemoveFunction.class, name = UpdateActionUtils.REMOVE_FUNCTION),
     @JsonSubTypes.Type(value = AddFunction.class, name = UpdateActionUtils.ADD_FUNCTION),

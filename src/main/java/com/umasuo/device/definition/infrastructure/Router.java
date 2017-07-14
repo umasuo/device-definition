@@ -11,5 +11,7 @@ public class Router {
 
   public static final String PRODUCT_WITH_ID = PRODUCT_ROOT + "/{id}";
 
+  public static final String PRODUCT_STATUS = PRODUCT_WITH_ID + "/status";
+
   public static final String PRODUCT_TYPE_ROOT = PRODUCT_ROOT + "/types";
 }

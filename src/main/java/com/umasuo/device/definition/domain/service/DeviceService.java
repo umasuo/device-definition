@@ -1,13 +1,12 @@
 package com.umasuo.device.definition.domain.service;
 
-import com.umasuo.device.definition.domain.model.Device;
+import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.infrastructure.repository.DeviceRepository;
 import com.umasuo.exception.NotExistException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,10 +28,10 @@ public class DeviceService {
    * @param device the device
    * @return device device
    */
-  public Device save(Device device) {
+  public Product save(Product device) {
     logger.debug("Enter. device: {}.", device);
 
-    Device deviceInDB = deviceRepository.save(device);
+    Product deviceInDB = deviceRepository.save(device);
 
     logger.debug("Exit. deviceInDB: {}.", deviceInDB);
     return deviceInDB;
@@ -44,12 +43,12 @@ public class DeviceService {
    * @param id the id
    * @return device device
    */
-  public Device get(String id) {
+  public Product get(String id) {
     logger.debug("Enter. id: {}.", id);
 
-    Device device = deviceRepository.findOne(id);
+    Product device = deviceRepository.findOne(id);
     if (device == null) {
-      throw new NotExistException("Device not exist, id: " + id);
+      throw new NotExistException("Product not exist, id: " + id);
     }
 
     logger.debug("Exit. device: {}.", device);
@@ -62,10 +61,10 @@ public class DeviceService {
    * @param developerId the developer id
    * @return by developer id
    */
-  public List<Device> getByDeveloperId(String developerId) {
+  public List<Product> getByDeveloperId(String developerId) {
     logger.debug("Enter. developerId: {}.", developerId);
 
-    List<Device> devices = deviceRepository.findAllByDeveloperId(developerId);
+    List<Product> devices = deviceRepository.findAllByDeveloperId(developerId);
 
     logger.debug("Exit. devicesSize: {}.", devices.size());
 
@@ -78,16 +77,16 @@ public class DeviceService {
    * @param developerId the developer id
    * @return the all openable device
    */
-  public List<Device> getAllOpenDevice(String developerId) {
+  public List<Product> getAllOpenDevice(String developerId) {
     logger.debug("Enter. developerId: {}.", developerId);
 
-    Device sample = new Device();
+    Product sample = new Product();
     sample.setDeveloperId(developerId);
     sample.setOpenable(true);
 
-    Example<Device> exam = Example.of(sample);
+    Example<Product> exam = Example.of(sample);
 
-    List<Device> devices = deviceRepository.findAll(exam);
+    List<Product> devices = deviceRepository.findAll(exam);
 
     logger.debug("Exit. devicesSize: {}.", devices.size());
 
@@ -105,11 +104,11 @@ public class DeviceService {
   public boolean isExistName(String developerId, String name) {
     logger.debug("Enter. developerId: {}, name: {}.", developerId, name);
 
-    Device sample = new Device();
+    Product sample = new Product();
     sample.setDeveloperId(developerId);
     sample.setName(name);
 
-    Example<Device> example = Example.of(sample);
+    Example<Product> example = Example.of(sample);
 
     boolean result = deviceRepository.exists(example);
 

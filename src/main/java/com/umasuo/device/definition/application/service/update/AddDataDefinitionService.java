@@ -1,11 +1,10 @@
 package com.umasuo.device.definition.application.service.update;
 
-import com.umasuo.device.definition.application.dto.ProductDataView;
 import com.umasuo.device.definition.application.dto.ProductTypeView;
 import com.umasuo.device.definition.application.dto.action.AddDataDefinition;
 import com.umasuo.device.definition.application.service.ProductTypeApplication;
 import com.umasuo.device.definition.application.service.RestClient;
-import com.umasuo.device.definition.domain.model.Device;
+import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
 import com.umasuo.exception.AlreadyExistException;
@@ -20,7 +19,7 @@ import org.springframework.stereotype.Service;
  * Created by Davis on 17/7/7.
  */
 @Service(UpdateActionUtils.ADD_DATA_DEFINITION)
-public class AddDataDefinitionService implements Updater<Device, UpdateAction>{
+public class AddDataDefinitionService implements Updater<Product, UpdateAction>{
 
   /**
    * Logger.
@@ -34,7 +33,7 @@ public class AddDataDefinitionService implements Updater<Device, UpdateAction>{
   private transient ProductTypeApplication productTypeApplication;
 
   @Override
-  public void handle(Device device, UpdateAction updateAction) {
+  public void handle(Product device, UpdateAction updateAction) {
     LOG.debug("Enter.");
     AddDataDefinition action = (AddDataDefinition) updateAction;
 
@@ -48,7 +47,7 @@ public class AddDataDefinitionService implements Updater<Device, UpdateAction>{
     LOG.debug("Exit.");
   }
 
-  private void checkDataId(String dataId, Device device) {
+  private void checkDataId(String dataId, Product device) {
     LOG.debug("Enter.");
     ProductTypeView productType = productTypeApplication.get(device.getProductType());
 

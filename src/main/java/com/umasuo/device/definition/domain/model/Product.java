@@ -29,10 +29,10 @@ import javax.persistence.Version;
  * Created by umasuo on 17/3/7.
  */
 @Entity
-@Table(name = "device_definition")
+@Table(name = "product")
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class Device implements Serializable {
+public class Product implements Serializable {
 
   private static final long serialVersionUID = -6085138635403490262L;
   @Id

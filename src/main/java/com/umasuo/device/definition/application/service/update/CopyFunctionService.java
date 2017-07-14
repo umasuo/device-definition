@@ -3,7 +3,7 @@ package com.umasuo.device.definition.application.service.update;
 import com.umasuo.device.definition.application.dto.action.CopyFunction;
 import com.umasuo.device.definition.application.dto.mapper.CommonFunctionMapper;
 import com.umasuo.device.definition.domain.model.CommonFunction;
-import com.umasuo.device.definition.domain.model.Device;
+import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.domain.model.DeviceFunction;
 import com.umasuo.device.definition.domain.model.ProductType;
 import com.umasuo.device.definition.domain.service.ProductTypeService;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * Created by Davis on 17/7/4.
  */
 @Service(UpdateActionUtils.COPY_FUNCTION)
-public class CopyFunctionService implements Updater<Device, UpdateAction>{
+public class CopyFunctionService implements Updater<Product, UpdateAction>{
 
   /**
    * Logger.
@@ -38,7 +38,7 @@ public class CopyFunctionService implements Updater<Device, UpdateAction>{
 
 
   @Override
-  public void handle(Device device, UpdateAction updateAction) {
+  public void handle(Product device, UpdateAction updateAction) {
     LOG.debug("Enter. device: {}, updateAction: {}.", device, updateAction);
 
     List<String> functionIds = ((CopyFunction) updateAction).getFunctionIds();
@@ -56,7 +56,7 @@ public class CopyFunctionService implements Updater<Device, UpdateAction>{
     LOG.debug("Exit.");
   }
 
-  private void checkExistFunction(List<CommonFunction> commonFunctions, Device device) {
+  private void checkExistFunction(List<CommonFunction> commonFunctions, Product device) {
     List<String> functionIds = commonFunctions.stream().map(
         function -> function.getFunctionId()
     ).collect(Collectors.toList());

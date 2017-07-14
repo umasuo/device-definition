@@ -2,7 +2,7 @@ package com.umasuo.device.definition.application.service.update;
 
 import com.umasuo.device.definition.application.dto.action.AddFunction;
 import com.umasuo.device.definition.application.dto.mapper.DeviceFunctionMapper;
-import com.umasuo.device.definition.domain.model.Device;
+import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.domain.model.DeviceFunction;
 import com.umasuo.device.definition.domain.model.ProductType;
 import com.umasuo.device.definition.domain.service.ProductTypeService;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
  * Created by Davis on 17/7/4.
  */
 @Service(UpdateActionUtils.ADD_FUNCTION)
-public class AddFunctionService implements Updater<Device, UpdateAction> {
+public class AddFunctionService implements Updater<Product, UpdateAction> {
 
   /**
    * Logger.
@@ -31,7 +31,7 @@ public class AddFunctionService implements Updater<Device, UpdateAction> {
   private transient ProductTypeService productTypeService;
 
   @Override
-  public void handle(Device device, UpdateAction updateAction) {
+  public void handle(Product device, UpdateAction updateAction) {
     LOG.debug("Enter. device: {}, updateAction: {}.", device, updateAction);
 
     AddFunction action = (AddFunction) updateAction;
@@ -45,7 +45,7 @@ public class AddFunctionService implements Updater<Device, UpdateAction> {
     LOG.debug("Exit.");
   }
 
-  private void checkFunctionId(Device device, String functionId) {
+  private void checkFunctionId(Product device, String functionId) {
     LOG.debug("Enter.");
 
     boolean existFunctionId = device.getDeviceFunctions().stream()

@@ -1,4 +1,4 @@
 jar {
-    baseName = 'device-definition'
-    version = '0.1'
+    baseName = 'product'
+    version = '0.2'
 }

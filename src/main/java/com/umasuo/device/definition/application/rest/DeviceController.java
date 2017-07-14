@@ -2,6 +2,7 @@ package com.umasuo.device.definition.application.rest;
 
 import com.umasuo.device.definition.application.dto.DeviceDraft;
 import com.umasuo.device.definition.application.dto.ProductView;
+import com.umasuo.device.definition.application.dto.action.SetStatus;
 import com.umasuo.device.definition.application.service.DeviceApplication;
 import com.umasuo.device.definition.infrastructure.Router;
 import com.umasuo.device.definition.infrastructure.update.UpdateRequest;
@@ -45,7 +46,7 @@ public class DeviceController {
   /**
    * create new device.
    *
-   * @param draft Device draft
+   * @param draft Product draft
    * @param developerId the developer id
    * @return device view
    */
@@ -72,9 +73,9 @@ public class DeviceController {
   }
 
   /**
-   * Update Device view.
+   * Update Product view.
    *
-   * @param id the Device id
+   * @param id the Product id
    * @param updateRequest the update request
    * @param developerId the developer id
    * @return the ProductView
@@ -89,6 +90,19 @@ public class DeviceController {
         .update(id, developerId, updateRequest.getVersion(), updateRequest.getActions());
 
     logger.trace("Updated device: {}.", result);
+    logger.info("Exit.");
+
+    return result;
+  }
+
+  @PutMapping(Router.PRODUCT_STATUS)
+  public ProductView updateStatus(@PathVariable("id") String id, @RequestHeader String developerId,
+      @RequestBody @Valid SetStatus status) {
+    logger.info("Enter. developerId: {}, productId: {}, status: {}.", developerId, id, status);
+
+    ProductView result = deviceApplication.setStatus(developerId, id, status);
+
+    logger.trace("Updated product: {}.", result);
     logger.info("Exit.");
 
     return result;

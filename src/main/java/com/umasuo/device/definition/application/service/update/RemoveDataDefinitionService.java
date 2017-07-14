@@ -2,7 +2,7 @@ package com.umasuo.device.definition.application.service.update;
 
 import com.umasuo.device.definition.application.dto.action.RemoveDataDefinition;
 import com.umasuo.device.definition.application.service.RestClient;
-import com.umasuo.device.definition.domain.model.Device;
+import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
 import com.umasuo.exception.ParametersException;
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by umasuo on 17/6/1.
  */
 @Service(value = UpdateActionUtils.REMOVE_DATA_DEFINITION)
-public class RemoveDataDefinitionService implements Updater<Device, UpdateAction> {
+public class RemoveDataDefinitionService implements Updater<Product, UpdateAction> {
 
   /**
    * Logger.
@@ -30,13 +30,13 @@ public class RemoveDataDefinitionService implements Updater<Device, UpdateAction
   private transient RestClient restClient;
 
   @Override
-  public void handle(Device entity, UpdateAction updateAction) {
+  public void handle(Product entity, UpdateAction updateAction) {
     String removeId = ((RemoveDataDefinition) updateAction).getDataDefinitionId();
 
     List<String> dataDefinitions = entity.getDataDefineIds();
 
     if (dataDefinitions == null) {
-      LOG.debug("Device: {} dataDefinition is null, can not remove anything.", entity.getId());
+      LOG.debug("Product: {} dataDefinition is null, can not remove anything.", entity.getId());
       throw new ParametersException("Can not remove dataDefinition from null list");
     }
 

@@ -4,7 +4,7 @@ import com.umasuo.device.definition.application.dto.CopyRequest;
 import com.umasuo.device.definition.application.dto.action.CopyDataDefinition;
 import com.umasuo.device.definition.application.service.DataDefinitionValidator;
 import com.umasuo.device.definition.application.service.RestClient;
-import com.umasuo.device.definition.domain.model.Device;
+import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdateActionUtils;
 import com.umasuo.exception.ParametersException;
@@ -22,7 +22,7 @@ import java.util.List;
  * todo 暂时是对ProductType的数据定义
  */
 @Service(value = UpdateActionUtils.COPY_DATA_DEFINITION)
-public class CopyDataDefinitionService implements Updater<Device, UpdateAction> {
+public class CopyDataDefinitionService implements Updater<Product, UpdateAction> {
 
   /**
    * Logger.
@@ -39,7 +39,7 @@ public class CopyDataDefinitionService implements Updater<Device, UpdateAction> 
   private transient RestClient restClient;
 
   @Override
-  public void handle(Device entity, UpdateAction action) {
+  public void handle(Product entity, UpdateAction action) {
     List<String> dataDefinitionIds = ((CopyDataDefinition) action).getDataDefinitionIds();
 
     CopyRequest copyRequest = CopyRequest.build(entity.getId(), dataDefinitionIds, null);

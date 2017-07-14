@@ -1,6 +1,6 @@
 package com.umasuo.device.definition.infrastructure.repository;
 
-import com.umasuo.device.definition.domain.model.Device;
+import com.umasuo.device.definition.domain.model.Product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
@@ -12,8 +12,8 @@ import java.util.List;
  * Created by umasuo on 17/2/10.
  */
 @Repository
-public interface DeviceRepository extends JpaRepository<Device, String>,
-    QueryByExampleExecutor<Device> {
+public interface DeviceRepository extends JpaRepository<Product, String>,
+    QueryByExampleExecutor<Product> {
 
   /**
    * Find all by developer id.
@@ -21,5 +21,5 @@ public interface DeviceRepository extends JpaRepository<Device, String>,
    * @param developerId the developer id
    * @return the list
    */
-  List<Device> findAllByDeveloperId(String developerId);
+  List<Product> findAllByDeveloperId(String developerId);
 }

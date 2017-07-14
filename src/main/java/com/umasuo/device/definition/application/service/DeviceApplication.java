@@ -4,9 +4,10 @@ import com.umasuo.device.definition.application.dto.CopyRequest;
 import com.umasuo.device.definition.application.dto.DeviceDraft;
 import com.umasuo.device.definition.application.dto.ProductView;
 import com.umasuo.device.definition.application.dto.ProductDataView;
+import com.umasuo.device.definition.application.dto.action.SetStatus;
 import com.umasuo.device.definition.application.dto.mapper.CommonFunctionMapper;
 import com.umasuo.device.definition.application.dto.mapper.DeviceMapper;
-import com.umasuo.device.definition.domain.model.Device;
+import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.domain.model.DeviceFunction;
 import com.umasuo.device.definition.domain.model.ProductType;
 import com.umasuo.device.definition.domain.service.DeviceService;
@@ -76,8 +77,8 @@ public class DeviceApplication {
 
     // 1. 检查名字是否重复
     if (deviceService.isExistName(developerId, draft.getName())) {
-      logger.debug("Device name: {} has existed in developer: {}.", draft.getName(), developerId);
-      throw new AlreadyExistException("Device name has existed");
+      logger.debug("Product name: {} has existed in developer: {}.", draft.getName(), developerId);
+      throw new AlreadyExistException("Product name has existed");
     }
 
     // 2. 检查类型是否存在
@@ -85,7 +86,7 @@ public class DeviceApplication {
     DeviceValidator.validateProductType(draft, productType);
 
     // 生成实体对象
-    Device device = DeviceMapper.viewToModel(draft, developerId);
+    Product device = DeviceMapper.viewToModel(draft, developerId);
 
     // 3. 拷贝功能, 同时检查功能是否属于该类型的（在创建阶段不允许添加新的功能和数据，只能在新建之后添加）
     if (draft.getFunctionIds() != null && !draft.getFunctionIds().isEmpty()) {
@@ -123,10 +124,10 @@ public class DeviceApplication {
     if (result == null) {
       logger.debug("Cache fail, get from database.");
 
-      List<Device> products = deviceService.getByDeveloperId(developerId);
+      List<Product> products = deviceService.getByDeveloperId(developerId);
       List<ProductView> productViews = DeviceMapper.modelToView(products);
 
-      List<String> productIds = products.stream().map(Device::getId).collect(Collectors.toList());
+      List<String> productIds = products.stream().map(Product::getId).collect(Collectors.toList());
 
       Map<String, List<ProductDataView>> productDataViews =
           restClient.getProductData(developerId, productIds);
@@ -162,11 +163,11 @@ public class DeviceApplication {
     List<ProductView> result = cacheApplication.getDeveloperProduct(developerId);
     if (result.isEmpty()) {
       logger.debug("Cache fail, get from database.");
-      List<Device> devices = deviceService.getByDeveloperId(developerId);
+      List<Product> devices = deviceService.getByDeveloperId(developerId);
       result = DeviceMapper.modelToView(devices);
 
       // TODO: 17/7/12 待重构
-      List<String> productIds = devices.stream().map(Device::getId).collect(Collectors.toList());
+      List<String> productIds = devices.stream().map(Product::getId).collect(Collectors.toList());
 
       Map<String, List<ProductDataView>> productDataViews =
           restClient.getProductData(developerId, productIds);
@@ -191,7 +192,7 @@ public class DeviceApplication {
   public List<ProductView> getAllOpenDevice(String id) {
     logger.debug("Enter. developerId: {}.", id);
 
-    List<Device> devices = deviceService.getAllOpenDevice(id);
+    List<Product> devices = deviceService.getAllOpenDevice(id);
     List<ProductView> views = DeviceMapper.modelToView(devices);
 
     logger.debug("Exit. devicesSize: {}.", views.size());
@@ -206,7 +207,7 @@ public class DeviceApplication {
       actions) {
     logger.debug("Enter: id: {}, version: {}, actions: {}", id, version, actions);
 
-    Device valueInDb = deviceService.get(id);
+    Product valueInDb = deviceService.get(id);
 
     DeviceValidator.checkDeveloper(developerId, valueInDb);
 
@@ -218,7 +219,7 @@ public class DeviceApplication {
 
     actions.stream().forEach(action -> updaterService.handle(valueInDb, action));
 
-    Device savedDevice = deviceService.save(valueInDb);
+    Product savedDevice = deviceService.save(valueInDb);
 
     cacheApplication.deleteDeveloperProducts(developerId);
 
@@ -236,7 +237,7 @@ public class DeviceApplication {
    * 把产品类别中定义的数据定义拷贝到新增的设备定义中。
    */
   private void copyDataDefinitions(DeviceDraft draft, String developerId, ProductType productType,
-      Device device) {
+      Product device) {
     DeviceValidator.validateDataDefinition(draft.getDataDefineIds(), productType);
 
     CopyRequest copyRequest = CopyRequest.build(device.getId(), draft.getDataDefineIds(), null);
@@ -250,7 +251,7 @@ public class DeviceApplication {
   /**
    * 把产品类别中定义的功能拷贝到新增的设备定义中。
    */
-  private void copyFunctions(DeviceDraft draft, ProductType productType, Device device) {
+  private void copyFunctions(DeviceDraft draft, ProductType productType, Product device) {
     DeviceValidator.validateFunction(draft.getFunctionIds(), productType);
     List<DeviceFunction> functions = CommonFunctionMapper.copy(productType.getFunctions());
     device.setDeviceFunctions(functions);
@@ -259,7 +260,7 @@ public class DeviceApplication {
   public void delete(String id, String developerId, Integer version) {
     logger.debug("Enter. id: {}, developerId: {}, version: {}.", id, developerId, version);
 
-    Device valueInDb = deviceService.get(id);
+    Product valueInDb = deviceService.get(id);
 
     DeviceValidator.checkDeveloper(developerId, valueInDb);
 
@@ -278,4 +279,22 @@ public class DeviceApplication {
     logger.debug("Exit.");
   }
 
+  public ProductView setStatus(String developerId, String id, SetStatus request) {
+    logger.debug("Enter. developerId: {}, productId: {}, status: {}.", developerId, id, request);
+
+    Product product = deviceService.get(id);
+
+    DeviceValidator.checkVersion(request.getVersion(), product.getVersion());
+
+    product.setStatus(request.getStatus());
+
+    deviceService.save(product);
+
+    ProductView result = DeviceMapper.modelToView(product);
+
+    logger.trace("Updated product: {}.", result);
+    logger.debug("Exit.");
+
+    return result;
+  }
 }
