@@ -144,7 +144,7 @@ public class ProductQueryApplication {
     logger.debug("Enter.");
 
     productViews.stream().forEach(
-        product -> product.setDataDefinitions(productDataViews.get(product.getId())));
+        product -> product.setDataDefinitions(ProductDataView.build(productDataViews.get(product.getId()))));
 
     logger.debug("Exit.");
   }
