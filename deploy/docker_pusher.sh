@@ -13,6 +13,6 @@ echo ${BRANCH}
 echo "====================================================================="
 if [ "$BRANCH" = "master" ] || [ "$BRANCH" = "dev" ]; then
   docker login --username="$DOCKER_USERNAME" --password="$DOCKER_PASSWORD";
-  docker push umasuo/device-definition;
+  docker push umasuo/product;
 fi
 echo "============= end push docker image ================================="
