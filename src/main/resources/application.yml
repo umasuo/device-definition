@@ -3,9 +3,9 @@ server:
 
 spring:
   application:
-    name: device-definition
+    name: product
   datasource:
-    url: jdbc:postgresql://localhost:5432/device_definition
+    url: jdbc:postgresql://localhost:5432/product
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
