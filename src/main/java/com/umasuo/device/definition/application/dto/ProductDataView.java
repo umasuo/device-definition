@@ -1,7 +1,9 @@
 package com.umasuo.device.definition.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Lists;
+import com.google.common.collect.PeekingIterator;
 import com.umasuo.device.definition.infrastructure.enums.Category;
 import com.umasuo.device.definition.infrastructure.util.JsonUtils;
 
@@ -10,6 +12,8 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import javax.persistence.Transient;
 
 /**
  * Created by Davis on 17/7/12.
@@ -37,7 +41,11 @@ public class ProductDataView implements Serializable{
   /**
    * the data structure.
    */
+  @JsonIgnore
   private String dataSchema;
+
+  @Transient
+  private JsonNode schema;
 
   /**
    * name of this definition.
@@ -76,7 +84,8 @@ public class ProductDataView implements Serializable{
     result.setName(map.get("name").toString());
     result.setId(map.get("id").toString());
     result.setCategory(Category.valueOf(map.get("category").toString()));
-    result.setDataSchema(map.get("dataSchema").toString());
+    result.setDataSchema(map.get("schema").toString());
+    result.setSchema(null);
     result.setDescription(map.get("description").toString());
     result.setVersion(Integer.valueOf(map.get("version").toString()));
 

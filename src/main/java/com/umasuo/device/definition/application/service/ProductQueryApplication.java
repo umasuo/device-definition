@@ -1,11 +1,13 @@
 package com.umasuo.device.definition.application.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Lists;
 import com.umasuo.device.definition.application.dto.ProductDataView;
 import com.umasuo.device.definition.application.dto.ProductView;
 import com.umasuo.device.definition.application.dto.mapper.DeviceMapper;
 import com.umasuo.device.definition.domain.model.Product;
 import com.umasuo.device.definition.domain.service.ProductService;
+import com.umasuo.device.definition.infrastructure.util.JsonUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -79,6 +82,12 @@ public class ProductQueryApplication {
       logger.debug("Cache fail, get from database.");
       result = fetchProducts(developerId);
     }
+
+    result.stream().forEach(
+        productView -> productView.getDataDefinitions().stream().forEach(
+            data -> data.setSchema(JsonUtils.deserialize(data.getDataSchema(), JsonNode.class))
+        )
+    );
 
     logger.trace("Devices: {}.", result);
     logger.debug("Exit. devicesSize: {}.", result.size());
