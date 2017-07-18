@@ -85,7 +85,7 @@ public class ProductQueryApplication {
 
     result.stream().forEach(
         productView -> productView.getDataDefinitions().stream().forEach(
-            data -> data.setSchema(JsonUtils.deserialize(data.getDataSchema(), JsonNode.class))
+            data -> data.setDataSchema(JsonUtils.deserialize(data.getSchema(), JsonNode.class))
         )
     );
 

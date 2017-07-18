@@ -1,5 +1,6 @@
 package com.umasuo.device.definition.application.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.umasuo.device.definition.application.dto.CopyRequest;
 import com.umasuo.device.definition.application.dto.ProductDataView;
 import com.umasuo.device.definition.application.dto.ProductDraft;
@@ -14,6 +15,7 @@ import com.umasuo.device.definition.domain.service.ProductService;
 import com.umasuo.device.definition.domain.service.ProductTypeService;
 import com.umasuo.device.definition.infrastructure.update.UpdateAction;
 import com.umasuo.device.definition.infrastructure.update.UpdaterService;
+import com.umasuo.device.definition.infrastructure.util.JsonUtils;
 import com.umasuo.device.definition.infrastructure.validator.ProductValidator;
 import com.umasuo.exception.AlreadyExistException;
 
@@ -134,7 +136,11 @@ public class ProductCommandApplication {
 
     ProductView updatedDevice = DeviceMapper.modelToView(savedDevice);
 
-    updatedDevice.setDataDefinitions(productDataViews);
+    updatedDevice.setDataDefinitions(ProductDataView.build(productDataViews));
+
+    updatedDevice.getDataDefinitions().stream().forEach(
+        data -> data.setDataSchema(JsonUtils.deserialize(data.getSchema(), JsonNode.class))
+    );
 
     logger.debug("Exit: updated device: {}", updatedDevice);
     return updatedDevice;

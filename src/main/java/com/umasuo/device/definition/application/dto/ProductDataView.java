@@ -42,10 +42,10 @@ public class ProductDataView implements Serializable{
    * the data structure.
    */
   @JsonIgnore
-  private String dataSchema;
+  private String schema;
 
   @Transient
-  private JsonNode schema;
+  private JsonNode dataSchema;
 
   /**
    * name of this definition.
@@ -84,8 +84,8 @@ public class ProductDataView implements Serializable{
     result.setName(map.get("name").toString());
     result.setId(map.get("id").toString());
     result.setCategory(Category.valueOf(map.get("category").toString()));
-    result.setDataSchema(map.get("schema").toString());
-    result.setSchema(null);
+    result.setSchema(map.get("schema").toString());
+    result.setDataSchema(null);
     result.setDescription(map.get("description").toString());
     result.setVersion(Integer.valueOf(map.get("version").toString()));
 
