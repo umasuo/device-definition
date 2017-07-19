@@ -2,7 +2,6 @@ package com.umasuo.product.application.rest;
 
 import com.umasuo.product.application.dto.ProductDraft;
 import com.umasuo.product.application.dto.ProductView;
-import com.umasuo.product.application.dto.action.UpdateStatus;
 import com.umasuo.product.application.service.ProductCommandApplication;
 import com.umasuo.product.application.service.ProductQueryApplication;
 import com.umasuo.product.infrastructure.Router;
@@ -92,19 +91,6 @@ public class ProductController {
 
     ProductView result = commandApplication
         .update(id, developerId, updateRequest.getVersion(), updateRequest.getActions());
-
-    logger.trace("Updated product: {}.", result);
-    logger.info("Exit.");
-
-    return result;
-  }
-
-  @PutMapping(Router.PRODUCT_STATUS)
-  public ProductView updateStatus(@PathVariable("id") String id, @RequestHeader String developerId,
-      @RequestBody @Valid UpdateStatus status) {
-    logger.info("Enter. developerId: {}, productId: {}, status: {}.", developerId, id, status);
-
-    ProductView result = commandApplication.updateStatus(developerId, id, status);
 
     logger.trace("Updated product: {}.", result);
     logger.info("Exit.");

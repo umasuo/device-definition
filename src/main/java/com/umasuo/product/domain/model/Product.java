@@ -35,6 +35,7 @@ import javax.persistence.Version;
 public class Product implements Serializable {
 
   private static final long serialVersionUID = -6085138635403490262L;
+
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")

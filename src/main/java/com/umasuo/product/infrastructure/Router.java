@@ -14,4 +14,8 @@ public class Router {
   public static final String PRODUCT_STATUS = PRODUCT_WITH_ID + "/status";
 
   public static final String PRODUCT_TYPE_ROOT = PRODUCT_ROOT + "/types";
+
+  public static final String PRODUCT_REQUEST = PRODUCT_ROOT + "/request";
+
+  public static final String PRODUCT_REQUEST_WITH_ID = PRODUCT_REQUEST + "/{}";
 }

@@ -87,4 +87,12 @@ public final class ProductValidator {
       throw new ConflictException("Product definition version is not correct.");
     }
   }
+
+  public static void checkStatusForPublish(Product product) {
+    if (ProductStatus.PUBLISHED.equals(product.getStatus()) ||
+        ProductStatus.REVOKED.equals(product.getStatus())) {
+      logger.debug("Can not publish product when product is published or revoked");
+      throw new ParametersException("Can not publish product on wrong status");
+    }
+  }
 }

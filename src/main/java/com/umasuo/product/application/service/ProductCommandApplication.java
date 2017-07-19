@@ -1,15 +1,15 @@
 package com.umasuo.product.application.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.umasuo.exception.AlreadyExistException;
 import com.umasuo.product.application.dto.CopyRequest;
 import com.umasuo.product.application.dto.ProductDataView;
 import com.umasuo.product.application.dto.ProductDraft;
 import com.umasuo.product.application.dto.ProductView;
-import com.umasuo.product.application.dto.action.UpdateStatus;
 import com.umasuo.product.application.dto.mapper.CommonFunctionMapper;
 import com.umasuo.product.application.dto.mapper.ProductMapper;
-import com.umasuo.product.domain.model.ProductFunction;
 import com.umasuo.product.domain.model.Product;
+import com.umasuo.product.domain.model.ProductFunction;
 import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.domain.service.ProductService;
 import com.umasuo.product.domain.service.ProductTypeService;
@@ -17,7 +17,6 @@ import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdaterService;
 import com.umasuo.product.infrastructure.util.JsonUtils;
 import com.umasuo.product.infrastructure.validator.ProductValidator;
-import com.umasuo.exception.AlreadyExistException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -190,26 +189,5 @@ public class ProductCommandApplication {
     restClient.deleteAllDataDefinition(developerId, product.getId());
 
     logger.debug("Exit.");
-  }
-
-  public ProductView updateStatus(String developerId, String id, UpdateStatus request) {
-    logger.debug("Enter. developerId: {}, productId: {}, status: {}.", developerId, id, request);
-
-    Product product = productService.get(id);
-
-    ProductValidator.checkVersion(request.getVersion(), product.getVersion());
-
-    product.setStatus(request.getStatus());
-
-    productService.save(product);
-
-    ProductView result = ProductMapper.modelToView(product);
-
-    cacheApplication.deleteProducts(developerId);
-
-    logger.trace("Updated product: {}.", result);
-    logger.debug("Exit.");
-
-    return result;
   }
 }
