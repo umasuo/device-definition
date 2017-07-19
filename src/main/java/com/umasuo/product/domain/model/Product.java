@@ -16,6 +16,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -135,5 +136,6 @@ public class Product implements Serializable {
    */
   private Boolean openable = false;
 
-  private TestUnion testUnion;
+  @Embedded
+  private TestUnion testUnion = new TestUnion();
 }
