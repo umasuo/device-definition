@@ -95,4 +95,6 @@ public class ProductView implements Serializable {
   private String wifiModule;
 
   private String description;
+
+  private TestUnionView testUnion;
 }

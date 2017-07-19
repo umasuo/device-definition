@@ -134,4 +134,6 @@ public class Product implements Serializable {
    * True means this product can be find by other developers and false means not.
    */
   private Boolean openable = false;
+
+  private TestUnion testUnion;
 }

@@ -33,6 +33,8 @@ public final class ProductMapper {
 
     product.setStatus(ProductStatus.DEVELOPING);
 
+    product.setTestUnion(UnionMapper.build());
+
     return product;
   }
 
@@ -59,6 +61,8 @@ public final class ProductMapper {
     view.setDescription(product.getDescription());
 
     view.setFunctions(ProductFunctionMapper.toModel(product.getProductFunctions()));
+
+    view.setTestUnion(UnionMapper.toView(product.getTestUnion()));
 
     return view;
   }
