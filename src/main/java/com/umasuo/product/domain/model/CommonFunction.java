@@ -32,7 +32,7 @@ import javax.persistence.Version;
 @EntityListeners(AuditingEntityListener.class)
 @TypeDef(name = "dataType", typeClass = JSONBUserType.class, parameters = {
     @Parameter(name = JSONBUserType.CLASS,
-        value = "FunctionDataType")})
+        value = "com.umasuo.product.application.dto.FunctionDataType")})
 public class CommonFunction {
 
   /**

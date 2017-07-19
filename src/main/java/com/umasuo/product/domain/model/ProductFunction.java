@@ -37,7 +37,7 @@ import javax.persistence.Version;
 @EntityListeners(AuditingEntityListener.class)
 @TypeDef(name = "dataType", typeClass = JSONBUserType.class, parameters = {
     @Parameter(name = JSONBUserType.CLASS,
-        value = "FunctionDataType")})
+        value = "com.umasuo.product.application.dto.FunctionDataType")})
 public class ProductFunction implements Serializable {
 
   private static final long serialVersionUID = -1741012173485432837L;
