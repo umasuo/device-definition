@@ -14,13 +14,13 @@ public class ValueType implements FunctionDataType, Serializable {
 
   private String type;
 
-  private Integer startValue;
+  private Long startValue;
 
-  private Integer endValue;
+  private Long endValue;
 
-  private Integer interval;
+  private Long interval;
 
-  private Integer multiple;
+  private Long multiple;
 
   private String unit;
 

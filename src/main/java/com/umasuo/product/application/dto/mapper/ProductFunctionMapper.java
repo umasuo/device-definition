@@ -45,7 +45,6 @@ public final class ProductFunctionMapper {
     model.setFunctionId(entity.getFunctionId());
     model.setName(entity.getName());
     model.setDescription(entity.getDescription());
-    model.setCommand(entity.getCommand());
     model.setDataType(entity.getDataType());
     model.setTransferType(entity.getTransferType());
     model.setCategory(entity.getCategory());
@@ -59,7 +58,6 @@ public final class ProductFunctionMapper {
     function.setFunctionId(action.getFunctionId());
     function.setName(action.getName());
     function.setDescription(action.getDescription());
-    function.setCommand(action.getCommand());
     function.setTransferType(action.getTransferType());
     function.setDataType(action.getDataType());
     function.setCategory(Category.PRODUCT);
@@ -68,7 +66,6 @@ public final class ProductFunctionMapper {
   }
 
   public static void merge(ProductFunction function, UpdateFunction action) {
-    function.setCommand(action.getCommand());
     function.setDescription(action.getDescription());
     function.setTransferType(action.getTransferType());
     function.setName(action.getName());

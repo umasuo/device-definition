@@ -79,11 +79,6 @@ public class CommonFunction {
    */
   private String description;
 
-  /**
-   * the command send to device.
-   */
-  private String command;
-
   @Type(type = "dataType")
   private FunctionDataType dataType;
 

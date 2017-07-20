@@ -23,8 +23,6 @@ public class ProductFunctionView implements Serializable{
 
   private String description;
 
-  private String command;
-
   private TransferType transferType;
 
   private FunctionDataType dataType;

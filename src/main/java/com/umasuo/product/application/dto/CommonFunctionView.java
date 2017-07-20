@@ -34,11 +34,6 @@ public class CommonFunctionView implements Serializable{
    */
   private String description;
 
-  /**
-   * the command send to device.
-   */
-  private String command;
-
   private TransferType transferType;
 
   private FunctionDataType dataType;

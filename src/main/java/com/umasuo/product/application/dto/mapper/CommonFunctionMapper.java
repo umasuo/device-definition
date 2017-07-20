@@ -48,7 +48,6 @@ public final class CommonFunctionMapper {
     model.setFunctionId(entity.getFunctionId());
     model.setName(entity.getName());
     model.setDescription(entity.getDescription());
-    model.setCommand(entity.getCommand());
     model.setTransferType(entity.getTransferType());
     model.setDataType(entity.getDataType());
 
@@ -81,7 +80,6 @@ public final class CommonFunctionMapper {
     productFunction.setFunctionId(function.getFunctionId());
     productFunction.setName(function.getName());
     productFunction.setDescription(function.getDescription());
-    productFunction.setCommand(function.getCommand());
     productFunction.setTransferType(function.getTransferType());
     productFunction.setDataType(function.getDataType());
     productFunction.setCategory(Category.PLATFORM);

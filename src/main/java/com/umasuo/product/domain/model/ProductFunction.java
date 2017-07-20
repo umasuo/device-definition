@@ -85,12 +85,6 @@ public class ProductFunction implements Serializable {
    */
   private String description;
 
-  /**
-   * the command that need to send.
-   */
-  private String command;
-
-
   @Type(type = "dataType")
   private FunctionDataType dataType;
 
