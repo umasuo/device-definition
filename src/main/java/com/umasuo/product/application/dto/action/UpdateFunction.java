@@ -27,9 +27,6 @@ public class UpdateFunction implements UpdateAction {
   private String description;
 
   @NotNull
-  private String command;
-
-  @NotNull
   private TransferType transferType;
 
   @NotNull
