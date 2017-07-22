@@ -2,19 +2,19 @@
 
 -- 插入功能
 
-INSERT INTO common_function (id, command, created_at, data_type, description, function_id, last_modified_at, name, transfer_type, version)
-VALUES ('2602b236-05f4-40df-a4ad-6feb5e91f16b', '开关', 1498647420511, '{"type": "boolean"}', NULL, 'cf001', 1499342216822, '开关', 0, 1) on conflict DO NOTHING;
+INSERT INTO common_function (id, created_at, data_type, description, function_id, last_modified_at, name, transfer_type, version)
+VALUES ('2602b236-05f4-40df-a4ad-6feb5e91f16b', 1498647420511, '{"type": "boolean"}', NULL, 'cf001', 1499342216822, '开关', 0, 1) on conflict DO NOTHING;
 
-INSERT INTO common_function (id, command, created_at, data_type, description, function_id, last_modified_at, name, transfer_type, version)
-VALUES ('8d789b1d-7e99-47b5-971f-8ce4517e44aa', '工作模式', 1498647420511, '{"type": "enum", "values": ["level1", "level2", "level3"]}', NULL, 'cf002', 1499342216826, '工作模式', 2, 1)
+INSERT INTO common_function (id, created_at, data_type, description, function_id, last_modified_at, name, transfer_type, version)
+VALUES ('8d789b1d-7e99-47b5-971f-8ce4517e44aa', 1498647420511, '{"type": "enum", "values": ["level1", "level2", "level3"]}', NULL, 'cf002', 1499342216826, '工作模式', 2, 1)
 on conflict DO NOTHING;
 
-INSERT INTO common_function (id, command, created_at, data_type, description, function_id, last_modified_at, name, transfer_type, version)
-VALUES ('74217304-b92a-4395-8bee-11260cd66fbf', '开关', 1498647420513, '{"type": "value", "endValue": 100, "interval": 2, "multiple": 4, "startValue": 1}', NULL, 'cf021', 1499342216827, '开关', 0, 1)
+INSERT INTO common_function (id, created_at, data_type, description, function_id, last_modified_at, name, transfer_type, version)
+VALUES ('74217304-b92a-4395-8bee-11260cd66fbf', 1498647420513, '{"type": "value", "endValue": 100, "interval": 2, "multiple": 4, "startValue": 1}', NULL, 'cf021', 1499342216827, '开关', 0, 1)
 on conflict DO NOTHING;
 
-INSERT INTO common_function (id, command, created_at, data_type, description, function_id, last_modified_at, name, transfer_type, version)
-VALUES ('95290536-54de-48ba-9a37-97254618ec91', '清扫模式', 1498647420513, '{"type": "string"}', NULL, 'cf022', 1499342216827, '清扫模式', 2, 1) on conflict DO NOTHING;
+INSERT INTO common_function (id, created_at, data_type, description, function_id, last_modified_at, name, transfer_type, version)
+VALUES ('95290536-54de-48ba-9a37-97254618ec91', 1498647420513, '{"type": "string"}', NULL, 'cf022', 1499342216827, '清扫模式', 2, 1) on conflict DO NOTHING;
 
 -- 插入产品
 
