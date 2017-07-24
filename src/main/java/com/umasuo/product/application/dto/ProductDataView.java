@@ -39,7 +39,6 @@ public class ProductDataView implements Serializable{
   /**
    * the data structure.
    */
-  @JsonIgnore
   private String schema;
 
   @Transient
@@ -66,10 +65,12 @@ public class ProductDataView implements Serializable{
   public static List<ProductDataView> build(List<ProductDataView> objects) {
     List<ProductDataView> result = Lists.newArrayList();
 
-    for (Object view : objects) {
-      LinkedHashMap map = (LinkedHashMap) view;
+    if (objects != null) {
+      for (Object view : objects) {
+        LinkedHashMap map = (LinkedHashMap) view;
 
-      result.add(build(map));
+        result.add(build(map));
+      }
     }
 
     return result;

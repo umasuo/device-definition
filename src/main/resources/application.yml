@@ -22,9 +22,6 @@ jwt:
   secret: QWERTYUIOPASDFGHJKLZXCVBNM
   expires: 72000
 
-developer:
-  service:
-    uri: http://localhost:8804/developers/
 datadefinition:
   service:
-    uri: http://localhost:8802/data-definitions/
+    uri: http://localhost:8802/data-definitions

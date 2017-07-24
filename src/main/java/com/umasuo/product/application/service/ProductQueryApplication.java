@@ -142,7 +142,8 @@ public class ProductQueryApplication {
 
     cacheApplication.cacheProducts(developerId, result);
 
-    logger.debug("Exit. product size: {}.", result);
+    logger.trace("Product: {}.", result);
+    logger.debug("Exit. product size: {}.", result.size());
 
     return result;
   }
@@ -151,8 +152,10 @@ public class ProductQueryApplication {
       Map<String, List<ProductDataView>> productDataViews) {
     logger.debug("Enter.");
 
+//    productViews.stream().forEach(
+//        product -> product.setDataDefinitions(ProductDataView.build(productDataViews.get(product.getId()))));
     productViews.stream().forEach(
-        product -> product.setDataDefinitions(ProductDataView.build(productDataViews.get(product.getId()))));
+        product -> product.setDataDefinitions(productDataViews.get(product.getId())));
 
     logger.debug("Exit.");
   }

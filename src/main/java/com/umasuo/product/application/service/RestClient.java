@@ -7,18 +7,20 @@ import static org.springframework.http.HttpMethod.PUT;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.umasuo.exception.ParametersException;
 import com.umasuo.product.application.dto.CommonDataView;
 import com.umasuo.product.application.dto.CopyRequest;
 import com.umasuo.product.application.dto.ProductDataView;
 import com.umasuo.product.application.dto.action.AddDataDefinition;
 import com.umasuo.product.infrastructure.update.UpdateRequest;
 import com.umasuo.product.infrastructure.util.HttpEntityUtils;
-import com.umasuo.exception.ParametersException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -42,12 +44,6 @@ public class RestClient {
   private final static Logger logger = LoggerFactory.getLogger(RestClient.class);
 
   /**
-   * developer service uri
-   */
-  @Value("${developer.service.uri:http://developer}")
-  private transient String developerUrl;
-
-  /**
    * Data-definition service uri.
    */
   @Value("${datadefinition.service.uri:http://data-definition}")
@@ -57,24 +53,7 @@ public class RestClient {
    * RestTemplate.
    */
   private transient RestTemplate restTemplate = new RestTemplate();
-
-  /**
-   * 调取开发者服务，检查给定的开发者是否存在.
-   *
-   * @param developerId 开发者ID
-   * @return boolean boolean
-   */
-  public boolean isDeveloperExist(String developerId) {
-    logger.debug("Enter. developerId: {}.", developerId);
-
-    String url = developerUrl + developerId;
-    logger.debug("check url: {}.", url);
-
-    Boolean result = restTemplate.getForObject(url, Boolean.class);
-
-    logger.debug("Exit. developer: {} exist? {}.", developerId, result);
-    return result;
-  }
+  public String url;
 
   /**
    * Check definition exist.
@@ -103,6 +82,8 @@ public class RestClient {
     logger.debug("Enter.");
     String url = definitionUrl + "/platform";
 
+    logger.debug("Url: {}.", url);
+
     Map<String, List<CommonDataView>> result = Maps.newHashMap();
 
     try {
@@ -128,14 +109,21 @@ public class RestClient {
   public List<String> copyDataDefinitions(String developerId, CopyRequest request) {
     logger.debug("Enter. developerId: {}, dataDefinitionIds: {}.", developerId, request);
 
-    HttpEntity entity = HttpEntityUtils.build(developerId, request);
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("developerId", developerId);
+    headers.set("Content-Type", "application/json");
+
+    HttpEntity entity = new HttpEntity(request, headers);
+    url = definitionUrl + "/copy";
+
+    logger.debug("url: {}.", url);
 
     try {
-      HttpEntity<String[]> response =
-          restTemplate.exchange(definitionUrl + "/copy", POST, entity, String[].class);
+      HttpEntity<List<String>> response = restTemplate.exchange(url, POST, entity,
+              new ParameterizedTypeReference<List<String>>() {});
       return Lists.newArrayList(response.getBody());
     } catch (RestClientException ex) {
-      logger.warn("Fetch data definition failed.", ex);
+      logger.warn("Copy data definition failed.", ex);
       //todo add message or retry
       return new ArrayList<>();
     }
@@ -209,10 +197,20 @@ public class RestClient {
 
     String url = builder.build().encode().toUriString();
 
-    ResponseEntity<Map> responseEntity =
-        restTemplate.exchange(url, GET, entity, Map.class);
+    logger.debug("data definition url: {}.", url);
 
-    Map<String, List<ProductDataView>> result = responseEntity.getBody();
+    Map<String, List<ProductDataView>> result = Maps.newHashMap();
+
+    try {
+
+      ResponseEntity<Map<String, List<ProductDataView>>> responseEntity = restTemplate.exchange(url,
+          GET, entity, new ParameterizedTypeReference<Map<String, List<ProductDataView>>>() {
+          });
+
+      result = responseEntity.getBody();
+    } catch (Exception ex) {
+      logger.debug("Can not get data definition: {}", url, ex);
+    }
 
     logger.debug("Exit. productData size: {}.", result.size());
 
@@ -229,11 +227,17 @@ public class RestClient {
         .queryParam("productId", productId);
 
     String url = builder.build().encode().toUriString();
+    List<ProductDataView> result = Lists.newArrayList();
+    try {
 
-    ResponseEntity<List> responseEntity =
-        restTemplate.exchange(url, GET, entity, List.class);
+      ResponseEntity<List<ProductDataView>> responseEntity = restTemplate.exchange(url, GET,
+          entity, new ParameterizedTypeReference<List<ProductDataView>>() {
+          });
 
-    List<ProductDataView> result = responseEntity.getBody();
+      result = responseEntity.getBody();
+    } catch (Exception ex) {
+      logger.debug("Can not get data definition by url: {}.", url, ex);
+    }
 
     logger.debug("Exit. productData size: {}.", result.size());
 
@@ -249,6 +253,8 @@ public class RestClient {
     String url = definitionUrl + "/" + dataDefinitionId;
 
     restTemplate.exchange(url, PUT, entity, Void.class);
+
+    logger.debug("Exit.");
   }
 
 }
