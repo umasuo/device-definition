@@ -23,7 +23,7 @@ import java.util.List;
  * Created by Davis on 17/7/7.
  */
 @Service(UpdateActionUtils.ADD_DATA_DEFINITION)
-public class AddDataDefinitionService implements Updater<Product, UpdateAction>{
+public class AddDataDefinitionService implements Updater<Product, UpdateAction> {
 
   /**
    * Logger.
@@ -61,8 +61,11 @@ public class AddDataDefinitionService implements Updater<Product, UpdateAction>{
     List<ProductDataView> productDataViews =
         productQueryApplication.getDataDefinitions(product.getDeveloperId(), product.getId());
 
-    boolean sameAsPlatformData =
-        productType.getData().stream().anyMatch(data -> dataId.equals(data.getDataId()));
+    boolean sameAsPlatformData = false;
+    if (productDataViews != null) {
+      sameAsPlatformData =
+          productType.getData().stream().anyMatch(data -> dataId.equals(data.getDataId()));
+    }
 
     boolean existDataId =
         productDataViews.stream().anyMatch(data -> dataId.equals(data.getDataId()));
