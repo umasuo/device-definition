@@ -30,5 +30,5 @@ dependencies {
     compile("io.jsonwebtoken:jjwt:0.7.0")
 
     // Commons lib from github project
-    compile("com.umasuo:commons:0.0.1")
+    compile("com.umasuo:commons:0.2")
 }
