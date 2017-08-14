@@ -64,13 +64,13 @@ public class CacheApplication {
 
     List<ProductView> result = Lists.newArrayList();
 
-//    String key = String.format(RedisUtils.PRODUCT_KEY_FORMAT, developerId);
-//    Map<String, Object> cacheProducts = redisTemplate.opsForHash().entries(key);
-//    if (cacheProducts != null && !cacheProducts.isEmpty()) {
-//      cacheProducts.entrySet().stream().forEach(
-//          entry -> result.add((ProductView) entry.getValue())
-//      );
-//    }
+    String key = String.format(RedisUtils.PRODUCT_KEY_FORMAT, developerId);
+    Map<String, Object> cacheProducts = redisTemplate.opsForHash().entries(key);
+    if (cacheProducts != null && !cacheProducts.isEmpty()) {
+      cacheProducts.entrySet().stream().forEach(
+          entry -> result.add((ProductView) entry.getValue())
+      );
+    }
 
     LOG.trace("Products: {}.", result);
     LOG.debug("Exit. products size: {}.", result.size());

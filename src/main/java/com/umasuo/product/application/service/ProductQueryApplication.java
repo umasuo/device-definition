@@ -152,8 +152,6 @@ public class ProductQueryApplication {
       Map<String, List<ProductDataView>> productDataViews) {
     logger.debug("Enter.");
 
-//    productViews.stream().forEach(
-//        product -> product.setDataDefinitions(ProductDataView.build(productDataViews.get(product.getId()))));
     productViews.stream().forEach(
         product -> product.setDataDefinitions(productDataViews.get(product.getId())));
 
