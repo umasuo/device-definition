@@ -88,11 +88,15 @@ public final class ProductValidator {
     }
   }
 
-  public static void checkStatusForPublish(Product product) {
-    if (ProductStatus.PUBLISHED.equals(product.getStatus()) ||
-        ProductStatus.REVOKED.equals(product.getStatus())) {
-      logger.debug("Can not publish product when product is published or revoked");
-      throw new ParametersException("Can not publish product on wrong status");
+  public static void validateStatus(ProductStatus requestStatus, ProductStatus realStatus) {
+    logger.debug("Enter. requestStatus: {}, realStatus: {}.", requestStatus, realStatus);
+
+    if (!requestStatus.equals(realStatus)) {
+      logger.debug("Product status not match, requestStatus: {}, realStatus: {}.",
+          requestStatus, realStatus);
+      throw new ParametersException("Product status is wrong");
     }
+
+    logger.debug("Exit.");
   }
 }

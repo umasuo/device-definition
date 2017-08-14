@@ -44,6 +44,15 @@ public class RequestApplication {
     return result;
   }
 
+  public void cancelRequest(String developerId, String productId) {
+    LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
+
+    requestService.cancelRequest(developerId, productId);
+
+    LOG.debug("Exit.");
+
+  }
+
   // 1. 获取开发者的请求
   public List<StatusRequestView> getRequest() {
     // TODO: 17/7/19

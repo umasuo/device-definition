@@ -5,5 +5,6 @@ package com.umasuo.product.infrastructure.enums;
  */
 public enum RequestType {
   PUBLISH,
+  CANCEL,
   REVOKE
 }

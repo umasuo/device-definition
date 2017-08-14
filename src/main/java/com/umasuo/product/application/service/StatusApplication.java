@@ -4,7 +4,6 @@ import com.umasuo.product.application.dto.ProductStatusRequest;
 import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.service.ProductService;
 import com.umasuo.product.infrastructure.enums.ProductStatus;
-import com.umasuo.product.infrastructure.enums.RequestType;
 import com.umasuo.product.infrastructure.validator.ProductValidator;
 
 import org.slf4j.Logger;
@@ -45,22 +44,56 @@ public class StatusApplication {
 
     ProductValidator.checkVersion(request.getVersion(), product.getVersion());
 
-    if (RequestType.PUBLISH.equals(request.getType())) {
-      // 申请published，则修改状态为checking， 新建一条request记录
-
-      ProductValidator.checkStatusForPublish(product);
-
-      product.setStatus(ProductStatus.CHECKING);
-
-      requestApplication.create(developerId, productId);
-    } else {
-      // 申请为revoked，则直接修改状态为revoked，不需要平台处理，直接下架
-      product.setStatus(ProductStatus.REVOKED);
+    switch (request.getType()) {
+      case PUBLISH:
+        publish(developerId, productId, product);
+        break;
+      case CANCEL:
+        cancel(developerId, productId, product);
+        break;
+      case REVOKE:
+        revoke(product);
+        break;
+      default:
+        break;
     }
 
     productService.save(product);
 
     cacheApplication.deleteProducts(developerId);
+
+    LOG.debug("Exit.");
+  }
+
+  private void revoke(Product product) {
+    LOG.debug("Enter. productId: {}.", product.getId());
+    ProductValidator.validateStatus(ProductStatus.PUBLISHED, product.getStatus());
+
+    product.setStatus(ProductStatus.REVOKED);
+
+    LOG.debug("Exit.");
+  }
+
+  private void cancel(String developerId, String productId, Product product) {
+    LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
+
+    ProductValidator.validateStatus(ProductStatus.CHECKING, product.getStatus());
+
+    product.setStatus(ProductStatus.DEVELOPING);
+
+    requestApplication.cancelRequest(developerId, productId);
+
+    LOG.debug("Exit.");
+  }
+
+  private void publish(String developerId, String productId, Product product) {
+    LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
+
+    ProductValidator.validateStatus(ProductStatus.DEVELOPING, product.getStatus());
+
+    product.setStatus(ProductStatus.CHECKING);
+
+    requestApplication.create(developerId, productId);
 
     LOG.debug("Exit.");
   }

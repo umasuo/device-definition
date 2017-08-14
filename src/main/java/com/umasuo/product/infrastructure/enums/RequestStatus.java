@@ -7,5 +7,6 @@ public enum RequestStatus {
   UNVIEW,
   VIEWED,
   AGREE,
-  DISAGREE
+  DISAGREE,
+  CANCELED
 }

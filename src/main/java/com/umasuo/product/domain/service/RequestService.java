@@ -2,6 +2,7 @@ package com.umasuo.product.domain.service;
 
 import com.umasuo.exception.NotExistException;
 import com.umasuo.product.domain.model.StatusRequest;
+import com.umasuo.product.infrastructure.enums.RequestStatus;
 import com.umasuo.product.infrastructure.repository.RequestRepository;
 
 import org.slf4j.Logger;
@@ -47,5 +48,13 @@ public class RequestService {
     LOG.debug("Exit. request: {}.", request);
 
     return request;
+  }
+
+  public void cancelRequest(String developerId, String productId) {
+    LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
+
+    int count = repository.changeRequestStatus(developerId, productId, RequestStatus.CANCELED);
+
+    LOG.debug("Exit. cancel count: {}.", count);
   }
 }
