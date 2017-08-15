@@ -1,13 +1,13 @@
 package com.umasuo.product.infrastructure.validator;
 
+import com.umasuo.exception.ConflictException;
+import com.umasuo.exception.NotExistException;
+import com.umasuo.exception.ParametersException;
 import com.umasuo.product.application.dto.ProductDraft;
 import com.umasuo.product.domain.model.CommonFunction;
 import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.infrastructure.enums.ProductStatus;
-import com.umasuo.exception.ConflictException;
-import com.umasuo.exception.NotExistException;
-import com.umasuo.exception.ParametersException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,9 +61,12 @@ public final class ProductValidator {
 
 
   public static void checkStatus(Product product) {
-    if (product.getStatus().equals(ProductStatus.PUBLISHED)) {
-      logger.debug("Can not delete or update a published product");
-      throw new ParametersException("Can not delete or update a published product");
+    if (product.getStatus().equals(ProductStatus.PUBLISHED) ||
+        product.getStatus().equals(ProductStatus.CHECKING)) {
+      logger.debug("Can not delete or update a published product in status: {}.",
+          product.getStatus());
+      throw new ParametersException(
+          "Can not delete or update a published product when it is checking or published");
     }
   }
 

@@ -135,7 +135,6 @@ public class ProductCommandApplication {
 
     ProductView updatedProduct = ProductMapper.modelToView(product);
 
-//    updatedProduct.setDataDefinitions(ProductDataView.build(productDataViews));
     updatedProduct.setDataDefinitions(productDataViews);
 
     updatedProduct.getDataDefinitions().stream().forEach(
