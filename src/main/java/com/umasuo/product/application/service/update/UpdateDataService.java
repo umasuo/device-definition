@@ -14,11 +14,13 @@ import com.umasuo.product.infrastructure.update.UpdateRequest;
 import com.umasuo.exception.AlreadyExistException;
 import com.umasuo.exception.NotExistException;
 import com.umasuo.model.Updater;
+import com.umasuo.product.infrastructure.validator.DataIdValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -80,17 +82,7 @@ public class UpdateDataService implements Updater<Product, UpdateAction> {
     List<ProductDataView> productDataViews =
         productQueryApplication.getDataDefinitions(product.getDeveloperId(), product.getId());
 
-    boolean sameAsPlatformData =
-        productType.getData().stream().anyMatch(data -> dataId.equals(data.getDataId()));
-
-    boolean existDataId =
-        productDataViews.stream().anyMatch(
-            data -> dataId.equals(data.getDataId()) && !dataDefinitionId.equals(data.getId()));
-
-    if (sameAsPlatformData || existDataId) {
-      LOG.debug("Can not add exist dataId: {}.", dataId);
-      throw new AlreadyExistException("DataId already exist");
-    }
+    DataIdValidator.checkForUpdate(dataDefinitionId, dataId, productType, productDataViews);
 
     LOG.debug("Exit.");
   }

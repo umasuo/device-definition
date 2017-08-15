@@ -11,6 +11,7 @@ import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdateActionUtils;
 import com.umasuo.exception.AlreadyExistException;
 import com.umasuo.model.Updater;
+import com.umasuo.product.infrastructure.validator.DataIdValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,19 +63,8 @@ public class AddDataDefinitionService implements Updater<Product, UpdateAction> 
     List<ProductDataView> productDataViews =
         productQueryApplication.getDataDefinitions(product.getDeveloperId(), product.getId());
 
-    boolean sameAsPlatformData = false;
-    if (! CollectionUtils.isEmpty(productType.getData())) {
-      sameAsPlatformData =
-          productType.getData().stream().anyMatch(data -> dataId.equals(data.getDataId()));
-    }
+    DataIdValidator.checkForAdd(dataId, productType, productDataViews);
 
-    boolean existDataId =
-        productDataViews.stream().anyMatch(data -> dataId.equals(data.getDataId()));
-
-    if (sameAsPlatformData || existDataId) {
-      LOG.debug("Can not add exist dataId: {}.", dataId);
-      throw new AlreadyExistException("DataId already exist");
-    }
     LOG.debug("Exit. dataId not exist.");
   }
 }
