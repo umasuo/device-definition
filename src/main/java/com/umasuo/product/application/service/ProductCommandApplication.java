@@ -63,6 +63,7 @@ public class ProductCommandApplication {
    * save new product view.
    *
    * @param draft product draft
+   * @param developerId the developer id
    * @return product view
    */
   @Transactional
@@ -89,21 +90,44 @@ public class ProductCommandApplication {
   }
 
   /**
+   * 删除Product。
+   *
+   * @param id product id
+   * @param developerId the developer id
+   * @param version the version
+   */
+  public void delete(String id, String developerId, Integer version) {
+    logger.debug("Enter. id: {}, developerId: {}, version: {}.", id, developerId, version);
+
+    Product product = productService.get(id);
+
+    checkForUpdateAndDelete(developerId, product, version);
+
+    productService.delete(id);
+
+    cacheApplication.deleteProducts(developerId);
+
+    restClient.deleteAllDataDefinition(developerId, product.getId());
+
+    logger.debug("Exit.");
+  }
+
+  /**
    * update product with actions.
+   *
+   * @param id the id
+   * @param developerId the developer id
+   * @param version the version
+   * @param actions the actions
+   * @return the product view
    */
   public ProductView update(String id, String developerId, Integer version, List<UpdateAction>
       actions) {
-    logger.debug("Enter: id: {}, version: {}, actions: {}", id, version, actions);
+    logger.debug("Enter: id: {}, version: {}, actions: {}.", id, version, actions);
 
     Product valueInDb = productService.get(id);
 
-    ProductValidator.checkDeveloper(developerId, valueInDb);
-
-    logger.debug("Data in db: {}", valueInDb);
-
-    ProductValidator.checkStatus(valueInDb);
-
-    ProductValidator.checkVersion(version, valueInDb.getVersion());
+    checkForUpdateAndDelete(developerId, valueInDb, version);
 
     actions.stream().forEach(action -> updaterService.handle(valueInDb, action));
 
@@ -125,25 +149,18 @@ public class ProductCommandApplication {
     return updatedProduct;
   }
 
-  public void delete(String id, String developerId, Integer version) {
-    logger.debug("Enter. id: {}, developerId: {}, version: {}.", id, developerId, version);
-
-    Product product = productService.get(id);
-
+  /**
+   * 在update和delete中，需要检查developer是否一致，version是否一致，status是否合法。
+   *
+   * @param developerId
+   * @param product
+   * @param version
+   */
+  private void checkForUpdateAndDelete(String developerId, Product product, Integer version) {
     ProductValidator.checkDeveloper(developerId, product);
-
-    logger.debug("Data in db: {}", product);
 
     ProductValidator.checkStatus(product);
 
     ProductValidator.checkVersion(version, product.getVersion());
-
-    productService.delete(id);
-
-    cacheApplication.deleteProducts(developerId);
-
-    restClient.deleteAllDataDefinition(developerId, product.getId());
-
-    logger.debug("Exit.");
   }
 }
