@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class AddDataDefinitionService implements Updater<Product, UpdateAction> 
         productQueryApplication.getDataDefinitions(product.getDeveloperId(), product.getId());
 
     boolean sameAsPlatformData = false;
-    if (productDataViews != null) {
+    if (! CollectionUtils.isEmpty(productType.getData())) {
       sameAsPlatformData =
           productType.getData().stream().anyMatch(data -> dataId.equals(data.getDataId()));
     }
