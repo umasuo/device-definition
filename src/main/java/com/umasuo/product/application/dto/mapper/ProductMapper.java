@@ -19,14 +19,14 @@ public final class ProductMapper {
   /**
    * convert from view to domain model
    */
-  public static Product viewToModel(ProductDraft draft, String developerId) {
+  public static Product toModel(ProductDraft draft, String developerId) {
     Product product = new Product();
+
     product.setDeveloperId(developerId);
     product.setIcon(draft.getIcon());
     product.setName(draft.getName());
     product.setProductType(draft.getProductTypeId());
     product.setCommunicationType(draft.getType());
-    product.setDataDefineIds(draft.getDataDefineIds());
     if (draft.getOpenable() != null) {
       product.setOpenable(draft.getOpenable());
     }
@@ -41,7 +41,7 @@ public final class ProductMapper {
   /**
    * convert domain model to view.
    */
-  public static ProductView modelToView(Product product) {
+  public static ProductView toView(Product product) {
     ProductView view = new ProductView();
     view.setId(product.getId());
     view.setProductTypeId(product.getProductType());
@@ -70,11 +70,11 @@ public final class ProductMapper {
   /**
    * convert list of model to list of views.
    */
-  public static List<ProductView> modelToView(List<Product> products) {
+  public static List<ProductView> toView(List<Product> products) {
     List<ProductView> views = new ArrayList<>();
     if (products != null) {
       products.stream().forEach(
-          product -> views.add(modelToView(product))
+          product -> views.add(toView(product))
       );
     }
     return views;

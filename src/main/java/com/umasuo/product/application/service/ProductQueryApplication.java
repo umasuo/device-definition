@@ -119,7 +119,7 @@ public class ProductQueryApplication {
     logger.debug("Enter. developerId: {}.", id);
 
     List<Product> products = productService.getAllOpenProduct(id);
-    List<ProductView> views = ProductMapper.modelToView(products);
+    List<ProductView> views = ProductMapper.toView(products);
 
     logger.trace("products: {}.", views);
     logger.debug("Exit. product Size: {}.", views.size());
@@ -131,7 +131,7 @@ public class ProductQueryApplication {
 
     List<Product> products = productService.getByDeveloperId(developerId);
 
-    List<ProductView> result = ProductMapper.modelToView(products);
+    List<ProductView> result = ProductMapper.toView(products);
 
     List<String> productIds = products.stream().map(Product::getId).collect(Collectors.toList());
 

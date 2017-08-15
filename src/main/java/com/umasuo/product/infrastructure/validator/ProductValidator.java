@@ -1,9 +1,7 @@
 package com.umasuo.product.infrastructure.validator;
 
 import com.umasuo.exception.ConflictException;
-import com.umasuo.exception.NotExistException;
 import com.umasuo.exception.ParametersException;
-import com.umasuo.product.application.dto.ProductDraft;
 import com.umasuo.product.domain.model.CommonFunction;
 import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.model.ProductType;
@@ -29,16 +27,6 @@ public final class ProductValidator {
    * Instantiates a new Product validator.
    */
   private ProductValidator() {
-  }
-
-  public static void validateProductType(ProductDraft draft, ProductType productType) {
-    String productTypeId = draft.getProductTypeId();
-
-    if (productType == null) {
-      logger.debug("Can not find productType: {}.", productTypeId);
-      throw new NotExistException("ProductType is not exist");
-    }
-
   }
 
   public static void validateFunction(List<String> functionIds, ProductType productType) {

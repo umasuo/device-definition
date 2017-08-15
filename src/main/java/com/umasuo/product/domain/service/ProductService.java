@@ -1,8 +1,9 @@
 package com.umasuo.product.domain.service;
 
+import com.umasuo.exception.AlreadyExistException;
+import com.umasuo.exception.NotExistException;
 import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.infrastructure.repository.ProductRepository;
-import com.umasuo.exception.NotExistException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,6 +113,11 @@ public class ProductService {
     Example<Product> example = Example.of(sample);
 
     boolean result = repository.exists(example);
+
+    if (result) {
+      logger.debug("Product name: {} has existed in developer: {}.", name, developerId);
+      throw new AlreadyExistException("Product name has existed");
+    }
 
     logger.debug("Exit. name: {} exist: {}.", name, result);
 

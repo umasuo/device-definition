@@ -1,8 +1,10 @@
 package com.umasuo.product.domain.service;
 
+import com.umasuo.exception.NotExistException;
 import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.infrastructure.repository.ProductTypeRepository;
 
+import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +55,18 @@ public class ProductTypeService {
 
     LOG.debug("Exit. productType: {}.", result);
     return result;
+  }
+
+  public void exists(String id) {
+    LOG.debug("Enter. id: {}.", id);
+
+    boolean exists = repository.exists(id);
+
+    if (!exists) {
+      LOG.debug("Can not find productType: {}.", id);
+      throw new NotExistException("ProductType is not exist");
+    }
+
+    LOG.debug("Exit. productType exist? {}.", exists);
   }
 }

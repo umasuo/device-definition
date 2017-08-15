@@ -36,16 +36,6 @@ public class ProductDraft {
   private String productTypeId;
 
   /**
-   * 选择的功能定义ID，系统中的uuid
-   */
-  private List<String> functionIds;
-
-  /**
-   * 数据定义ID，需要提前定义好不同的数据类型.系统中的uuid.
-   */
-  private List<String> dataDefineIds;
-
-  /**
    * Product net type, identify by how the product connect to the internet.
    */
   @NotNull(message = "NetType can not be null")
