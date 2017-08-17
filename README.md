@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/umasuo/product.svg?branch=master)](https://travis-ci.org/umasuo/product)
+
 # device-definition
 Each developer can define several  kind of device. And for each device, they can define different basic info.
 定义设备的基本信息：名称，图标，设备类型.
