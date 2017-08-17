@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.umasuo.product.application.dto.ProductFunctionView;
 import com.umasuo.product.application.dto.action.AddFunction;
 import com.umasuo.product.application.dto.action.UpdateFunction;
+import com.umasuo.product.application.dto.action.UpdateStandardFunction;
 import com.umasuo.product.domain.model.ProductFunction;
 import com.umasuo.product.infrastructure.enums.Category;
 
@@ -70,6 +71,13 @@ public final class ProductFunctionMapper {
     function.setTransferType(action.getTransferType());
     function.setName(action.getName());
     function.setFunctionId(action.getFunctionId());
+    function.setDataType(action.getDataType());
+  }
+
+  public static void merge(ProductFunction function, UpdateStandardFunction action) {
+    function.setDescription(action.getDescription());
+    function.setTransferType(action.getTransferType());
+    function.setName(action.getName());
     function.setDataType(action.getDataType());
   }
 }

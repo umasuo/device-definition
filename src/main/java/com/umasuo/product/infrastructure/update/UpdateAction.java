@@ -1,5 +1,7 @@
 package com.umasuo.product.infrastructure.update;
 
+import static com.umasuo.product.infrastructure.update.UpdateActionUtils.*;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.umasuo.product.application.dto.action.AddDataDefinition;
@@ -11,6 +13,7 @@ import com.umasuo.product.application.dto.action.RemoveFunction;
 import com.umasuo.product.application.dto.action.UpdateDataDefinition;
 import com.umasuo.product.application.dto.action.UpdateFunction;
 import com.umasuo.product.application.dto.action.UpdateProduct;
+import com.umasuo.product.application.dto.action.UpdateStandardFunction;
 
 import java.io.Serializable;
 
@@ -21,19 +24,16 @@ import java.io.Serializable;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property =
     "action")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = CopyDataDefinition.class,
-        name = UpdateActionUtils.COPY_DATA_DEFINITION),
-    @JsonSubTypes.Type(value = AddDataDefinition.class,
-        name = UpdateActionUtils.ADD_DATA_DEFINITION),
-    @JsonSubTypes.Type(value = RemoveDataDefinition.class,
-        name = UpdateActionUtils.REMOVE_DATA_DEFINITION),
-    @JsonSubTypes.Type(value = UpdateDataDefinition.class,
-        name = UpdateActionUtils.UPDATE_DATA_DEFINITION),
-    @JsonSubTypes.Type(value = UpdateProduct.class, name = UpdateActionUtils.UPDATE_PRODUCT),
-    @JsonSubTypes.Type(value = CopyFunction.class, name = UpdateActionUtils.COPY_FUNCTION),
-    @JsonSubTypes.Type(value = RemoveFunction.class, name = UpdateActionUtils.REMOVE_FUNCTION),
-    @JsonSubTypes.Type(value = AddFunction.class, name = UpdateActionUtils.ADD_FUNCTION),
-    @JsonSubTypes.Type(value = UpdateFunction.class, name = UpdateActionUtils.UPDATE_FUNCTION)
+    @JsonSubTypes.Type(value = CopyDataDefinition.class, name = COPY_DATA_DEFINITION),
+    @JsonSubTypes.Type(value = AddDataDefinition.class, name = ADD_DATA_DEFINITION),
+    @JsonSubTypes.Type(value = RemoveDataDefinition.class, name = REMOVE_DATA_DEFINITION),
+    @JsonSubTypes.Type(value = UpdateDataDefinition.class, name = UPDATE_DATA_DEFINITION),
+    @JsonSubTypes.Type(value = UpdateProduct.class, name = UPDATE_PRODUCT),
+    @JsonSubTypes.Type(value = CopyFunction.class, name = COPY_FUNCTION),
+    @JsonSubTypes.Type(value = RemoveFunction.class, name = REMOVE_FUNCTION),
+    @JsonSubTypes.Type(value = AddFunction.class, name = ADD_FUNCTION),
+    @JsonSubTypes.Type(value = UpdateFunction.class, name = UPDATE_FUNCTION),
+    @JsonSubTypes.Type(value = UpdateStandardFunction.class, name = UPDATE_STANDARD_FUNCTION)
 })
 public interface UpdateAction extends Serializable {
 

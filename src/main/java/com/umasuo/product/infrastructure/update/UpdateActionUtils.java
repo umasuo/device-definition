@@ -25,5 +25,7 @@ public class UpdateActionUtils {
 
   public static final String UPDATE_FUNCTION = "updateFunction";
 
+  public static final String UPDATE_STANDARD_FUNCTION = "updateStandardFunction";
+
   public static final String UPDATE_PRODUCT = "updateProduct";
 }
