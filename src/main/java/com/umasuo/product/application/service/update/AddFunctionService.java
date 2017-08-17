@@ -1,15 +1,15 @@
 package com.umasuo.product.application.service.update;
 
+import com.umasuo.model.Updater;
+import com.umasuo.product.application.dto.ProductTypeView;
 import com.umasuo.product.application.dto.action.AddFunction;
 import com.umasuo.product.application.dto.mapper.ProductFunctionMapper;
+import com.umasuo.product.application.service.ProductTypeApplication;
 import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.model.ProductFunction;
-import com.umasuo.product.domain.model.ProductType;
-import com.umasuo.product.domain.service.ProductTypeService;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdateActionUtils;
-import com.umasuo.exception.ConflictException;
-import com.umasuo.model.Updater;
+import com.umasuo.product.infrastructure.validator.FunctionIdValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class AddFunctionService implements Updater<Product, UpdateAction> {
   private static final Logger LOG = LoggerFactory.getLogger(AddFunctionService.class);
 
   @Autowired
-  private transient ProductTypeService productTypeService;
+  private transient ProductTypeApplication productTypeApplication;
 
   @Override
   public void handle(Product product, UpdateAction updateAction) {
@@ -48,25 +48,9 @@ public class AddFunctionService implements Updater<Product, UpdateAction> {
   private void checkFunctionId(Product product, String functionId) {
     LOG.debug("Enter.");
 
-    boolean existFunctionId = product.getProductFunctions().stream()
-        .anyMatch(function -> function.getFunctionId().equals(functionId));
+    ProductTypeView productType = productTypeApplication.get(product.getProductType());
 
-    if (existFunctionId) {
-      LOG.debug("Can not add function: {} in this product: {}.",
-          functionId, product.getId());
-      throw new ConflictException("FunctionId is exist");
-    }
-
-    ProductType productType = productTypeService.getById(product.getProductType());
-
-    existFunctionId =
-        productType.getFunctions().stream().anyMatch(p -> functionId.equals(p.getFunctionId()));
-
-    if (existFunctionId) {
-      LOG.debug("Can not add function: {} in this product: {} belongs to productType: {}.",
-          functionId, product.getId(), product.getProductType());
-      throw new ConflictException("FunctionId is exist");
-    }
+    FunctionIdValidator.checkForAdd(functionId, productType, product.getProductFunctions());
 
     LOG.debug("Exit.");
   }
