@@ -6,6 +6,8 @@ import com.umasuo.product.domain.model.CommonFunction;
 import com.umasuo.product.domain.model.ProductFunction;
 import com.umasuo.product.infrastructure.enums.Category;
 
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 
 /**
@@ -28,9 +30,11 @@ public final class CommonFunctionMapper {
   public static List<CommonFunctionView> toModel(List<CommonFunction> entities) {
     List<CommonFunctionView> models = Lists.newArrayList();
 
-    entities.stream().forEach(
-        entity -> models.add(toModel(entity))
-    );
+    if (!CollectionUtils.isEmpty(entities)) {
+      entities.stream().forEach(
+          entity -> models.add(toModel(entity))
+      );
+    }
 
     return models;
   }

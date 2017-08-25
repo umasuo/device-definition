@@ -2,6 +2,7 @@ package com.umasuo.product.application.service;
 
 import com.umasuo.exception.NotExistException;
 import com.umasuo.product.application.dto.CommonDataView;
+import com.umasuo.product.application.dto.ProductTypeDraft;
 import com.umasuo.product.application.dto.ProductTypeView;
 import com.umasuo.product.application.dto.mapper.ProductTypeMapper;
 import com.umasuo.product.domain.model.ProductType;
@@ -60,7 +61,7 @@ public class ProductTypeApplication {
       Map<String, List<CommonDataView>> dataDefinitionViews = restClient
           .getPlatformDataDefinition();
 
-      cacheProductTypes = ProductTypeMapper.toModel(productTypes, dataDefinitionViews);
+      cacheProductTypes = ProductTypeMapper.toView(productTypes, dataDefinitionViews);
 
       cacheApplication.cacheProductType(cacheProductTypes);
     }
@@ -98,5 +99,20 @@ public class ProductTypeApplication {
     cacheApplication.deleteProductTypes();
 
     LOG.debug("Exit.");
+  }
+
+  public ProductTypeView create(ProductTypeDraft productTypeDraft) {
+    LOG.debug("Enter. productTypeDraft: {}.", productTypeDraft);
+
+    ProductType productType = ProductTypeMapper.toModel(productTypeDraft);
+
+    ProductType newProductType = productTypeService.save(productType);
+
+    ProductTypeView result = ProductTypeMapper.toView(newProductType);
+
+    cacheApplication.deleteProductTypes();
+
+    LOG.debug("Exit. new productType id: {}.", result.getId());
+    return result;
   }
 }

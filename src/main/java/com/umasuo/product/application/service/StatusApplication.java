@@ -5,6 +5,7 @@ import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.service.ProductService;
 import com.umasuo.product.infrastructure.enums.ProductStatus;
 import com.umasuo.product.infrastructure.validator.ProductValidator;
+import com.umasuo.product.infrastructure.validator.VersionValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +43,7 @@ public class StatusApplication {
 
     ProductValidator.checkDeveloper(developerId, product);
 
-    ProductValidator.checkVersion(request.getVersion(), product.getVersion());
+    VersionValidator.checkVersion(request.getVersion(), product.getVersion());
 
     switch (request.getType()) {
       case PUBLISH:

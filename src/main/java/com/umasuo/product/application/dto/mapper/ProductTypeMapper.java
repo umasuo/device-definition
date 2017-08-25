@@ -2,6 +2,7 @@ package com.umasuo.product.application.dto.mapper;
 
 import com.google.common.collect.Lists;
 import com.umasuo.product.application.dto.CommonDataView;
+import com.umasuo.product.application.dto.ProductTypeDraft;
 import com.umasuo.product.application.dto.ProductTypeView;
 import com.umasuo.product.domain.model.ProductType;
 
@@ -28,15 +29,15 @@ public final class ProductTypeMapper {
    * @param commonDataViews CommonDataView list
    * @return list of ProductTypeView
    */
-  public static List<ProductTypeView> toModel(List<ProductType> entities,
+  public static List<ProductTypeView> toView(List<ProductType> entities,
       Map<String, List<CommonDataView>> commonDataViews) {
-    List<ProductTypeView> models = Lists.newArrayList();
+    List<ProductTypeView> views = Lists.newArrayList();
 
     entities.stream().forEach(
-        entity -> models.add(toModel(entity, commonDataViews))
+        entity -> views.add(toView(entity, commonDataViews))
     );
 
-    return models;
+    return views;
   }
 
   /**
@@ -46,18 +47,34 @@ public final class ProductTypeMapper {
    * @param commonDataViews CommonDataView list
    * @return ProductTypeView
    */
-  public static ProductTypeView toModel(ProductType entity,
+  public static ProductTypeView toView(ProductType entity,
       Map<String, List<CommonDataView>> commonDataViews) {
-    ProductTypeView model = new ProductTypeView();
-
-    model.setName(entity.getName());
-    model.setGroupName(entity.getGroupName());
-    model.setId(entity.getId());
-    model.setFunctions(CommonFunctionMapper.toModel(entity.getFunctions()));
+    ProductTypeView view = toView(entity);
 
     List<CommonDataView> dataViews = commonDataViews.get(entity.getId());
-    model.setData(dataViews);
+    view.setData(dataViews);
 
-    return model;
+    return view;
+  }
+
+  public static ProductTypeView toView(ProductType entity) {
+    ProductTypeView view = new ProductTypeView();
+
+    view.setId(entity.getId());
+    view.setName(entity.getName());
+    view.setGroupName(entity.getGroupName());
+    view.setFunctions(CommonFunctionMapper.toModel(entity.getFunctions()));
+
+    return view;
+  }
+
+
+  public static ProductType toModel(ProductTypeDraft draft) {
+    ProductType productType = new ProductType();
+
+    productType.setName(draft.getName());
+    productType.setGroupName(draft.getGroupName());
+
+    return productType;
   }
 }

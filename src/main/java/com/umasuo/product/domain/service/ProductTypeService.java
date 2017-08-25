@@ -82,4 +82,14 @@ public class ProductTypeService {
 
     LOG.info("Exit.");
   }
+
+  public ProductType save(ProductType productType) {
+    LOG.debug("Enter. productType: {}", productType);
+
+    ProductType newProductType = repository.save(productType);
+
+    LOG.debug("Exit. new productType id: {}.", newProductType.getId());
+
+    return newProductType;
+  }
 }

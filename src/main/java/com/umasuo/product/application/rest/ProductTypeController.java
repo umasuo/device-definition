@@ -3,9 +3,9 @@ package com.umasuo.product.application.rest;
 import static com.umasuo.product.infrastructure.Router.ADMIN_PRODUCT_TYPE_ROOT;
 import static com.umasuo.product.infrastructure.Router.ADMIN_PRODUCT_TYPE_WITH_ID;
 
+import com.umasuo.product.application.dto.ProductTypeDraft;
 import com.umasuo.product.application.dto.ProductTypeView;
 import com.umasuo.product.application.service.ProductTypeApplication;
-import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.infrastructure.Router;
 
 import org.slf4j.Logger;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,13 +42,14 @@ public class ProductTypeController {
   private transient ProductTypeApplication productTypeApplication;
 
   @PostMapping(ADMIN_PRODUCT_TYPE_ROOT)
-  public ProductTypeView add() {
-    LOG.info("Enter.");
+  public ProductTypeView create(@RequestBody ProductTypeDraft productTypeDraft) {
+    LOG.info("Enter. productTypeDraft: {}.", productTypeDraft);
 
-    // TODO: 17/8/25
+    ProductTypeView result = productTypeApplication.create(productTypeDraft);
 
+    LOG.trace("new productType: {}.", result);
     LOG.info("Exit.");
-    return null;
+    return result;
   }
 
   @DeleteMapping(ADMIN_PRODUCT_TYPE_WITH_ID)
