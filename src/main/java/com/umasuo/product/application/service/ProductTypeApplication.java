@@ -1,12 +1,20 @@
 package com.umasuo.product.application.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.umasuo.exception.NotExistException;
 import com.umasuo.product.application.dto.CommonDataView;
+import com.umasuo.product.application.dto.ProductDataView;
 import com.umasuo.product.application.dto.ProductTypeDraft;
 import com.umasuo.product.application.dto.ProductTypeView;
+import com.umasuo.product.application.dto.ProductView;
+import com.umasuo.product.application.dto.mapper.ProductMapper;
 import com.umasuo.product.application.dto.mapper.ProductTypeMapper;
+import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.domain.service.ProductTypeService;
+import com.umasuo.product.infrastructure.update.UpdateAction;
+import com.umasuo.product.infrastructure.update.UpdaterService;
+import com.umasuo.product.infrastructure.util.JsonUtils;
 import com.umasuo.product.infrastructure.validator.VersionValidator;
 
 import org.slf4j.Logger;
@@ -43,6 +51,12 @@ public class ProductTypeApplication {
 
   @Autowired
   private transient CacheApplication cacheApplication;
+
+  /**
+   * UpdaterService.
+   */
+  @Autowired
+  private transient UpdaterService updaterService;
 
   /**
    * 查询所有的产品类型。
@@ -114,5 +128,29 @@ public class ProductTypeApplication {
 
     LOG.debug("Exit. new productType id: {}.", result.getId());
     return result;
+  }
+
+  public ProductTypeView update(String id, Integer version, List<UpdateAction> actions) {
+    LOG.debug("Enter: id: {}, version: {}, actions: {}.", id, version, actions);
+
+    ProductType valueInDb = productTypeService.getById(id);
+
+    VersionValidator.checkVersion(version, valueInDb.getVersion());
+
+    actions.stream().forEach(action -> updaterService.handle(valueInDb, action));
+
+    ProductType product = productTypeService.save(valueInDb);
+
+    cacheApplication.deleteProductTypes();
+
+    Map<String, List<CommonDataView>> dataDefinitionViews = restClient
+        .getPlatformDataDefinition();
+
+    ProductTypeView updatedProduct = ProductTypeMapper.toView(product, dataDefinitionViews);
+
+    LOG.trace("updated productType: {}", updatedProduct);
+    LOG.debug("Exit.");
+
+    return updatedProduct;
   }
 }

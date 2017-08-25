@@ -1,6 +1,7 @@
 package com.umasuo.product.infrastructure.update;
 
 import com.umasuo.model.Updater;
+import com.umasuo.product.domain.model.Product;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
  * updater service.
  */
 @Service
-public class UpdaterService implements Updater<Object, UpdateAction> {
+public class ProductTypeUpdaterService implements Updater<Product, UpdateAction> {
 
   /**
    * ApplicationContext for get update services.
@@ -21,8 +22,20 @@ public class UpdaterService implements Updater<Object, UpdateAction> {
    *
    * @param context ApplicationContext
    */
-  public UpdaterService(ApplicationContext context) {
+  public ProductTypeUpdaterService(ApplicationContext context) {
     this.context = context;
+  }
+
+  /**
+   * put the value in action to entity.
+   *
+   * @param entity E
+   * @param action UpdateAction
+   */
+  @Override
+  public void handle(Product entity, UpdateAction action) {
+    Updater updater = getUpdateService(action);
+    updater.handle(entity, action);
   }
 
   /**
@@ -35,9 +48,4 @@ public class UpdaterService implements Updater<Object, UpdateAction> {
     return (Updater) context.getBean(action.getActionName());
   }
 
-  @Override
-  public void handle(Object o, UpdateAction action) {
-    Updater updater = getUpdateService(action);
-    updater.handle(o, action);
-  }
 }

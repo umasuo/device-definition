@@ -6,7 +6,7 @@ package com.umasuo.product.infrastructure.update;
 public class UpdateActionUtils {
 
   /**
-   * add data definition.
+   * Update action for product.
    */
   public static final String ADD_DATA_DEFINITION = "addDataDefinition";
 
@@ -14,7 +14,6 @@ public class UpdateActionUtils {
 
   public static final String REMOVE_DATA_DEFINITION = "removeDataDefinition";
 
-  // TODO: 17/7/7 暂时在data definition实现
   public static final String UPDATE_DATA_DEFINITION = "updateDataDefinition";
 
   public static final String COPY_FUNCTION = "copyFunction";
@@ -28,4 +27,23 @@ public class UpdateActionUtils {
   public static final String UPDATE_STANDARD_FUNCTION = "updateStandardFunction";
 
   public static final String UPDATE_PRODUCT = "updateProduct";
+
+  /**
+   * Update action for product type.
+   */
+  public static final String UPDATE_PRODUCT_TYPE = "updateProductType";
+
+  public static final String ADD_PRODUCT_TYPE_FUNCTION = "addProductTypeFunction";
+
+  public static final String UPDATE_PRODUCT_TYPE_FUNCTION = "updateProductTypeFunction";
+
+  public static final String REMOVE_PRODUCT_TYPE_FUNCTION = "removeProductTypeFunction";
+
+  public static final String ADD_PRODUCT_TYPE_DATA = "addProductTypeData";
+
+  public static final String UPDATE_PRODUCT_TYPE_DATA = "updateProductTypeData";
+
+  public static final String REMOVE_PRODUCT_TYPE_DATA = "removeProductTypeData";
+
+
 }
