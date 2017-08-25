@@ -54,14 +54,18 @@ public final class FunctionIdValidator {
     LOG.debug("Exit.");
   }
 
-  private static boolean existPlatformFunctionId(String functionId, ProductTypeView productType) {
-    boolean sameAsPlatformData = false;
+  public static boolean existPlatformFunctionId(String functionId, ProductTypeView productType) {
     LOG.debug("Enter.");
+
+    boolean sameAsPlatformData = false;
+
     if (!CollectionUtils.isEmpty(productType.getFunctions())) {
       sameAsPlatformData = productType.getFunctions().stream()
           .anyMatch(function -> functionId.equals(function.getFunctionId()));
     }
+
     LOG.debug("Exit. ");
+
     return sameAsPlatformData;
   }
 

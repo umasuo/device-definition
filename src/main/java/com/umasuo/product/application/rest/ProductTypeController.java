@@ -70,7 +70,6 @@ public class ProductTypeController {
       @RequestBody @Valid UpdateRequest updateRequest) {
     LOG.info("Enter. product type id: {}, updateRequest: {}.", id, updateRequest);
 
-
     ProductTypeView result =
         productTypeApplication.update(id, updateRequest.getVersion(), updateRequest.getActions());
 

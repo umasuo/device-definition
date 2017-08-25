@@ -2,9 +2,11 @@ package com.umasuo.product.application.dto.mapper;
 
 import com.google.common.collect.Lists;
 import com.umasuo.product.application.dto.CommonFunctionView;
+import com.umasuo.product.application.dto.action.AddProductTypeFunction;
 import com.umasuo.product.domain.model.CommonFunction;
 import com.umasuo.product.domain.model.ProductFunction;
 import com.umasuo.product.infrastructure.enums.Category;
+import com.umasuo.product.infrastructure.update.UpdateAction;
 
 import org.springframework.util.CollectionUtils;
 
@@ -89,5 +91,17 @@ public final class CommonFunctionMapper {
     productFunction.setCategory(Category.PLATFORM);
 
     return productFunction;
+  }
+
+  public static CommonFunction build(AddProductTypeFunction action) {
+    CommonFunction function = new CommonFunction();
+
+    function.setFunctionId(action.getFunctionId());
+    function.setName(action.getName());
+    function.setDescription(action.getDescription());
+    function.setTransferType(action.getTransferType());
+    function.setDataType(action.getDataType());
+
+    return function;
   }
 }
