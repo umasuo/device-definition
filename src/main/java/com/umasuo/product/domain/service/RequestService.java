@@ -55,6 +55,6 @@ public class RequestService {
 
     int count = repository.changeRequestStatus(developerId, productId, RequestStatus.CANCELED);
 
-    LOG.debug("Exit. cancel count: {}.", count);
+    LOG.debug("Exit. cancel countProducts: {}.", count);
   }
 }

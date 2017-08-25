@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,8 +36,8 @@ public class ProductTypeController {
    * 开放接口，开发者可以访问。
    */
   @GetMapping(Router.PRODUCT_TYPE_ROOT)
-  public List<ProductTypeView> getAll(@RequestHeader("developerId") String developerId) {
-    LOG.info("Enter. developerId: {}.", developerId);
+  public List<ProductTypeView> getAll() {
+    LOG.info("Enter.");
 
     List<ProductTypeView> result = productTypeApplication.getAll();
 
