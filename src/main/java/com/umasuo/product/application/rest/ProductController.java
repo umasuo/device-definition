@@ -152,7 +152,7 @@ public class ProductController {
     return views;
   }
 
-  @GetMapping("/v1/admin/products/countProducts")
+  @GetMapping("/v1/admin/products/count")
   public Long countProducts() {
     logger.info("Enter.");
 
