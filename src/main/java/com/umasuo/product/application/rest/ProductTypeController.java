@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -50,10 +51,10 @@ public class ProductTypeController {
   }
 
   @DeleteMapping(ADMIN_PRODUCT_TYPE_WITH_ID)
-  public void delete(@PathVariable("id") String id) {
-    LOG.info("Enter. product type id: {}.", id);
+  public void delete(@PathVariable("id") String id, @RequestParam("version") Integer version) {
+    LOG.info("Enter. product type id: {}, version: {}.", id, version);
 
-    // TODO: 17/8/25
+    productTypeApplication.delete(id, version);
 
     LOG.info("Exit.");
   }
@@ -69,13 +70,15 @@ public class ProductTypeController {
   }
 
   @GetMapping(ADMIN_PRODUCT_TYPE_WITH_ID)
-  public ProductType getOne(@PathVariable("id") String id) {
+  public ProductTypeView getOne(@PathVariable("id") String id) {
     LOG.info("Enter. product type id: {}.", id);
 
-    // TODO: 17/8/25
+    ProductTypeView result = productTypeApplication.get(id);
 
+    LOG.trace("ProductType: {}.", result);
     LOG.info("Exit.");
-    return null;
+
+    return result;
   }
 
   /**

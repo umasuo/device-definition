@@ -66,19 +66,6 @@ public final class ProductValidator {
     }
   }
 
-  /**
-   * check the version.
-   *
-   * @param inputVersion Integer
-   * @param existVersion Integer
-   */
-  public static void checkVersion(Integer inputVersion, Integer existVersion) {
-    if (!inputVersion.equals(existVersion)) {
-      logger.debug("Product definition version is not correct.");
-      throw new ConflictException("Product definition version is not correct.");
-    }
-  }
-
   public static void validateStatus(ProductStatus requestStatus, ProductStatus realStatus) {
     logger.debug("Enter. requestStatus: {}, realStatus: {}.", requestStatus, realStatus);
 

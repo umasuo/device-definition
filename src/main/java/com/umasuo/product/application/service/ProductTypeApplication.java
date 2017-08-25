@@ -1,11 +1,12 @@
 package com.umasuo.product.application.service;
 
+import com.umasuo.exception.NotExistException;
 import com.umasuo.product.application.dto.CommonDataView;
 import com.umasuo.product.application.dto.ProductTypeView;
 import com.umasuo.product.application.dto.mapper.ProductTypeMapper;
 import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.domain.service.ProductTypeService;
-import com.umasuo.exception.NotExistException;
+import com.umasuo.product.infrastructure.validator.VersionValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,5 +84,19 @@ public class ProductTypeApplication {
 
     LOG.debug("Exit. productType: {}.", result);
     return result;
+  }
+
+  public void delete(String id, Integer version) {
+    LOG.debug("Enter. product type id: {}, version: {}.", id, version);
+
+    ProductType productType = productTypeService.getById(id);
+
+    VersionValidator.checkVersion(version, productType.getVersion());
+
+    productTypeService.delete(id);
+
+    cacheApplication.deleteProductTypes();
+
+    LOG.debug("Exit.");
   }
 }

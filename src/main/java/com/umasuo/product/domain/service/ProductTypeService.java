@@ -53,6 +53,11 @@ public class ProductTypeService {
 
     ProductType result = repository.findOne(id);
 
+    if (result == null) {
+      LOG.debug("Can not find productType: {}.", id);
+      throw new NotExistException("ProductType is not exist");
+    }
+
     LOG.debug("Exit. productType: {}.", result);
     return result;
   }
@@ -68,5 +73,13 @@ public class ProductTypeService {
     }
 
     LOG.debug("Exit. productType exist? {}.", exists);
+  }
+
+  public void delete(String id) {
+    LOG.info("Enter. product type id: {}.", id);
+
+    repository.delete(id);
+
+    LOG.info("Exit.");
   }
 }

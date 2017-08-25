@@ -12,6 +12,7 @@ import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdaterService;
 import com.umasuo.product.infrastructure.util.JsonUtils;
 import com.umasuo.product.infrastructure.validator.ProductValidator;
+import com.umasuo.product.infrastructure.validator.VersionValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,6 +162,6 @@ public class ProductCommandApplication {
 
     ProductValidator.checkStatus(product);
 
-    ProductValidator.checkVersion(version, product.getVersion());
+    VersionValidator.checkVersion(version, product.getVersion());
   }
 }

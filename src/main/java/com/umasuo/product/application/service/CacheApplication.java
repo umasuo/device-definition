@@ -59,6 +59,15 @@ public class CacheApplication {
     LOG.debug("Exit.");
   }
 
+  @Async
+  public void deleteProductTypes() {
+    LOG.debug("Enter.");
+
+    redisTemplate.delete(RedisUtils.PRODUCT_TYPE_KEY);
+
+    LOG.debug("Exit.");
+  }
+
   public List<ProductView> getProducts(String developerId) {
     LOG.debug("Enter. developerId: {}.", developerId);
 
