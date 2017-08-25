@@ -18,4 +18,8 @@ public class Router {
   public static final String PRODUCT_REQUEST = PRODUCT_ROOT + "/request";
 
   public static final String PRODUCT_REQUEST_WITH_ID = PRODUCT_REQUEST + "/{}";
+
+  public static final String ADMIN_PRODUCT_TYPE_ROOT = VERSION + "/admin/products/types";
+
+  public static final String ADMIN_PRODUCT_TYPE_WITH_ID = ADMIN_PRODUCT_TYPE_ROOT + "/{id}";
 }
