@@ -157,4 +157,14 @@ public class ProductQueryApplication {
 
     logger.debug("Exit.");
   }
+
+  public Long countProducts() {
+    logger.debug("Enter.");
+
+    Long count = productService.count();
+
+    logger.debug("Exit. product count: {}.", count);
+
+    return count;
+  }
 }

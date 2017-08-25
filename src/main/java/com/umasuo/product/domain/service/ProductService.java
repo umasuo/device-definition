@@ -131,4 +131,14 @@ public class ProductService {
 
     logger.debug("Exit.");
   }
+
+  public Long count() {
+    logger.debug("Enter.");
+
+    Long count = repository.count();
+
+    logger.debug("Exit. product count: {}.", count);
+
+    return count;
+  }
 }
