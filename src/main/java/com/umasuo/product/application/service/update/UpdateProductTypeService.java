@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by umasuo on 17/6/1.
  */
-@Service(value = UpdateActionUtils.UPDATE_PRODUCT)
+@Service(value = UpdateActionUtils.UPDATE_PRODUCT_TYPE)
 public class UpdateProductTypeService implements Updater<ProductType, UpdateAction> {
 
   /**
