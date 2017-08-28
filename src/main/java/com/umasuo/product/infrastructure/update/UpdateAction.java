@@ -11,6 +11,8 @@ import com.umasuo.product.application.dto.action.CopyDataDefinition;
 import com.umasuo.product.application.dto.action.CopyFunction;
 import com.umasuo.product.application.dto.action.RemoveDataDefinition;
 import com.umasuo.product.application.dto.action.RemoveFunction;
+import com.umasuo.product.application.dto.action.RemoveProductTypeFunction;
+import com.umasuo.product.application.dto.action.UpdateProductTypeFunction;
 import com.umasuo.product.application.dto.action.UpdateDataDefinition;
 import com.umasuo.product.application.dto.action.UpdateFunction;
 import com.umasuo.product.application.dto.action.UpdateProduct;
@@ -39,9 +41,9 @@ import java.io.Serializable;
     //update action for product type.
     @JsonSubTypes.Type(value = UpdateProductType.class, name = UPDATE_PRODUCT_TYPE),
     @JsonSubTypes.Type(value = AddProductTypeFunction.class, name = ADD_PRODUCT_TYPE_FUNCTION),
+    @JsonSubTypes.Type(value = UpdateProductTypeFunction.class, name = UPDATE_PRODUCT_TYPE_FUNCTION),
+    @JsonSubTypes.Type(value = RemoveProductTypeFunction.class, name = REMOVE_PRODUCT_TYPE_FUNCTION),
 
-    @JsonSubTypes.Type(value = UpdateFunction.class, name = UPDATE_PRODUCT_TYPE_FUNCTION),
-    @JsonSubTypes.Type(value = RemoveFunction.class, name = REMOVE_PRODUCT_TYPE_FUNCTION),
     @JsonSubTypes.Type(value = AddDataDefinition.class, name = ADD_PRODUCT_TYPE_DATA),
     @JsonSubTypes.Type(value = UpdateDataDefinition.class, name = UPDATE_PRODUCT_TYPE_DATA),
     @JsonSubTypes.Type(value = RemoveDataDefinition.class, name = REMOVE_PRODUCT_TYPE_DATA),
