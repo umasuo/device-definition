@@ -40,9 +40,9 @@ import java.util.Map;
 public class RestClient {
 
   /**
-   * logger.
+   * LOG.
    */
-  private final static Logger logger = LoggerFactory.getLogger(RestClient.class);
+  private final static Logger LOG = LoggerFactory.getLogger(RestClient.class);
 
   /**
    * Data-definition service uri.
@@ -64,7 +64,7 @@ public class RestClient {
    * @return the map
    */
   public Map<String, Boolean> checkDefinitionExist(String developerId, List<String> definitionIds) {
-    logger.debug("Enter. developerId: {}, definitionIds: {}.", developerId, definitionIds);
+    LOG.debug("Enter. developerId: {}, definitionIds: {}.", developerId, definitionIds);
 
     UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(definitionUrl)
         .queryParam("developerId", developerId)
@@ -74,16 +74,16 @@ public class RestClient {
 
     Map<String, Boolean> result = restTemplate.getForObject(url, Map.class);
 
-    logger.debug("Exit. result: {}.", result);
+    LOG.debug("Exit. result: {}.", result);
 
     return result;
   }
 
   public Map<String, List<CommonDataView>> getPlatformDataDefinition() {
-    logger.debug("Enter.");
+    LOG.debug("Enter.");
     String url = definitionUrl + "/platform";
 
-    logger.debug("Url: {}.", url);
+    LOG.debug("Url: {}.", url);
 
     Map<String, List<CommonDataView>> result = Maps.newHashMap();
 
@@ -94,10 +94,10 @@ public class RestClient {
           entey -> result.put(entey.getKey(), CommonDataView.build(entey.getValue())));
 
     } catch (Exception e) {
-      logger.warn("Fetch data definition failed.", e);
+      LOG.warn("Fetch data definition failed.", e);
     }
 
-    logger.debug("Exit. result size: {}.", result.size());
+    LOG.debug("Exit. result size: {}.", result.size());
 
     return result;
   }
@@ -108,7 +108,7 @@ public class RestClient {
    * @param developerId 开发者ID
    */
   public List<String> copyDataDefinitions(String developerId, CopyRequest request) {
-    logger.debug("Enter. developerId: {}, dataDefinitionIds: {}.", developerId, request);
+    LOG.debug("Enter. developerId: {}, dataDefinitionIds: {}.", developerId, request);
 
     HttpHeaders headers = new HttpHeaders();
     headers.set("developerId", developerId);
@@ -117,7 +117,7 @@ public class RestClient {
     HttpEntity entity = new HttpEntity(request, headers);
     url = definitionUrl + "/copy";
 
-    logger.debug("url: {}.", url);
+    LOG.debug("url: {}.", url);
 
     try {
       HttpEntity<List<String>> response = restTemplate.exchange(url, POST, entity,
@@ -125,14 +125,14 @@ public class RestClient {
           });
       return Lists.newArrayList(response.getBody());
     } catch (RestClientException ex) {
-      logger.warn("Copy data definition failed.", ex);
+      LOG.warn("Copy data definition failed.", ex);
       //todo add message or retry
       return new ArrayList<>();
     }
   }
 
   public void deleteDataDefinition(String developerId, String productId, String removeId) {
-    logger.debug("Enter. developerId: {}, productId: {}, removed dataDefinition: {}.",
+    LOG.debug("Enter. developerId: {}, productId: {}, removed dataDefinition: {}.",
         developerId, productId, removeId);
 
     HttpEntity entity = HttpEntityUtils.build(developerId);
@@ -144,13 +144,13 @@ public class RestClient {
       restTemplate.exchange(url, DELETE, entity, Void.class);
 
     } catch (Exception ex) {
-      logger.debug("Something wrong when delete dataDefinition.", ex);
+      LOG.debug("Something wrong when delete dataDefinition.", ex);
     }
 
   }
 
   public void deleteAllDataDefinition(String developerId, String productId) {
-    logger.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
+    LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 
     HttpEntity entity = HttpEntityUtils.build(developerId);
 
@@ -160,14 +160,14 @@ public class RestClient {
     try {
       restTemplate.exchange(url, DELETE, entity, Void.class);
     } catch (Exception ex) {
-      logger.debug("Something wrong when delete dataDefinition.", ex);
+      LOG.debug("Something wrong when delete dataDefinition.", ex);
     }
 
-    logger.debug("Exit.");
+    LOG.debug("Exit.");
   }
 
   public String createDataDefinition(String developerId, AddDataDefinition action) {
-    logger.debug("Enter.");
+    LOG.debug("Enter.");
 
     HttpEntity entity = HttpEntityUtils.build(developerId, action);
 
@@ -179,10 +179,10 @@ public class RestClient {
           restTemplate.exchange(definitionUrl, POST, entity, Map.class);
       newDataDefinitionId = ((LinkedHashMap) response.getBody()).get("id").toString();
     } catch (Exception ex) {
-      logger.debug("Wrong when create dataDefinition.", ex);
+      LOG.debug("Wrong when create dataDefinition.", ex);
       throw new ParametersException("Something wrong when create dataDefinition");
     }
-    logger.debug("Exit.");
+    LOG.debug("Exit.");
 
     return newDataDefinitionId;
   }
@@ -190,7 +190,7 @@ public class RestClient {
   public Map<String, List<ProductDataView>> getProductData(String developerId,
       List<String> productIds) {
 
-    logger.debug("Enter. developerId: {}, productIds: {}.", developerId, productIds);
+    LOG.debug("Enter. developerId: {}, productIds: {}.", developerId, productIds);
 
     HttpEntity entity = HttpEntityUtils.build(developerId);
 
@@ -199,7 +199,7 @@ public class RestClient {
 
     String url = builder.build().encode().toUriString();
 
-    logger.debug("data definition url: {}.", url);
+    LOG.debug("data definition url: {}.", url);
 
     Map<String, List<ProductDataView>> result = Maps.newHashMap();
 
@@ -211,17 +211,17 @@ public class RestClient {
 
       result = responseEntity.getBody();
     } catch (Exception ex) {
-      logger.debug("Can not get data definition: {}", url, ex);
+      LOG.debug("Can not get data definition: {}", url, ex);
     }
 
-    logger.debug("Exit. productData size: {}.", result.size());
+    LOG.debug("Exit. productData size: {}.", result.size());
 
     return result;
   }
 
   public List<ProductDataView> getProductData(String developerId, String productId) {
 
-    logger.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
+    LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 
     HttpEntity entity = HttpEntityUtils.build(developerId);
 
@@ -238,17 +238,17 @@ public class RestClient {
 
       result = responseEntity.getBody();
     } catch (Exception ex) {
-      logger.debug("Can not get data definition by url: {}.", url, ex);
+      LOG.debug("Can not get data definition by url: {}.", url, ex);
     }
 
-    logger.debug("Exit. productData size: {}.", result.size());
+    LOG.debug("Exit. productData size: {}.", result.size());
 
     return result;
   }
 
   public void updateDataDefinition(String dataDefinitionId, String developerId,
       UpdateRequest request) {
-    logger.debug("Enter. developerId: {}.", developerId);
+    LOG.debug("Enter. developerId: {}.", developerId);
 
     HttpEntity entity = HttpEntityUtils.build(developerId, request);
 
@@ -256,13 +256,13 @@ public class RestClient {
 
     restTemplate.exchange(url, PUT, entity, Void.class);
 
-    logger.debug("Exit.");
+    LOG.debug("Exit.");
   }
 
   public String createProductTypeData(AddProductTypeData action) {
-    logger.debug("Enter. action: {}.", action);
+    LOG.debug("Enter. action: {}.", action);
 
-    logger.debug("Enter.");
+    LOG.debug("Enter.");
 
     HttpEntity entity = HttpEntityUtils.build(action);
 
@@ -274,16 +274,16 @@ public class RestClient {
           restTemplate.exchange(definitionUrl + "/platform", POST, entity, Map.class);
       newDataDefinitionId = ((LinkedHashMap) response.getBody()).get("id").toString();
     } catch (Exception ex) {
-      logger.debug("Wrong when create dataDefinition.", ex);
+      LOG.debug("Wrong when create dataDefinition.", ex);
       throw new ParametersException("Something wrong when create dataDefinition");
     }
-    logger.debug("Exit.");
+    LOG.debug("Exit.");
 
     return newDataDefinitionId;
   }
 
   public void deletePlatformData(String productTypeId) {
-    logger.debug("Enter. productTypeId: {}.", productTypeId);
+    LOG.debug("Enter. productTypeId: {}.", productTypeId);
 
     String url = UriComponentsBuilder.fromHttpUrl(definitionUrl + "/platform")
         .queryParam("productTypeId", productTypeId).toUriString();
@@ -291,9 +291,22 @@ public class RestClient {
     try {
       restTemplate.delete(url);
     } catch (Exception ex) {
-      logger.debug("Something wrong when delete dataDefinition.", ex);
+      LOG.debug("Something wrong when delete dataDefinition.", ex);
     }
 
-    logger.debug("Exit.");
+    LOG.debug("Exit.");
+  }
+
+  public void deletePlatformData(String productTypeId, String dataDefinitionId) {
+    LOG.debug("Enter. productTypeId: {}, dataDefinitionId: {}.", productTypeId, dataDefinitionId);
+    String url = UriComponentsBuilder.fromHttpUrl(definitionUrl + "/platform/" + dataDefinitionId)
+        .queryParam("productTypeId", productTypeId).toUriString();
+    try {
+      restTemplate.delete(url);
+    } catch (Exception ex) {
+      LOG.debug("Something wrong when delete dataDefinition.", ex);
+    }
+
+    LOG.debug("Exit.");
   }
 }
