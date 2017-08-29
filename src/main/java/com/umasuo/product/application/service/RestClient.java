@@ -309,4 +309,16 @@ public class RestClient {
 
     LOG.debug("Exit.");
   }
+
+  public void updatePlatformData(String dataDefinitionId, UpdateRequest request) {
+    LOG.debug("Enter. dataDefinitionId: {}.", dataDefinitionId);
+
+    HttpEntity entity = HttpEntityUtils.build(request);
+
+    String url = definitionUrl + "/platform/" + dataDefinitionId;
+
+    restTemplate.exchange(url, PUT, entity, Void.class);
+
+    LOG.debug("Exit.");
+  }
 }

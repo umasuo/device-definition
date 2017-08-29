@@ -12,13 +12,10 @@ import javax.validation.constraints.NotNull;
  * Created by Davis on 17/7/12.
  */
 @Data
-public class UpdateDataDefinition implements UpdateAction {
+public class UpdateProductTypeData implements UpdateAction {
 
   @NotNull
   private String dataDefinitionId;
-
-  @NotNull
-  private String dataId;
 
   @NotNull
   private String name;
@@ -36,6 +33,6 @@ public class UpdateDataDefinition implements UpdateAction {
 
   @Override
   public String getActionName() {
-    return UpdateActionUtils.UPDATE_DATA_DEFINITION;
+    return UpdateActionUtils.UPDATE_PRODUCT_TYPE_DATA;
   }
 }
