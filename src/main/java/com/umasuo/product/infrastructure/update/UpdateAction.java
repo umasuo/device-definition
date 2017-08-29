@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.umasuo.product.application.dto.action.AddDataDefinition;
 import com.umasuo.product.application.dto.action.AddFunction;
+import com.umasuo.product.application.dto.action.AddProductTypeData;
 import com.umasuo.product.application.dto.action.AddProductTypeFunction;
 import com.umasuo.product.application.dto.action.CopyDataDefinition;
 import com.umasuo.product.application.dto.action.CopyFunction;
@@ -45,7 +46,7 @@ import java.io.Serializable;
     @JsonSubTypes.Type(value = AddProductTypeFunction.class, name = ADD_PRODUCT_TYPE_FUNCTION),
     @JsonSubTypes.Type(value = UpdateProductTypeFunction.class, name = UPDATE_PRODUCT_TYPE_FUNCTION),
     @JsonSubTypes.Type(value = RemoveProductTypeFunction.class, name = REMOVE_PRODUCT_TYPE_FUNCTION),
-    @JsonSubTypes.Type(value = AddDataDefinition.class, name = ADD_PRODUCT_TYPE_DATA),
+    @JsonSubTypes.Type(value = AddProductTypeData.class, name = ADD_PRODUCT_TYPE_DATA),
     @JsonSubTypes.Type(value = RemoveProductTypeData.class, name = REMOVE_PRODUCT_TYPE_DATA),
     @JsonSubTypes.Type(value = UpdateProductTypeData.class, name = UPDATE_PRODUCT_TYPE_DATA),
 })
