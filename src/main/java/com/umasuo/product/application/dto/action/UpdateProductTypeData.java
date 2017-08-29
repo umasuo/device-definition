@@ -25,12 +25,6 @@ public class UpdateProductTypeData implements UpdateAction {
 
   private String description;
 
-  @NotNull
-  private Boolean openable;
-
-  @NotNull
-  private Integer version;
-
   @Override
   public String getActionName() {
     return UpdateActionUtils.UPDATE_PRODUCT_TYPE_DATA;

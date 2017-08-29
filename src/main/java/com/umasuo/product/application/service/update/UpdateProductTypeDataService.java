@@ -52,7 +52,6 @@ public class UpdateProductTypeDataService implements Updater<ProductType, Update
     }
 
     UpdateRequest request = new UpdateRequest();
-    request.setVersion(action.getVersion());
 
     List<UpdateAction> actions = Lists.newArrayList(updateAction);
 
