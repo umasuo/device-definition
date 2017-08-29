@@ -29,4 +29,11 @@ public final class HttpEntityUtils {
 
     return new HttpEntity(requestBody, headers);
   }
+
+  public static HttpEntity build(Object requestBody) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("Content-Type", "application/json");
+
+    return new HttpEntity(requestBody, headers);
+  }
 }

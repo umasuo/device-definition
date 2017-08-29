@@ -39,7 +39,7 @@ public class UpdateActionUtils {
 
   public static final String REMOVE_PRODUCT_TYPE_FUNCTION = "removeProductTypeFunction";
 
-  public static final String ADD_PRODUCT_TYPE_DATA = "addProductTypeData";
+  public static final String ADD_PRODUCT_TYPE_DATA = "createProductTypeData";
 
   public static final String UPDATE_PRODUCT_TYPE_DATA = "updateProductTypeData";
 

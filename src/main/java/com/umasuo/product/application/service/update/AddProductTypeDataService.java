@@ -1,26 +1,18 @@
 package com.umasuo.product.application.service.update;
 
 import com.umasuo.model.Updater;
-import com.umasuo.product.application.dto.ProductDataView;
-import com.umasuo.product.application.dto.ProductTypeView;
-import com.umasuo.product.application.dto.action.AddDataDefinition;
 import com.umasuo.product.application.dto.action.AddProductTypeData;
 import com.umasuo.product.application.service.ProductQueryApplication;
 import com.umasuo.product.application.service.ProductTypeApplication;
 import com.umasuo.product.application.service.RestClient;
-import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdateActionUtils;
-import com.umasuo.product.infrastructure.validator.DataIdValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import java.util.List;
 
 /**
  * Created by Davis on 17/7/7.
@@ -49,7 +41,7 @@ public class AddProductTypeDataService implements Updater<ProductType, UpdateAct
 
     action.setProductTypeId(productType.getId());
 
-    String dataDefinitionId = restClient.addProductTypeData(action);
+    String dataDefinitionId = restClient.createProductTypeData(action);
 
     productType.getDataIds().add(dataDefinitionId);
     LOG.debug("Exit.");

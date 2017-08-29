@@ -259,10 +259,41 @@ public class RestClient {
     logger.debug("Exit.");
   }
 
-  public String addProductTypeData(AddProductTypeData action) {
+  public String createProductTypeData(AddProductTypeData action) {
     logger.debug("Enter. action: {}.", action);
 
-    logger.debug("Exit. dataDefinition id: {}.");
-    return "";
+    logger.debug("Enter.");
+
+    HttpEntity entity = HttpEntityUtils.build(action);
+
+    String newDataDefinitionId = null;
+
+    try {
+
+      ResponseEntity response =
+          restTemplate.exchange(definitionUrl + "/platform", POST, entity, Map.class);
+      newDataDefinitionId = ((LinkedHashMap) response.getBody()).get("id").toString();
+    } catch (Exception ex) {
+      logger.debug("Wrong when create dataDefinition.", ex);
+      throw new ParametersException("Something wrong when create dataDefinition");
+    }
+    logger.debug("Exit.");
+
+    return newDataDefinitionId;
+  }
+
+  public void deletePlatformData(String productTypeId) {
+    logger.debug("Enter. productTypeId: {}.", productTypeId);
+
+    String url = UriComponentsBuilder.fromHttpUrl(definitionUrl + "/platform")
+        .queryParam("productTypeId", productTypeId).toUriString();
+
+    try {
+      restTemplate.delete(url);
+    } catch (Exception ex) {
+      logger.debug("Something wrong when delete dataDefinition.", ex);
+    }
+
+    logger.debug("Exit.");
   }
 }

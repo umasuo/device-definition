@@ -104,6 +104,8 @@ public class ProductTypeApplication {
 
     productTypeService.delete(id);
 
+    restClient.deletePlatformData(id);
+
     cacheApplication.deleteProductTypes();
 
     LOG.debug("Exit.");
