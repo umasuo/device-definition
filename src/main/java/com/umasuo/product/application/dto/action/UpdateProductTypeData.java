@@ -25,6 +25,8 @@ public class UpdateProductTypeData implements UpdateAction {
 
   private String description;
 
+  private Integer version;
+
   @Override
   public String getActionName() {
     return UpdateActionUtils.UPDATE_PRODUCT_TYPE_DATA;

@@ -55,6 +55,8 @@ public class UpdateProductTypeDataService implements Updater<ProductType, Update
 
     List<UpdateAction> actions = Lists.newArrayList(updateAction);
 
+    // TODO: 17/8/29 应该从页面传进来
+    request.setVersion(0);
     request.setActions(actions);
 
     restClient.updatePlatformData(dataDefinitionId, request);
