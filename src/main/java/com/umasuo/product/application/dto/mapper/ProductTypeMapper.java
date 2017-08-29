@@ -6,8 +6,11 @@ import com.umasuo.product.application.dto.ProductTypeDraft;
 import com.umasuo.product.application.dto.ProductTypeView;
 import com.umasuo.product.domain.model.ProductType;
 
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * 该类用于转换ProductType与ProductTypeView。
@@ -51,7 +54,11 @@ public final class ProductTypeMapper {
       Map<String, List<CommonDataView>> commonDataViews) {
     ProductTypeView view = toView(entity);
 
-    List<CommonDataView> dataViews = commonDataViews.get(entity.getId());
+    List<CommonDataView> dataViews = Lists.newArrayList();
+    if (!CollectionUtils.isEmpty(commonDataViews) && commonDataViews.containsKey(entity.getId())) {
+      dataViews = commonDataViews.get(entity.getId());
+    }
+
     view.setData(dataViews);
 
     return view;

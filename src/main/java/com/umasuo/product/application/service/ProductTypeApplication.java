@@ -1,20 +1,14 @@
 package com.umasuo.product.application.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.umasuo.exception.NotExistException;
 import com.umasuo.product.application.dto.CommonDataView;
-import com.umasuo.product.application.dto.ProductDataView;
 import com.umasuo.product.application.dto.ProductTypeDraft;
 import com.umasuo.product.application.dto.ProductTypeView;
-import com.umasuo.product.application.dto.ProductView;
-import com.umasuo.product.application.dto.mapper.ProductMapper;
 import com.umasuo.product.application.dto.mapper.ProductTypeMapper;
-import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.domain.service.ProductTypeService;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdaterService;
-import com.umasuo.product.infrastructure.util.JsonUtils;
 import com.umasuo.product.infrastructure.validator.VersionValidator;
 
 import org.slf4j.Logger;
