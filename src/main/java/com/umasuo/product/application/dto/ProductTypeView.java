@@ -22,4 +22,6 @@ public class ProductTypeView implements Serializable {
   private List<CommonFunctionView> functions;
 
   private List<CommonDataView> data;
+
+  private Integer version;
 }

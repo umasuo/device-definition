@@ -47,7 +47,7 @@ public final class DataIdValidator {
     existDataId(dataId, sameAsPlatformData, existDataId);
   }
 
-  private static boolean existPlatformDataId(String dataId, ProductTypeView productType) {
+  public static boolean existPlatformDataId(String dataId, ProductTypeView productType) {
     boolean sameAsPlatformData = false;
     if (! CollectionUtils.isEmpty(productType.getData())) {
       sameAsPlatformData =

@@ -12,6 +12,7 @@ import com.umasuo.product.application.dto.CommonDataView;
 import com.umasuo.product.application.dto.CopyRequest;
 import com.umasuo.product.application.dto.ProductDataView;
 import com.umasuo.product.application.dto.action.AddDataDefinition;
+import com.umasuo.product.application.dto.action.AddProductTypeData;
 import com.umasuo.product.infrastructure.update.UpdateRequest;
 import com.umasuo.product.infrastructure.util.HttpEntityUtils;
 
@@ -120,7 +121,8 @@ public class RestClient {
 
     try {
       HttpEntity<List<String>> response = restTemplate.exchange(url, POST, entity,
-              new ParameterizedTypeReference<List<String>>() {});
+          new ParameterizedTypeReference<List<String>>() {
+          });
       return Lists.newArrayList(response.getBody());
     } catch (RestClientException ex) {
       logger.warn("Copy data definition failed.", ex);
@@ -257,4 +259,10 @@ public class RestClient {
     logger.debug("Exit.");
   }
 
+  public String addProductTypeData(AddProductTypeData action) {
+    logger.debug("Enter. action: {}.", action);
+
+    logger.debug("Exit. dataDefinition id: {}.");
+    return "";
+  }
 }

@@ -10,7 +10,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * 该类用于转换ProductType与ProductTypeView。
@@ -71,6 +70,8 @@ public final class ProductTypeMapper {
     view.setName(entity.getName());
     view.setGroupName(entity.getGroupName());
     view.setFunctions(CommonFunctionMapper.toModel(entity.getFunctions()));
+    view.setData(Lists.newArrayList());
+    view.setVersion(entity.getVersion());
 
     return view;
   }
