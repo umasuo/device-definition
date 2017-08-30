@@ -79,29 +79,6 @@ public class RestClient {
     return result;
   }
 
-  public Map<String, List<CommonDataView>> getPlatformDataDefinition() {
-    LOG.debug("Enter.");
-    String url = definitionUrl + "/platform";
-
-    LOG.debug("Url: {}.", url);
-
-    Map<String, List<CommonDataView>> result = Maps.newHashMap();
-
-    try {
-      Map<String, List<CommonDataView>> dataView = restTemplate.getForObject(url, Map.class);
-
-      dataView.entrySet().stream().forEach(
-          entey -> result.put(entey.getKey(), CommonDataView.build(entey.getValue())));
-
-    } catch (Exception e) {
-      LOG.warn("Fetch data definition failed.", e);
-    }
-
-    LOG.debug("Exit. result size: {}.", result.size());
-
-    return result;
-  }
-
   /**
    * 设备创建时调用, 将定义好的数据定义复制一分到新定义的设备名下，如果复制出错，返回空的，待后面重新添加，不妨碍设备创建.
    *
@@ -205,9 +182,9 @@ public class RestClient {
 
     try {
 
-      ResponseEntity<Map<String, List<ProductDataView>>> responseEntity = restTemplate.exchange(url,
-          GET, entity, new ParameterizedTypeReference<Map<String, List<ProductDataView>>>() {
-          });
+      ResponseEntity<Map<String, List<ProductDataView>>> responseEntity =
+          restTemplate.exchange(url, GET, entity,
+              new ParameterizedTypeReference<Map<String, List<ProductDataView>>>() {});
 
       result = responseEntity.getBody();
     } catch (Exception ex) {
@@ -257,6 +234,29 @@ public class RestClient {
     restTemplate.exchange(url, PUT, entity, Void.class);
 
     LOG.debug("Exit.");
+  }
+
+  public Map<String, List<CommonDataView>> getPlatformDataDefinition() {
+    LOG.debug("Enter.");
+    String url = definitionUrl + "/platform";
+
+    LOG.debug("Url: {}.", url);
+
+    Map<String, List<CommonDataView>> result = Maps.newHashMap();
+
+    try {
+      Map<String, List<CommonDataView>> dataView = restTemplate.getForObject(url, Map.class);
+
+      dataView.entrySet().stream().forEach(
+          entry -> result.put(entry.getKey(), CommonDataView.build(entry.getValue())));
+
+    } catch (Exception e) {
+      LOG.warn("Fetch data definition failed.", e);
+    }
+
+    LOG.debug("Exit. result size: {}.", result.size());
+
+    return result;
   }
 
   public String createProductTypeData(AddProductTypeData action) {

@@ -1,5 +1,6 @@
 package com.umasuo.product.application.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.umasuo.exception.NotExistException;
 import com.umasuo.product.application.dto.CommonDataView;
 import com.umasuo.product.application.dto.ProductTypeDraft;
@@ -9,12 +10,14 @@ import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.domain.service.ProductTypeService;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdaterService;
+import com.umasuo.product.infrastructure.util.JsonUtils;
 import com.umasuo.product.infrastructure.validator.VersionValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -72,10 +75,22 @@ public class ProductTypeApplication {
       cacheProductTypes = ProductTypeMapper.toView(productTypes, dataDefinitionViews);
 
       cacheApplication.cacheProductType(cacheProductTypes);
+
+      handleSchema(cacheProductTypes);
     }
 
     LOG.debug("Exit. productType size: {}.", cacheProductTypes.size());
     return cacheProductTypes;
+  }
+
+  private void handleSchema(List<ProductTypeView> cacheProductTypes) {
+    if (!CollectionUtils.isEmpty(cacheProductTypes)) {
+      cacheProductTypes.stream().forEach(
+          productTypeView -> productTypeView.getData().stream().forEach(
+              data -> data.setDataSchema(JsonUtils.deserialize(data.getSchema(), JsonNode.class))
+          )
+      );
+    }
   }
 
   public ProductTypeView get(String id) {

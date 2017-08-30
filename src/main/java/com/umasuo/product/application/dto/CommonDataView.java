@@ -1,5 +1,6 @@
 package com.umasuo.product.application.dto;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Lists;
 
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import javax.persistence.Transient;
 
 /**
  * Created by Davis on 17/6/28.
@@ -21,6 +24,21 @@ public class CommonDataView implements Serializable{
   private String dataId;
 
   private String name;
+
+  /**
+   * version used for update date check.
+   */
+  private Integer version;
+
+  /**
+   * the data structure.
+   */
+  private String schema;
+
+  @Transient
+  private JsonNode dataSchema;
+
+  private String description;
 
   public static List<CommonDataView> build(List<CommonDataView> objects) {
     List<CommonDataView> result = Lists.newArrayList();
@@ -37,9 +55,13 @@ public class CommonDataView implements Serializable{
   private static CommonDataView build(LinkedHashMap map) {
     CommonDataView result = new CommonDataView();
 
+    result.setId(map.get("id").toString());
     result.setDataId(map.get("dataId").toString());
     result.setName(map.get("name").toString());
-    result.setId(map.get("id").toString());
+    result.setSchema(map.get("schema").toString());
+    result.setDataSchema(null);
+    result.setDescription(map.get("description").toString());
+    result.setVersion(Integer.valueOf(map.get("version").toString()));
 
     return result;
   }
