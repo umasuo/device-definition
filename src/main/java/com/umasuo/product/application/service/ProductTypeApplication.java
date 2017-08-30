@@ -76,8 +76,9 @@ public class ProductTypeApplication {
 
       cacheApplication.cacheProductType(cacheProductTypes);
 
-      handleSchema(cacheProductTypes);
     }
+
+    handleSchema(cacheProductTypes);
 
     LOG.debug("Exit. productType size: {}.", cacheProductTypes.size());
     return cacheProductTypes;
