@@ -245,11 +245,11 @@ public class RestClient {
     Map<String, List<CommonDataView>> result = Maps.newHashMap();
 
     try {
-      Map<String, List<CommonDataView>> dataView = restTemplate.getForObject(url, Map.class);
+        ResponseEntity<Map<String, List<CommonDataView>>> responseEntity =
+            restTemplate.exchange(url, GET, null,
+                new ParameterizedTypeReference<Map<String, List<CommonDataView>>>() {});
 
-      dataView.entrySet().stream().forEach(
-          entry -> result.put(entry.getKey(), CommonDataView.build(entry.getValue())));
-
+        result = responseEntity.getBody();
     } catch (Exception e) {
       LOG.warn("Fetch data definition failed.", e);
     }
