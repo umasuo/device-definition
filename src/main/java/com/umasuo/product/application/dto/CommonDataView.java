@@ -60,7 +60,7 @@ public class CommonDataView implements Serializable{
     result.setName(map.get("name").toString());
     result.setSchema(map.get("dataSchema").toString());
     result.setDataSchema(null);
-    result.setDescription(map.get("description").toString());
+    result.setDescription(map.getOrDefault("description", null).toString());
     result.setVersion(Integer.valueOf(map.get("version").toString()));
 
     return result;
