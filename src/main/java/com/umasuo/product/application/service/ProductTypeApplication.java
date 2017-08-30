@@ -83,16 +83,6 @@ public class ProductTypeApplication {
     return cacheProductTypes;
   }
 
-  private void handleSchema(List<ProductTypeView> cacheProductTypes) {
-    if (!CollectionUtils.isEmpty(cacheProductTypes)) {
-      cacheProductTypes.stream().forEach(
-          productTypeView -> productTypeView.getData().stream().forEach(
-              data -> data.setDataSchema(JsonUtils.deserialize(data.getSchema(), JsonNode.class))
-          )
-      );
-    }
-  }
-
   public ProductTypeView get(String id) {
     LOG.debug("Enter. id: {}.", id);
     List<ProductTypeView> productTypeViews = getAll();
@@ -159,9 +149,27 @@ public class ProductTypeApplication {
 
     ProductTypeView updatedProduct = ProductTypeMapper.toView(product, dataDefinitionViews);
 
+    handleSchema(updatedProduct);
+
     LOG.trace("updated productType: {}", updatedProduct);
     LOG.debug("Exit.");
 
     return updatedProduct;
+  }
+
+  private void handleSchema(List<ProductTypeView> cacheProductTypes) {
+    if (!CollectionUtils.isEmpty(cacheProductTypes)) {
+      cacheProductTypes.stream().forEach(
+          productTypeView -> handleSchema(productTypeView)
+      );
+    }
+  }
+
+  private void handleSchema(ProductTypeView productTypeView) {
+    if (!CollectionUtils.isEmpty(productTypeView.getData())) {
+      productTypeView.getData().stream().forEach(
+          data -> data.setDataSchema(JsonUtils.deserialize(data.getSchema(), JsonNode.class))
+      );
+    }
   }
 }
