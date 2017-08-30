@@ -311,7 +311,7 @@ public class RestClient {
   }
 
   public void updatePlatformData(String dataDefinitionId, UpdateRequest request) {
-    LOG.debug("Enter. dataDefinitionId: {}.", dataDefinitionId);
+    LOG.debug("Enter. dataDefinitionId: {}, updateRequest: {}.", dataDefinitionId, request);
 
     HttpEntity entity = HttpEntityUtils.build(request);
 
