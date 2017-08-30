@@ -9,8 +9,6 @@ import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.persistence.Transient;
-
 /**
  * Created by Davis on 17/6/28.
  */
@@ -35,7 +33,6 @@ public class CommonDataView implements Serializable{
    */
   private String schema;
 
-  @Transient
   private JsonNode dataSchema;
 
   private String description;
