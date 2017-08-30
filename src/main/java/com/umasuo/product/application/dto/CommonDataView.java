@@ -55,7 +55,7 @@ public class CommonDataView implements Serializable{
     result.setId(map.get("id").toString());
     result.setDataId(map.get("dataId").toString());
     result.setName(map.get("name").toString());
-    result.setSchema(map.get("dataSchema").toString());
+    result.setSchema(map.get("schema").toString());
     result.setDataSchema(null);
     result.setDescription(String.valueOf(map.getOrDefault("description", null)));
     result.setVersion(Integer.valueOf(map.get("version").toString()));
