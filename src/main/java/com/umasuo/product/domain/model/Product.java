@@ -137,5 +137,5 @@ public class Product implements Serializable {
   private Boolean openable = false;
 
   @Embedded
-  private TestUnion testUnion = new TestUnion();
+  private transient TestUnion testUnion = new TestUnion();
 }

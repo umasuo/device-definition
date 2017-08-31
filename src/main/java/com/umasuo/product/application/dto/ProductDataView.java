@@ -38,7 +38,7 @@ public class ProductDataView implements Serializable {
   private String schema;
 
   @Transient
-  private JsonNode dataSchema;
+  private transient JsonNode dataSchema;
 
   /**
    * name of this definition.

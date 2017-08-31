@@ -33,7 +33,7 @@ public class CommonDataView implements Serializable{
   private String schema;
 
   @Transient
-  private JsonNode dataSchema;
+  private transient JsonNode dataSchema;
 
   private String description;
 }
