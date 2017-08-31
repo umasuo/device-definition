@@ -14,26 +14,44 @@ import javax.persistence.Transient;
 @Data
 public class CommonDataView implements Serializable{
 
+  /**
+   * The serialVersionUID.
+   */
   private static final long serialVersionUID = -8861282658167694700L;
 
+  /**
+   * The id.
+   */
   private String id;
 
+  /**
+   * The dataId.
+   */
   private String dataId;
 
+  /**
+   * The name.
+   */
   private String name;
 
   /**
-   * version used for update date check.
+   * Version used for update date check.
    */
   private Integer version;
 
   /**
-   * the data structure.
+   * The data structure.
    */
   private String schema;
 
+  /**
+   * The dataSchema.
+   */
   @Transient
   private transient JsonNode dataSchema;
 
+  /**
+   * The description.
+   */
   private String description;
 }

@@ -5,13 +5,20 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by Davis on 17/8/25.
+ * 用于创建产品类型。
  */
 @Data
 public class ProductTypeDraft {
+
+  /**
+   * The name.
+   */
   @NotNull
   private String name;
 
+  /**
+   * The groupName.
+   */
   @NotNull
   private String groupName;
 }

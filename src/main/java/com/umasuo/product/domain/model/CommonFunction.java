@@ -23,7 +23,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 /**
- * Created by umasuo on 17/6/28.
  * 预先定义好的设备功能.
  */
 @Entity
@@ -79,8 +78,14 @@ public class CommonFunction {
    */
   private String description;
 
+  /**
+   * 功能的具体数据.
+   */
   @Type(type = "dataType")
   private FunctionDataType dataType;
 
+  /**
+   * 传输类型.
+   */
   private TransferType transferType;
 }

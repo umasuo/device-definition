@@ -14,47 +14,48 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Created by umasuo on 17/5/31.
+ * Service class for Product.
  */
 @Service
 public class ProductService {
 
-  private final static Logger logger = LoggerFactory.getLogger(ProductService.class);
+  /**
+   * Logger.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(ProductService.class);
 
+  /**
+   * ProductRepository.
+   */
   @Autowired
   private transient ProductRepository repository;
 
   /**
-   * 新建product.
+   * 保存product.
    *
    * @param product the product
    * @return product product
    */
   public Product save(Product product) {
-    logger.debug("Enter. product: {}.", product);
+    LOG.debug("Enter. product: {}.", product);
 
     Product savedProduct = repository.save(product);
 
-    logger.debug("Exit. saved product: {}.", savedProduct);
+    LOG.debug("Exit. saved product: {}.", savedProduct);
     return savedProduct;
   }
 
   /**
-   * Get product.
+   * Delete product by it's id.
    *
    * @param id the id
-   * @return product product
    */
-  public Product get(String id) {
-    logger.debug("Enter. id: {}.", id);
+  public void delete(String id) {
+    LOG.debug("Enter. id: {}.", id);
 
-    Product product = repository.findOne(id);
-    if (product == null) {
-      throw new NotExistException("Product not exist, id: " + id);
-    }
+    repository.delete(id);
 
-    logger.debug("Exit. product: {}.", product);
-    return product;
+    LOG.debug("Exit.");
   }
 
   /**
@@ -64,13 +65,31 @@ public class ProductService {
    * @return by developer id
    */
   public List<Product> getByDeveloperId(String developerId) {
-    logger.debug("Enter. developerId: {}.", developerId);
+    LOG.debug("Enter. developerId: {}.", developerId);
 
     List<Product> products = repository.findAllByDeveloperId(developerId);
 
-    logger.debug("Exit. products size: {}.", products.size());
+    LOG.debug("Exit. products size: {}.", products.size());
 
     return products;
+  }
+
+  /**
+   * Get product.
+   *
+   * @param id the id
+   * @return product product
+   */
+  public Product get(String id) {
+    LOG.debug("Enter. id: {}.", id);
+
+    Product product = repository.findOne(id);
+    if (product == null) {
+      throw new NotExistException("Product not exist, id: " + id);
+    }
+
+    LOG.debug("Exit. product: {}.", product);
+    return product;
   }
 
   /**
@@ -80,7 +99,7 @@ public class ProductService {
    * @return the all openable product
    */
   public List<Product> getAllOpenProduct(String developerId) {
-    logger.debug("Enter. developerId: {}.", developerId);
+    LOG.debug("Enter. developerId: {}.", developerId);
 
     Product sample = new Product();
     sample.setDeveloperId(developerId);
@@ -90,11 +109,10 @@ public class ProductService {
 
     List<Product> products = repository.findAll(exam);
 
-    logger.debug("Exit. products size: {}.", products.size());
+    LOG.debug("Exit. products size: {}.", products.size());
 
     return products;
   }
-
 
   /**
    * Is exist name in developer.
@@ -104,7 +122,7 @@ public class ProductService {
    * @return the boolean
    */
   public boolean isExistName(String developerId, String name) {
-    logger.debug("Enter. developerId: {}, name: {}.", developerId, name);
+    LOG.debug("Enter. developerId: {}, name: {}.", developerId, name);
 
     Product sample = new Product();
     sample.setDeveloperId(developerId);
@@ -115,29 +133,26 @@ public class ProductService {
     boolean result = repository.exists(example);
 
     if (result) {
-      logger.debug("Product name: {} has existed in developer: {}.", name, developerId);
+      LOG.debug("Product name: {} has existed in developer: {}.", name, developerId);
       throw new AlreadyExistException("Product name has existed");
     }
 
-    logger.debug("Exit. name: {} exist: {}.", name, result);
+    LOG.debug("Exit. name: {} exist: {}.", name, result);
 
     return result;
   }
 
-  public void delete(String id) {
-    logger.debug("Enter. id: {}.", id);
-
-    repository.delete(id);
-
-    logger.debug("Exit.");
-  }
-
+  /**
+   * Count products.
+   *
+   * @return long
+   */
   public Long countProducts() {
-    logger.debug("Enter.");
+    LOG.debug("Enter.");
 
     Long count = repository.count();
 
-    logger.debug("Exit. product countProducts: {}.", count);
+    LOG.debug("Exit. product countProducts: {}.", count);
 
     return count;
   }

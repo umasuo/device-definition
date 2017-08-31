@@ -11,21 +11,24 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by umasuo on 17/6/1.
+ * 更新product信息的action。
  */
 @Data
 public class UpdateProduct implements UpdateAction, Serializable {
 
+  /**
+   * The serialVersionUID.
+   */
   private static final long serialVersionUID = -8600039731763078261L;
 
   /**
-   * name of the product.
+   * Name build the product.
    */
   @NotNull
   private String name;
 
   /**
-   * product icon.
+   * Product icon.
    */
   @NotNull
   private String icon;
@@ -37,7 +40,7 @@ public class UpdateProduct implements UpdateAction, Serializable {
   private Boolean openable;
 
   /**
-   * product NetType, identify by how the communicate with other services(app, cloud)
+   * Product NetType, identify by how the communicate with other services(app, cloud)
    */
   @NotNull
   private NetType type;
@@ -53,12 +56,20 @@ public class UpdateProduct implements UpdateAction, Serializable {
   private String model;
 
   /**
-   * wifi模组型号。
+   * Wifi模组型号。
    */
   private String wifiModule;
 
+  /**
+   * The description.
+   */
   private String description;
 
+  /**
+   * Get action name: updateProduct.
+   *
+   * @return updateProduct
+   */
   @Override
   public String getActionName() {
     return UpdateActionUtils.UPDATE_PRODUCT;

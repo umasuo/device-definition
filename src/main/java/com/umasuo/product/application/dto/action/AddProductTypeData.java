@@ -9,7 +9,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by Davis on 17/7/7.
+ * 添加产品类别的数据的action。
  */
 @Data
 public class AddProductTypeData implements UpdateAction {
@@ -42,6 +42,11 @@ public class AddProductTypeData implements UpdateAction {
    */
   private String productTypeId;
 
+  /**
+   * Get action name: addProductTypeData.
+   *
+   * @return addProductTypeData
+   */
   @Override
   public String getActionName() {
     return UpdateActionUtils.ADD_PRODUCT_TYPE_DATA;

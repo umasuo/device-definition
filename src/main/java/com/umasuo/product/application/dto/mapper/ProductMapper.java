@@ -68,7 +68,7 @@ public final class ProductMapper {
   }
 
   /**
-   * convert list of model to list of views.
+   * convert list build model to list build views.
    */
   public static List<ProductView> toView(List<Product> products) {
     List<ProductView> views = new ArrayList<>();

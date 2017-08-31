@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by Davis on 17/7/4.
+ * 从产品类别中移除功能的service.
  */
 @Service(UpdateActionUtils.REMOVE_PRODUCT_TYPE_FUNCTION)
 public class RemoveProductTypeFunctionService implements Updater<ProductType, UpdateAction> {
@@ -25,6 +25,12 @@ public class RemoveProductTypeFunctionService implements Updater<ProductType, Up
    */
   private static final Logger LOG = LoggerFactory.getLogger(RemoveProductTypeFunctionService.class);
 
+  /**
+   * 执行update的方法。
+   *
+   * @param productType the ProductType
+   * @param updateAction the RemoveProductTypeFunction
+   */
   @Override
   public void handle(ProductType productType, UpdateAction updateAction) {
     LOG.debug("Enter.", productType, updateAction);
@@ -38,6 +44,12 @@ public class RemoveProductTypeFunctionService implements Updater<ProductType, Up
     LOG.debug("Exit.");
   }
 
+  /**
+   * 判断functionId是否存在。
+   *
+   * @param productType the ProductType
+   * @param functionIds list build function id
+   */
   private void checkFunctionId(ProductType productType, List<String> functionIds) {
     LOG.debug("Enter.");
 

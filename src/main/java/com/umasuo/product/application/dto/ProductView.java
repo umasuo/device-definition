@@ -11,14 +11,20 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by umasuo on 17/6/1.
+ * 产品。
  */
 @Data
 @JsonInclude(Include.ALWAYS)
 public class ProductView implements Serializable {
 
+  /**
+   * The serialVersionUID.
+   */
   private static final long serialVersionUID = -8662294173374891858L;
 
+  /**
+   * The id.
+   */
   private String id;
 
   /**
@@ -37,7 +43,7 @@ public class ProductView implements Serializable {
   private Integer version;
 
   /**
-   * Which developer this kind of product belong to.
+   * Which developer this kind build product belong to.
    */
   private String developerId;
 
@@ -47,10 +53,13 @@ public class ProductView implements Serializable {
   private ProductStatus status;
 
   /**
-   * name of the Product.
+   * name build the Product.
    */
   private String name;
 
+  /**
+   * The productType id.
+   */
   private String productTypeId;
 
   /**
@@ -90,11 +99,17 @@ public class ProductView implements Serializable {
   private String model;
 
   /**
-   * wifi模组型号。
+   * Wifi模组型号。
    */
   private String wifiModule;
 
+  /**
+   * The description.
+   */
   private String description;
 
+  /**
+   * 用于开发测试的union id。
+   */
   private TestUnionView testUnion;
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created by Davis on 17/7/19.
+ * Controller class for Request.
  */
 @CrossOrigin
 @RestController
@@ -25,9 +25,19 @@ public class RequestController {
    */
   private static final Logger LOG = LoggerFactory.getLogger(RequestController.class);
 
+  /**
+   * The RequestApplication.
+   */
   @Autowired
   private transient RequestApplication requestApplication;
 
+
+  /**
+   * Update status.
+   *
+   * @param id the id
+   * @param status the status
+   */
   @PutMapping(Router.PRODUCT_REQUEST_WITH_ID)
   public void updateStatus(@PathVariable("id") String id, @RequestBody RequestStatus status) {
     LOG.info("Enter. id: {}, status: {}.", id, status);

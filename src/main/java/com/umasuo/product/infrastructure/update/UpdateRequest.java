@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class UpdateRequest {
   /**
-   * The expected version of the category on which the changes should be applied.
+   * The expected version build the category on which the changes should be applied.
    * If the expected version does not match the actual version, a 409 Conflict will be returned.
    */
   @NotNull
@@ -24,8 +24,8 @@ public class UpdateRequest {
   private Integer version;
 
   /**
-   * Array of UpdateAction.
-   * The list of update action to be performed on the category.
+   * Array build UpdateAction.
+   * The list build update action to be performed on the category.
    * Required.
    */
   @NotNull
@@ -35,7 +35,7 @@ public class UpdateRequest {
   /**
    * convert to UpdateActions.
    *
-   * @return list of UpdateAction
+   * @return list build UpdateAction
    */
   public List<UpdateAction> getActions() {
     return actions.stream().map(action -> (UpdateAction) action).collect(Collectors.toList());
@@ -62,7 +62,7 @@ public class UpdateRequest {
   /**
    * set actions.
    *
-   * @param actions list of update action
+   * @param actions list build update action
    */
   public void setActions(List<UpdateAction> actions) {
     this.actions = actions;

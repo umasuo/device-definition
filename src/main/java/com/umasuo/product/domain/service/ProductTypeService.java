@@ -4,7 +4,6 @@ import com.umasuo.exception.NotExistException;
 import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.infrastructure.repository.ProductTypeRepository;
 
-import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Created by Davis on 17/6/28.
+ * Service class for ProductType.
  */
 @Service
 public class ProductTypeService {
@@ -23,19 +22,50 @@ public class ProductTypeService {
    */
   private static final Logger LOG = LoggerFactory.getLogger(ProductTypeService.class);
 
+  /**
+   * ProductTypeRepository.
+   */
   @Autowired
   private transient ProductTypeRepository repository;
 
   /**
+   * Save product type.
+   *
+   * @param productType the product type
+   * @return product type
+   */
+  public ProductType save(ProductType productType) {
+    LOG.debug("Enter. productType: {}", productType);
+
+    ProductType newProductType = repository.save(productType);
+
+    LOG.debug("Exit. new productType id: {}.", newProductType.getId());
+
+    return newProductType;
+  }
+
+  /**
+   * Delete by id.
+   *
+   * @param id the id
+   */
+  public void delete(String id) {
+    LOG.info("Enter. product type id: {}.", id);
+
+    repository.delete(id);
+
+    LOG.info("Exit.");
+  }
+
+  /**
    * 查询所有的产品类型。
    *
-   * @return
+   * @return all
    */
   public List<ProductType> getAll() {
     LOG.debug("Enter.");
 
     List<ProductType> productTypes = repository.findAll();
-
 
     LOG.debug("Exit. productType size: {}.", productTypes.size());
 
@@ -45,8 +75,8 @@ public class ProductTypeService {
   /**
    * 根据id查询产品类型
    *
-   * @param id
-   * @return
+   * @param id the id
+   * @return by id
    */
   public ProductType getById(String id) {
     LOG.debug("Enter. id: {}.", id);
@@ -62,6 +92,11 @@ public class ProductTypeService {
     return result;
   }
 
+  /**
+   * Exists.
+   *
+   * @param id the id
+   */
   public void exists(String id) {
     LOG.debug("Enter. id: {}.", id);
 
@@ -73,23 +108,5 @@ public class ProductTypeService {
     }
 
     LOG.debug("Exit. productType exist? {}.", exists);
-  }
-
-  public void delete(String id) {
-    LOG.info("Enter. product type id: {}.", id);
-
-    repository.delete(id);
-
-    LOG.info("Exit.");
-  }
-
-  public ProductType save(ProductType productType) {
-    LOG.debug("Enter. productType: {}", productType);
-
-    ProductType newProductType = repository.save(productType);
-
-    LOG.debug("Exit. new productType id: {}.", newProductType.getId());
-
-    return newProductType;
   }
 }

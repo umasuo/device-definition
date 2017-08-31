@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by Davis on 17/8/17.
+ * 用于判断Category是否符合要求.
  */
 public final class CategoryValidator {
 
@@ -17,11 +17,17 @@ public final class CategoryValidator {
   private static final Logger LOG = LoggerFactory.getLogger(CategoryValidator.class);
 
   /**
-   * Instantiates a new Category validator.
+   * Private constructor.
    */
-  public CategoryValidator() {
+  private CategoryValidator() {
   }
 
+  /**
+   * 判断Category是否一致。
+   *
+   * @param requestCategory the requestCategory
+   * @param realCategory the realCategory
+   */
   public static void checkCategory(Category requestCategory, Category realCategory) {
     LOG.debug("Enter. requestCategory: {}, realCategory: {}.", requestCategory, realCategory);
 

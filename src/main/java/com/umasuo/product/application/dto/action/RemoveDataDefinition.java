@@ -8,14 +8,22 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by umasuo on 17/6/1.
+ * 移除产品的数据的action。
  */
 @Data
 public class RemoveDataDefinition implements UpdateAction {
 
+  /**
+   * The dataDefinitionId.
+   */
   @NotNull
   private String dataDefinitionId;
 
+  /**
+   * Get action name: addDataDefinition.
+   *
+   * @return addDataDefinition
+   */
   @Override
   public String getActionName() {
     return UpdateActionUtils.REMOVE_DATA_DEFINITION;

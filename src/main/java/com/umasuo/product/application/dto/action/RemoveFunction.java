@@ -11,15 +11,23 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Created by Davis on 17/7/4.
+ * 移除产品的功能的action。
  */
 @Data
 public class RemoveFunction implements UpdateAction {
 
+  /**
+   * The functionIds.
+   */
   @NotNull
   @Size(min = 1)
   private List<String> functionIds;
 
+  /**
+   * Get action name: removeFunction.
+   *
+   * @return removeFunction
+   */
   @Override
   public String getActionName() {
     return UpdateActionUtils.REMOVE_FUNCTION;

@@ -13,13 +13,11 @@ import java.util.Map;
 
 /**
  * 该类用于转换ProductType与ProductTypeView。
- *
- * Created by Davis on 17/6/28.
  */
 public final class ProductTypeMapper {
 
   /**
-   * Instantiates a new Product type mapper.
+   * Private constructor.
    */
   private ProductTypeMapper() {
   }
@@ -29,7 +27,7 @@ public final class ProductTypeMapper {
    *
    * @param entities ProductType list
    * @param commonDataViews CommonDataView list
-   * @return list of ProductTypeView
+   * @return list build ProductTypeView
    */
   public static List<ProductTypeView> toView(List<ProductType> entities,
       Map<String, List<CommonDataView>> commonDataViews) {
@@ -47,7 +45,7 @@ public final class ProductTypeMapper {
    *
    * @param entity ProductType
    * @param commonDataViews CommonDataView list
-   * @return ProductTypeView
+   * @return ProductTypeView product type view
    */
   public static ProductTypeView toView(ProductType entity,
       Map<String, List<CommonDataView>> commonDataViews) {
@@ -63,6 +61,13 @@ public final class ProductTypeMapper {
     return view;
   }
 
+
+  /**
+   * Convert ProductType into ProductTypeView.
+   *
+   * @param entity the entity
+   * @return the product type view
+   */
   public static ProductTypeView toView(ProductType entity) {
     ProductTypeView view = new ProductTypeView();
 
@@ -77,6 +82,12 @@ public final class ProductTypeMapper {
   }
 
 
+  /**
+   * Convert ProductTypeDraft into ProductType.
+   *
+   * @param draft the draft
+   * @return the product type
+   */
   public static ProductType toModel(ProductTypeDraft draft) {
     ProductType productType = new ProductType();
 

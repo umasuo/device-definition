@@ -26,7 +26,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 /**
- * Created by umasuo on 17/6/1.
+ * Controller class for Product.
  */
 @CrossOrigin
 @RestController
@@ -35,7 +35,7 @@ public class ProductController {
   /**
    * Logger.
    */
-  private final static Logger logger = LoggerFactory.getLogger(ProductController.class);
+  private final static Logger LOG = LoggerFactory.getLogger(ProductController.class);
 
   /**
    * ProductCommandApplication.
@@ -43,63 +43,73 @@ public class ProductController {
   @Autowired
   private transient ProductCommandApplication commandApplication;
 
+  /**
+   * ProductQueryApplication.
+   */
   @Autowired
   private transient ProductQueryApplication queryApplication;
 
   /**
-   * create new product.
+   * Create new product.
    *
-   * @param draft Product draft
    * @param developerId the developer id
+   * @param draft Product draft
    * @return product view
    */
   @PostMapping(Router.PRODUCT_ROOT)
   public ProductView create(@RequestHeader("developerId") String developerId,
       @RequestBody @Valid ProductDraft draft) {
-    logger.info("Enter. developerId: {}, productDraft: {}.", developerId, draft);
+    LOG.info("Enter. developerId: {}, productDraft: {}.", developerId, draft);
 
     ProductView view = commandApplication.create(draft, developerId);
 
-    logger.info("Exit. productView: {}.", view);
+    LOG.info("Exit. productView: {}.", view);
 
     return view;
   }
 
+  /**
+   * Delete a product by it's id.
+   *
+   * @param id the id
+   * @param developerId the developer id
+   * @param version the version
+   */
   @DeleteMapping(Router.PRODUCT_WITH_ID)
   public void delete(@PathVariable("id") String id, @RequestHeader String developerId,
       @RequestParam("version") Integer version) {
-    logger.info("Enter. id: {}, developerId: {}, version: {}.", id, developerId, version);
+    LOG.info("Enter. id: {}, developerId: {}, version: {}.", id, developerId, version);
 
     commandApplication.delete(id, developerId, version);
 
-    logger.info("Exit.");
+    LOG.info("Exit.");
   }
 
   /**
-   * Update Product view.
+   * Update Product.
    *
    * @param id the Product id
-   * @param updateRequest the update request
    * @param developerId the developer id
+   * @param updateRequest the update request
    * @return the ProductView
    */
   @PutMapping(Router.PRODUCT_WITH_ID)
   public ProductView update(@PathVariable("id") String id, @RequestHeader String developerId,
       @RequestBody @Valid UpdateRequest updateRequest) {
-    logger.info("Enter. productId: {}, updateRequest: {}, developerId: {}.",
+    LOG.info("Enter. productId: {}, updateRequest: {}, developerId: {}.",
         id, updateRequest, developerId);
 
     ProductView result = commandApplication
         .update(id, developerId, updateRequest.getVersion(), updateRequest.getActions());
 
-    logger.trace("Updated product: {}.", result);
-    logger.info("Exit.");
+    LOG.trace("Updated product: {}.", result);
+    LOG.info("Exit.");
 
     return result;
   }
 
   /**
-   * get product definition by product id.
+   * Get product by it's id.
    *
    * @param id String
    * @param developerId the developer id
@@ -107,28 +117,28 @@ public class ProductController {
    */
   @GetMapping(Router.PRODUCT_WITH_ID)
   public ProductView get(@PathVariable String id, @RequestHeader String developerId) {
-    logger.info("Enter. id: {}.", id);
+    LOG.info("Enter. id: {}.", id);
 
     ProductView view = queryApplication.get(id, developerId);
 
-    logger.info("Exit. view: {}.", view);
+    LOG.info("Exit. view: {}.", view);
     return view;
   }
 
   /**
-   * get all developer's product definition by developer id.
+   * Get all developer's product by developer id.
    *
    * @param developerId String
-   * @return list of product view
+   * @return list build product view
    */
   @GetMapping(Router.PRODUCT_ROOT)
   public List<ProductView> getByDeveloperId(@RequestHeader String developerId) {
-    logger.info("Enter. developerId: {}.", developerId);
+    LOG.info("Enter. developerId: {}.", developerId);
 
     List<ProductView> views = queryApplication.getAllByDeveloperId(developerId);
 
-    logger.info("Exit. viewsSize: {}.", views.size());
-    logger.trace("views: {}.", views);
+    LOG.info("Exit. viewsSize: {}.", views.size());
+    LOG.trace("views: {}.", views);
     return views;
   }
 
@@ -136,29 +146,34 @@ public class ProductController {
    * Gets all open product.
    *
    * @param developerId the developer id
+   * @param isOpen the is open
    * @return the all open product
    */
-
   @GetMapping(value = Router.PRODUCT_ROOT, params = {"isOpen", "developerId"})
   public List<ProductView> getAllOpenProduct(@RequestParam String developerId, @RequestParam
       Boolean isOpen) {
-    logger.info("Enter. developerId: {}.", developerId);
+    LOG.info("Enter. developerId: {}.", developerId);
     //todo
     List<ProductView> views = queryApplication.getAllOpenProduct(developerId);
 
-    logger.info("Exit. viewsSize: {}.", views.size());
-    logger.trace("views: {}.", views);
+    LOG.info("Exit. viewsSize: {}.", views.size());
+    LOG.trace("views: {}.", views);
 
     return views;
   }
 
-  @GetMapping("/v1/admin/products/count")
+  /**
+   * Count products.
+   *
+   * @return the long
+   */
+  @GetMapping(value = Router.ADMIN_PRODUCT_COUNT)
   public Long countProducts() {
-    logger.info("Enter.");
+    LOG.info("Enter.");
 
     Long count = queryApplication.countProducts();
 
-    logger.info("Exit. product countProducts: {}.", count);
+    LOG.info("Exit. product countProducts: {}.", count);
 
     return count;
   }

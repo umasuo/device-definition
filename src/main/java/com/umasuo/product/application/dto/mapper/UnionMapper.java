@@ -8,12 +8,26 @@ import org.apache.commons.lang3.RandomStringUtils;
 import java.util.UUID;
 
 /**
- * Created by Davis on 17/7/19.
+ * Mapper class for Union.
  */
-public class UnionMapper {
+public final class UnionMapper {
 
+  /**
+   * The length build secret key.
+   */
   private static final int SECRET_KEY_LENGTH = 7;
 
+  /**
+   * Private constructor.
+   */
+  private UnionMapper() {
+  }
+
+  /**
+   * Build a new TestUnion.
+   *
+   * @return TestUnion test union
+   */
   public static TestUnion build() {
     TestUnion testUnion = new TestUnion();
 
@@ -23,6 +37,12 @@ public class UnionMapper {
     return testUnion;
   }
 
+  /**
+   * Convert TestUnion to TestUnionView.
+   *
+   * @param testUnion the test union
+   * @return the test union view
+   */
   public static TestUnionView toView(TestUnion testUnion) {
     TestUnionView view = new TestUnionView();
 

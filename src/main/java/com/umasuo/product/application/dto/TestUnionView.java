@@ -5,14 +5,23 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * Created by Davis on 17/7/19.
+ * 开发测试使用的UnionId。
  */
 @Data
-public class TestUnionView implements Serializable{
+public class TestUnionView implements Serializable {
 
+  /**
+   * The serialVersionUID.
+   */
   private static final long serialVersionUID = -2570826887391517208L;
 
+  /**
+   * The unionId.
+   */
   private String unionId;
 
+  /**
+   * The secretKey.
+   */
   private String secretKey;
 }

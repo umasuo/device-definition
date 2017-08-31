@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Created by Davis on 17/7/4.
+ * 拷贝产品功能的action。
  */
 @Data
 public class CopyFunction implements UpdateAction {
@@ -23,6 +23,11 @@ public class CopyFunction implements UpdateAction {
   @Size(min = 1)
   private List<String> functionIds;
 
+  /**
+   * Get action name: removeDataDefinition.
+   *
+   * @return removeDataDefinition
+   */
   @Override
   public String getActionName() {
     return UpdateActionUtils.COPY_FUNCTION;

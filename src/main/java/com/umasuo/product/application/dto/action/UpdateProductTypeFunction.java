@@ -10,25 +10,45 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by rai on 2017/8/28.
+ * 更新产品类别的功能的action.
  */
 @Data
 public class UpdateProductTypeFunction implements UpdateAction {
 
+  /**
+   * The id.
+   */
   @NotNull
   private String id;
 
+  /**
+   * The name.
+   */
   @NotNull
   private String name;
 
+  /**
+   * The description.
+   */
   private String description;
 
+  /**
+   * The transferType.
+   */
   @NotNull
   private TransferType transferType;
 
+  /**
+   * The dataType.
+   */
   @NotNull
   private FunctionDataType dataType;
 
+  /**
+   * Get action name: updateProductTypeFunction.
+   *
+   * @return updateProductTypeFunction
+   */
   @Override
   public String getActionName() {
     return UpdateActionUtils.UPDATE_PRODUCT_TYPE_FUNCTION;

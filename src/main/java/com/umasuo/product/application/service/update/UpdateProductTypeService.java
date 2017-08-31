@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by umasuo on 17/6/1.
+ * 更修产品类别信息的service.
  */
 @Service(value = UpdateActionUtils.UPDATE_PRODUCT_TYPE)
 public class UpdateProductTypeService implements Updater<ProductType, UpdateAction> {
@@ -21,9 +21,15 @@ public class UpdateProductTypeService implements Updater<ProductType, UpdateActi
    */
   private static final Logger LOG = LoggerFactory.getLogger(UpdateProductTypeService.class);
 
+  /**
+   * 执行update的方法。
+   *
+   * @param entity the ProductType
+   * @param updateAction the UpdateProductType
+   */
   @Override
   public void handle(ProductType entity, UpdateAction updateAction) {
-    LOG.debug("Enter.");
+    LOG.debug("Enter. productType id: {}, updateAction: {}.", entity.getId(), updateAction);
 
     UpdateProductType action = (UpdateProductType) updateAction;
 

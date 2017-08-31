@@ -5,13 +5,19 @@ import lombok.Data;
 import javax.persistence.Embeddable;
 
 /**
- * Created by Davis on 17/7/19.
+ * 用于开发测试的unionId和secretKey.
  */
 @Data
 @Embeddable
 public class TestUnion {
 
+  /**
+   * The unionId.
+   */
   private String unionId;
 
+  /**
+   * The secretKey.
+   */
   private String secretKey;
 }

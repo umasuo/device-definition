@@ -7,11 +7,12 @@ import com.umasuo.product.infrastructure.validator.CategoryValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
 /**
- * Created by Davis on 17/8/17.
+ * FunctionUtils class, used to filter function from list of function.
  */
 public final class FunctionUtils {
 
@@ -21,14 +22,21 @@ public final class FunctionUtils {
   private static final Logger LOG = LoggerFactory.getLogger(FunctionUtils.class);
 
   /**
-   * Instantiates a new Function utils.
+   * Private Constructor.
    */
-  public FunctionUtils() {
+  private FunctionUtils() {
   }
 
+  /**
+   * 根据id从产品的功能中挑选出对应的标准功能。
+   *
+   * @param productFunctions list of ProductFunction
+   * @param id the id
+   * @return ProductFunction
+   */
   public static ProductFunction getStandardFunction(List<ProductFunction> productFunctions,
       String id) {
-    LOG.debug("Enter.");
+    LOG.debug("Enter. id: {}.", id);
     ProductFunction function = getFunction(productFunctions, id);
 
     CategoryValidator.checkCategory(Category.PLATFORM, function.getCategory());
@@ -37,9 +45,16 @@ public final class FunctionUtils {
     return function;
   }
 
+  /**
+   * 根据id从产品的功能中挑选出对应的自定义功能。
+   *
+   * @param productFunctions list of ProductFunction
+   * @param id the id
+   * @return ProductFunction
+   */
   public static ProductFunction getProductFunction(List<ProductFunction> productFunctions,
       String id) {
-    LOG.debug("Enter.");
+    LOG.debug("Enter. id: {}.", id);
     ProductFunction function = getFunction(productFunctions, id);
 
     CategoryValidator.checkCategory(Category.PRODUCT, function.getCategory());
@@ -48,19 +63,30 @@ public final class FunctionUtils {
     return function;
   }
 
+  /**
+   * 根据id从产品的功能列表中挑选对应的功能。
+   *
+   * @param productFunctions list of ProductFunction
+   * @param id the id
+   * @return ProductFunction
+   */
   private static ProductFunction getFunction(List<ProductFunction> productFunctions, String id) {
-    if (productFunctions == null) {
+    LOG.debug("Enter. id: {}.", id);
+
+    if (CollectionUtils.isEmpty(productFunctions)) {
       LOG.debug("Product do not have any functions.");
       throw new NotExistException("Function not exist");
     }
 
     ProductFunction function =
-        productFunctions.stream().filter(f -> id.equals(f.getId())).findAny().orElse(null);
+        productFunctions.stream().filter(func -> id.equals(func.getId())).findAny().orElse(null);
 
     if (function == null) {
       LOG.debug("Can not find function: {}.", id);
       throw new NotExistException("Function not exist");
     }
+    LOG.debug("Exit.");
+
     return function;
   }
 }

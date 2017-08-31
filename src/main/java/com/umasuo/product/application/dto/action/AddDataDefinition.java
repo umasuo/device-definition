@@ -9,7 +9,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by Davis on 17/7/7.
+ * 添加产品的数据定义action.
  */
 @Data
 public class AddDataDefinition implements UpdateAction {
@@ -48,6 +48,11 @@ public class AddDataDefinition implements UpdateAction {
    */
   private Boolean openable;
 
+  /**
+   * Get action name: addDataDefinition.
+   *
+   * @return addDataDefinition
+   */
   @Override
   public String getActionName() {
     return UpdateActionUtils.ADD_DATA_DEFINITION;

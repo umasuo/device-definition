@@ -1,11 +1,7 @@
 package com.umasuo.product.application.rest;
 
-import static com.umasuo.product.infrastructure.Router.ADMIN_PRODUCT_TYPE_ROOT;
-import static com.umasuo.product.infrastructure.Router.ADMIN_PRODUCT_TYPE_WITH_ID;
-
 import com.umasuo.product.application.dto.ProductTypeDraft;
 import com.umasuo.product.application.dto.ProductTypeView;
-import com.umasuo.product.application.dto.ProductView;
 import com.umasuo.product.application.service.ProductTypeApplication;
 import com.umasuo.product.infrastructure.Router;
 import com.umasuo.product.infrastructure.update.UpdateRequest;
@@ -28,7 +24,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 /**
- * Created by Davis on 17/6/28.
+ * Controller class for ProductType.
  */
 @CrossOrigin
 @RestController
@@ -45,27 +41,47 @@ public class ProductTypeController {
   @Autowired
   private transient ProductTypeApplication productTypeApplication;
 
-  @PostMapping(ADMIN_PRODUCT_TYPE_ROOT)
+
+  /**
+   * Create ProductType.
+   *
+   * @param productTypeDraft the product type draft
+   * @return the product type view
+   */
+  @PostMapping(Router.ADMIN_PRODUCT_TYPE_ROOT)
   public ProductTypeView create(@RequestBody ProductTypeDraft productTypeDraft) {
     LOG.info("Enter. productTypeDraft: {}.", productTypeDraft);
 
     ProductTypeView result = productTypeApplication.create(productTypeDraft);
 
-    LOG.trace("new productType: {}.", result);
-    LOG.info("Exit.");
+    LOG.info("Exit. new productType: {}.", result);
     return result;
   }
 
-  @DeleteMapping(ADMIN_PRODUCT_TYPE_WITH_ID)
+  /**
+   * Delete ProductType by it's id.
+   *
+   * @param id the id
+   * @param version the version
+   */
+  @DeleteMapping(Router.ADMIN_PRODUCT_TYPE_WITH_ID)
   public void delete(@PathVariable("id") String id, @RequestParam("version") Integer version) {
     LOG.info("Enter. product type id: {}, version: {}.", id, version);
 
     productTypeApplication.delete(id, version);
 
-    LOG.info("Exit.");
+    LOG.info("Exit. delete done.");
   }
 
-  @PutMapping(ADMIN_PRODUCT_TYPE_WITH_ID)
+
+  /**
+   * Update ProductType.
+   *
+   * @param id the id
+   * @param updateRequest the update request
+   * @return the product type view
+   */
+  @PutMapping(Router.ADMIN_PRODUCT_TYPE_WITH_ID)
   public ProductTypeView update(@PathVariable("id") String id,
       @RequestBody @Valid UpdateRequest updateRequest) {
     LOG.info("Enter. product type id: {}, updateRequest: {}.", id, updateRequest);
@@ -79,7 +95,13 @@ public class ProductTypeController {
     return result;
   }
 
-  @GetMapping(ADMIN_PRODUCT_TYPE_WITH_ID)
+  /**
+   * Gets one ProductType by id.
+   *
+   * @param id the id
+   * @return the one
+   */
+  @GetMapping(Router.ADMIN_PRODUCT_TYPE_WITH_ID)
   public ProductTypeView getOne(@PathVariable("id") String id) {
     LOG.info("Enter. product type id: {}.", id);
 
@@ -94,8 +116,9 @@ public class ProductTypeController {
   /**
    * 查询所有的产品类型，用于新建产品时选择类型和对应的功能，数据。
    * 开放接口，开发者可以访问。
+   * 该接口配置了两个path，分别用于developer-site和admin-site.
    */
-  @GetMapping(value = { Router.PRODUCT_TYPE_ROOT, Router.ADMIN_PRODUCT_TYPE_ROOT})
+  @GetMapping(value = {Router.PRODUCT_TYPE_ROOT, Router.ADMIN_PRODUCT_TYPE_ROOT})
   public List<ProductTypeView> getAll() {
     LOG.info("Enter.");
 

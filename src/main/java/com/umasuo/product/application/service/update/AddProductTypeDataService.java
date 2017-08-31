@@ -2,8 +2,6 @@ package com.umasuo.product.application.service.update;
 
 import com.umasuo.model.Updater;
 import com.umasuo.product.application.dto.action.AddProductTypeData;
-import com.umasuo.product.application.service.ProductQueryApplication;
-import com.umasuo.product.application.service.ProductTypeApplication;
 import com.umasuo.product.application.service.RestClient;
 import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.infrastructure.update.UpdateAction;
@@ -15,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by Davis on 17/7/7.
+ * 添加产品类别的数据的service.
  */
 @Service(UpdateActionUtils.ADD_PRODUCT_TYPE_DATA)
 public class AddProductTypeDataService implements Updater<ProductType, UpdateAction> {
@@ -25,15 +23,18 @@ public class AddProductTypeDataService implements Updater<ProductType, UpdateAct
    */
   private static final Logger LOG = LoggerFactory.getLogger(AddProductTypeDataService.class);
 
+  /**
+   * RestClient.
+   */
   @Autowired
   private transient RestClient restClient;
 
-  @Autowired
-  private transient ProductTypeApplication productTypeApplication;
-
-  @Autowired
-  private transient ProductQueryApplication productQueryApplication;
-
+  /**
+   * 执行update的方法。
+   *
+   * @param productType the ProductType
+   * @param updateAction the AddProductTypeData
+   */
   @Override
   public void handle(ProductType productType, UpdateAction updateAction) {
     LOG.debug("Enter.");

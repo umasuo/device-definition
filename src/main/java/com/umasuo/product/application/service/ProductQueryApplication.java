@@ -7,7 +7,7 @@ import com.umasuo.product.application.dto.ProductView;
 import com.umasuo.product.application.dto.mapper.ProductMapper;
 import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.service.ProductService;
-import com.umasuo.product.infrastructure.util.JsonUtils;
+import com.umasuo.util.JsonUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Created by umasuo on 17/6/1.
+ * 用于查询Product.
  */
 @Service
 public class ProductQueryApplication {
@@ -27,7 +27,7 @@ public class ProductQueryApplication {
   /**
    * Logger.
    */
-  private final static Logger logger = LoggerFactory.getLogger(ProductQueryApplication.class);
+  private final static Logger LOG = LoggerFactory.getLogger(ProductQueryApplication.class);
 
   /**
    * ProductService.
@@ -41,44 +41,49 @@ public class ProductQueryApplication {
   @Autowired
   private transient RestClient restClient;
 
+  /**
+   * CacheApplication.
+   */
   @Autowired
   private transient CacheApplication cacheApplication;
 
   /**
-   * get product by id.
+   * Get product by id.
    *
    * @param id String
+   * @param developerId the developer id
+   * @return the product view
    */
   public ProductView get(String id, String developerId) {
-    logger.debug("Enter. id: {}, developerId: {}.", id, developerId);
+    LOG.debug("Enter. id: {}, developerId: {}.", id, developerId);
 
     ProductView result = cacheApplication.getProductById(developerId, id);
 
     if (result == null) {
-      logger.debug("Cache fail, get from database.");
+      LOG.debug("Cache fail, get from database.");
 
       List<ProductView> productViews = fetchProducts(developerId);
 
       result = productViews.stream().filter(view -> id.equals(view.getId())).findAny().orElse(null);
     }
 
-    logger.debug("Exit. productView: {}.", result);
+    LOG.debug("Exit. productView: {}.", result);
     return result;
   }
 
   /**
-   * get all product define by developer id.
+   * Get all product by developer id.
    *
    * @param developerId developer id
-   * @return list of product view
+   * @return list build product view
    */
   public List<ProductView> getAllByDeveloperId(String developerId) {
-    logger.debug("Enter. developerId: {}.", developerId);
+    LOG.debug("Enter. developerId: {}.", developerId);
 
     List<ProductView> result = cacheApplication.getProducts(developerId);
 
     if (result.isEmpty()) {
-      logger.debug("Cache fail, get from database.");
+      LOG.debug("Cache fail, get from database.");
       result = fetchProducts(developerId);
     }
 
@@ -88,13 +93,20 @@ public class ProductQueryApplication {
         )
     );
 
-    logger.trace("products: {}.", result);
-    logger.debug("Exit. product Size: {}.", result.size());
+    LOG.trace("products: {}.", result);
+    LOG.debug("Exit. product Size: {}.", result.size());
     return result;
   }
 
+  /**
+   * Gets data definitions by productId.
+   *
+   * @param developerId the developer id
+   * @param productId the product id
+   * @return the data definitions
+   */
   public List<ProductDataView> getDataDefinitions(String developerId, String productId) {
-    logger.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
+    LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 
     List<ProductDataView> dataViews = Lists.newArrayList();
     ProductView product = get(productId, developerId);
@@ -103,7 +115,7 @@ public class ProductQueryApplication {
       dataViews = product.getDataDefinitions();
     }
 
-    logger.debug("Exit. dataDefinition size: {}.", dataViews.size());
+    LOG.debug("Exit. dataDefinition size: {}.", dataViews.size());
 
     return dataViews;
   }
@@ -113,21 +125,42 @@ public class ProductQueryApplication {
    * 接口比较少用，暂时不需要使用缓存。
    *
    * @param id developer id
-   * @return list of product view
+   * @return list build product view
    */
   public List<ProductView> getAllOpenProduct(String id) {
-    logger.debug("Enter. developerId: {}.", id);
+    LOG.debug("Enter. developerId: {}.", id);
 
     List<Product> products = productService.getAllOpenProduct(id);
     List<ProductView> views = ProductMapper.toView(products);
 
-    logger.trace("products: {}.", views);
-    logger.debug("Exit. product Size: {}.", views.size());
+    LOG.trace("products: {}.", views);
+    LOG.debug("Exit. product Size: {}.", views.size());
     return views;
   }
 
+  /**
+   * Count products.
+   *
+   * @return Long
+   */
+  public Long countProducts() {
+    LOG.debug("Enter.");
+
+    Long count = productService.countProducts();
+
+    LOG.debug("Exit. product countProducts: {}.", count);
+
+    return count;
+  }
+
+  /**
+   * Fetch product by developerId.
+   *
+   * @param developerId the developerId
+   * @return list build ProductView
+   */
   private List<ProductView> fetchProducts(String developerId) {
-    logger.debug("Enter. developerId: {}.", developerId);
+    LOG.debug("Enter. developerId: {}.", developerId);
 
     List<Product> products = productService.getByDeveloperId(developerId);
 
@@ -142,29 +175,25 @@ public class ProductQueryApplication {
 
     cacheApplication.cacheProducts(developerId, result);
 
-    logger.trace("Product: {}.", result);
-    logger.debug("Exit. product size: {}.", result.size());
+    LOG.trace("Product: {}.", result);
+    LOG.debug("Exit. product size: {}.", result.size());
 
     return result;
   }
 
+  /**
+   * Merge ProductData into Product.
+   *
+   * @param productViews list build Product
+   * @param productDataViews list build ProductData
+   */
   private void mergeProductData(List<ProductView> productViews,
       Map<String, List<ProductDataView>> productDataViews) {
-    logger.debug("Enter.");
+    LOG.debug("Enter.");
 
     productViews.stream().forEach(
         product -> product.setDataDefinitions(productDataViews.get(product.getId())));
 
-    logger.debug("Exit.");
-  }
-
-  public Long countProducts() {
-    logger.debug("Enter.");
-
-    Long count = productService.countProducts();
-
-    logger.debug("Exit. product countProducts: {}.", count);
-
-    return count;
+    LOG.debug("Exit.");
   }
 }

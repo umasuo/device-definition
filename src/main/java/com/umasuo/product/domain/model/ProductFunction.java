@@ -27,9 +27,8 @@ import javax.persistence.Version;
 
 /**
  * Product function means the function that the product can support.
- * most of the function is sending command.
- * 调用功能的方式：productId + functionId
- * Created by umasuo on 17/6/28.
+ * most build the function is sending command.
+ * 调用功能的方式：productId + functionId.
  */
 @Entity
 @Table(name = "product_function")
@@ -40,9 +39,14 @@ import javax.persistence.Version;
         value = "com.umasuo.product.application.dto.FunctionDataType")})
 public class ProductFunction implements Serializable {
 
-  private static final long serialVersionUID = -1741012173485432837L;
   /**
-   * id.
+   * The serialVersionUID.
+   */
+  private static final long serialVersionUID = -1741012173485432837L;
+
+  /**
+   * The id.
+   * Created by database when insert.
    */
   @Id
   @GeneratedValue(generator = "uuid")
@@ -65,7 +69,7 @@ public class ProductFunction implements Serializable {
   protected Long lastModifiedAt;
 
   /**
-   * version used for update date check.
+   * Version used for update date check.
    */
   @Version
   private Integer version;
@@ -85,10 +89,19 @@ public class ProductFunction implements Serializable {
    */
   private String description;
 
+  /**
+   * 功能的数据类型。
+   */
   @Type(type = "dataType")
   private FunctionDataType dataType;
 
+  /**
+   * 传输类型。
+   */
   private TransferType transferType;
 
+  /**
+   * 类别，包括：Platform, Product.
+   */
   private Category category;
 }

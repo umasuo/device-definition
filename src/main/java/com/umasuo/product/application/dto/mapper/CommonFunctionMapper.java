@@ -4,21 +4,18 @@ import com.google.common.collect.Lists;
 import com.umasuo.product.application.dto.CommonFunctionView;
 import com.umasuo.product.application.dto.action.AddProductTypeFunction;
 import com.umasuo.product.domain.model.CommonFunction;
-import com.umasuo.product.domain.model.ProductFunction;
-import com.umasuo.product.infrastructure.enums.Category;
-import com.umasuo.product.infrastructure.update.UpdateAction;
 
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
 /**
- * Created by Davis on 17/6/28.
+ * Mapper class for CommonFunction.
  */
 public final class CommonFunctionMapper {
 
   /**
-   * Instantiates a new Function mapper.
+   * Private constructor.
    */
   private CommonFunctionMapper() {
   }
@@ -45,7 +42,7 @@ public final class CommonFunctionMapper {
    * 把CommonFunction转换为CommonFunctionView。
    *
    * @param entity CommonFunction
-   * @return CommonFunctionView
+   * @return CommonFunctionView common function view
    */
   public static CommonFunctionView toModel(CommonFunction entity) {
     CommonFunctionView model = new CommonFunctionView();
@@ -61,38 +58,11 @@ public final class CommonFunctionMapper {
   }
 
   /**
-   * 拷贝一份新的CommonFunction列表。
+   * Build CommonFunction.
    *
-   * @param functions 原始的CommonFunction列表
-   * @return 新拷贝的CommonFunction列表
+   * @param action the action
+   * @return common function
    */
-  public static List<ProductFunction> copy(List<CommonFunction> functions) {
-    List<ProductFunction> productFunctions = Lists.newArrayList();
-
-    functions.stream().forEach(function -> productFunctions.add(copy(function)));
-
-    return productFunctions;
-  }
-
-  /**
-   * 拷贝一份新的CommonFunction实体。
-   *
-   * @param function CommonFunction实体
-   * @return 新拷贝的CommonFunction实体
-   */
-  public static ProductFunction copy(CommonFunction function) {
-    ProductFunction productFunction = new ProductFunction();
-
-    productFunction.setFunctionId(function.getFunctionId());
-    productFunction.setName(function.getName());
-    productFunction.setDescription(function.getDescription());
-    productFunction.setTransferType(function.getTransferType());
-    productFunction.setDataType(function.getDataType());
-    productFunction.setCategory(Category.PLATFORM);
-
-    return productFunction;
-  }
-
   public static CommonFunction build(AddProductTypeFunction action) {
     CommonFunction function = new CommonFunction();
 

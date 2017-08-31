@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by Davis on 17/7/4.
+ * 添加产品的功能的service.
  */
 @Service(UpdateActionUtils.ADD_FUNCTION)
 public class AddFunctionService implements Updater<Product, UpdateAction> {
@@ -27,9 +27,18 @@ public class AddFunctionService implements Updater<Product, UpdateAction> {
    */
   private static final Logger LOG = LoggerFactory.getLogger(AddFunctionService.class);
 
+  /**
+   * ProductTypeApplication.
+   */
   @Autowired
   private transient ProductTypeApplication productTypeApplication;
 
+  /**
+   * 执行update的方法。
+   *
+   * @param product the Product
+   * @param updateAction the AddFunction
+   */
   @Override
   public void handle(Product product, UpdateAction updateAction) {
     LOG.debug("Enter. product: {}, updateAction: {}.", product, updateAction);
@@ -45,6 +54,12 @@ public class AddFunctionService implements Updater<Product, UpdateAction> {
     LOG.debug("Exit.");
   }
 
+  /**
+   * 判断functionId是否合法：对应的ProductType没有该functionId，已存在的function没有该id。
+   *
+   * @param product the Product
+   * @param functionId the functionId
+   */
   private void checkFunctionId(Product product, String functionId) {
     LOG.debug("Enter.");
 

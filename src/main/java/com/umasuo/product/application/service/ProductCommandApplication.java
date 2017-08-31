@@ -10,9 +10,9 @@ import com.umasuo.product.domain.service.ProductService;
 import com.umasuo.product.domain.service.ProductTypeService;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdaterService;
-import com.umasuo.product.infrastructure.util.JsonUtils;
 import com.umasuo.product.infrastructure.validator.ProductValidator;
 import com.umasuo.product.infrastructure.validator.VersionValidator;
+import com.umasuo.util.JsonUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Created by umasuo on 17/6/1.
+ * 用于增删改Product.
  */
 @Service
 public class ProductCommandApplication {
@@ -31,7 +31,7 @@ public class ProductCommandApplication {
   /**
    * Logger.
    */
-  private final static Logger logger = LoggerFactory.getLogger(ProductCommandApplication.class);
+  private final static Logger LOG = LoggerFactory.getLogger(ProductCommandApplication.class);
 
   /**
    * ProductService.
@@ -57,11 +57,14 @@ public class ProductCommandApplication {
   @Autowired
   private transient RestClient restClient;
 
+  /**
+   * CacheApplication.
+   */
   @Autowired
   private transient CacheApplication cacheApplication;
 
   /**
-   * save new product view.
+   * Create Product.
    *
    * @param draft product draft
    * @param developerId the developer id
@@ -69,7 +72,7 @@ public class ProductCommandApplication {
    */
   @Transactional
   public ProductView create(ProductDraft draft, String developerId) {
-    logger.debug("Enter. developerId: {}, draft: {}.", developerId, draft);
+    LOG.debug("Enter. developerId: {}, draft: {}.", developerId, draft);
 
     // 1. 检查名字是否重复
     productService.isExistName(developerId, draft.getName());
@@ -86,7 +89,7 @@ public class ProductCommandApplication {
 
     ProductView view = ProductMapper.toView(product);
 
-    logger.debug("Exit. productView: {}.", view);
+    LOG.debug("Exit. productView: {}.", view);
     return view;
   }
 
@@ -98,7 +101,7 @@ public class ProductCommandApplication {
    * @param version the version
    */
   public void delete(String id, String developerId, Integer version) {
-    logger.debug("Enter. id: {}, developerId: {}, version: {}.", id, developerId, version);
+    LOG.debug("Enter. id: {}, developerId: {}, version: {}.", id, developerId, version);
 
     Product product = productService.get(id);
 
@@ -110,11 +113,11 @@ public class ProductCommandApplication {
 
     restClient.deleteAllDataDefinition(developerId, product.getId());
 
-    logger.debug("Exit.");
+    LOG.debug("Exit.");
   }
 
   /**
-   * update product with actions.
+   * Update product with actions.
    *
    * @param id the id
    * @param developerId the developer id
@@ -124,7 +127,7 @@ public class ProductCommandApplication {
    */
   public ProductView update(String id, String developerId, Integer version, List<UpdateAction>
       actions) {
-    logger.debug("Enter: id: {}, version: {}, actions: {}.", id, version, actions);
+    LOG.debug("Enter: id: {}, version: {}, actions: {}.", id, version, actions);
 
     Product valueInDb = productService.get(id);
 
@@ -146,16 +149,12 @@ public class ProductCommandApplication {
         data -> data.setDataSchema(JsonUtils.deserialize(data.getSchema(), JsonNode.class))
     );
 
-    logger.debug("Exit: updated product: {}", updatedProduct);
+    LOG.debug("Exit: updated product: {}", updatedProduct);
     return updatedProduct;
   }
 
   /**
    * 在update和delete中，需要检查developer是否一致，version是否一致，status是否合法。
-   *
-   * @param developerId
-   * @param product
-   * @param version
    */
   private void checkForUpdateAndDelete(String developerId, Product product, Integer version) {
     ProductValidator.checkDeveloper(developerId, product);

@@ -10,8 +10,8 @@ import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.domain.service.ProductTypeService;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdaterService;
-import com.umasuo.product.infrastructure.util.JsonUtils;
 import com.umasuo.product.infrastructure.validator.VersionValidator;
+import com.umasuo.util.JsonUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Davis on 17/6/28.
+ * ProductType application.
  */
 @Service
 public class ProductTypeApplication {
@@ -46,6 +46,9 @@ public class ProductTypeApplication {
   @Autowired
   private transient RestClient restClient;
 
+  /**
+   * CacheApplication.
+   */
   @Autowired
   private transient CacheApplication cacheApplication;
 
@@ -56,12 +59,91 @@ public class ProductTypeApplication {
   private transient UpdaterService updaterService;
 
   /**
+   * Create product type view.
+   *
+   * @param productTypeDraft the product type draft
+   * @return the product type view
+   */
+  public ProductTypeView create(ProductTypeDraft productTypeDraft) {
+    LOG.debug("Enter. productTypeDraft: {}.", productTypeDraft);
+
+    ProductType productType = ProductTypeMapper.toModel(productTypeDraft);
+
+    ProductType newProductType = productTypeService.save(productType);
+
+    ProductTypeView result = ProductTypeMapper.toView(newProductType);
+
+    cacheApplication.deleteProductTypes();
+
+    LOG.debug("Exit. new productType id: {}.", result.getId());
+    return result;
+  }
+
+  /**
+   * Delete ProductType by it's id.
+   *
+   * @param id the id
+   * @param version the version
+   */
+  public void delete(String id, Integer version) {
+    LOG.debug("Enter. product type id: {}, version: {}.", id, version);
+
+    ProductType productType = productTypeService.getById(id);
+
+    VersionValidator.checkVersion(version, productType.getVersion());
+
+    productTypeService.delete(id);
+
+    restClient.deleteProductTypeData(id);
+
+    cacheApplication.deleteProductTypes();
+
+    LOG.debug("Exit.");
+  }
+
+  /**
+   * Update product type view.
+   *
+   * @param id the id
+   * @param version the version
+   * @param actions the actions
+   * @return the product type view
+   */
+  public ProductTypeView update(String id, Integer version, List<UpdateAction> actions) {
+    LOG.debug("Enter: id: {}, version: {}, actions: {}.", id, version, actions);
+
+    ProductType valueInDb = productTypeService.getById(id);
+
+    VersionValidator.checkVersion(version, valueInDb.getVersion());
+
+    actions.stream().forEach(action -> updaterService.handle(valueInDb, action));
+
+    ProductType product = productTypeService.save(valueInDb);
+
+    cacheApplication.deleteProductTypes();
+
+    Map<String, List<CommonDataView>> dataDefinitionViews =
+        restClient.getProductTypeData();
+
+    ProductTypeView updatedProduct = ProductTypeMapper.toView(product, dataDefinitionViews);
+
+    handleSchema(updatedProduct);
+
+    LOG.trace("updated productType: {}", updatedProduct);
+    LOG.debug("Exit.");
+
+    return updatedProduct;
+  }
+
+  /**
    * 查询所有的产品类型。
+   *
+   * @return list build ProductType
    */
   public List<ProductTypeView> getAll() {
     LOG.debug("Enter.");
 
-    // 1. get from redis
+    // get from redis
     List<ProductTypeView> cacheProductTypes = cacheApplication.getAllProductType();
 
     if (cacheProductTypes.isEmpty()) {
@@ -70,7 +152,7 @@ public class ProductTypeApplication {
 
       // 调用data-definition的api获取对应id的CommonDataView
       Map<String, List<CommonDataView>> dataDefinitionViews =
-          restClient.getPlatformDataDefinition();
+          restClient.getProductTypeData();
 
       cacheProductTypes = ProductTypeMapper.toView(productTypes, dataDefinitionViews);
 
@@ -84,6 +166,12 @@ public class ProductTypeApplication {
     return cacheProductTypes;
   }
 
+  /**
+   * Get ProductType by it's id.
+   *
+   * @param id the id
+   * @return the product type view
+   */
   public ProductTypeView get(String id) {
     LOG.debug("Enter. id: {}.", id);
     List<ProductTypeView> productTypeViews = getAll();
@@ -101,63 +189,11 @@ public class ProductTypeApplication {
     return result;
   }
 
-  public void delete(String id, Integer version) {
-    LOG.debug("Enter. product type id: {}, version: {}.", id, version);
-
-    ProductType productType = productTypeService.getById(id);
-
-    VersionValidator.checkVersion(version, productType.getVersion());
-
-    productTypeService.delete(id);
-
-    restClient.deletePlatformData(id);
-
-    cacheApplication.deleteProductTypes();
-
-    LOG.debug("Exit.");
-  }
-
-  public ProductTypeView create(ProductTypeDraft productTypeDraft) {
-    LOG.debug("Enter. productTypeDraft: {}.", productTypeDraft);
-
-    ProductType productType = ProductTypeMapper.toModel(productTypeDraft);
-
-    ProductType newProductType = productTypeService.save(productType);
-
-    ProductTypeView result = ProductTypeMapper.toView(newProductType);
-
-    cacheApplication.deleteProductTypes();
-
-    LOG.debug("Exit. new productType id: {}.", result.getId());
-    return result;
-  }
-
-  public ProductTypeView update(String id, Integer version, List<UpdateAction> actions) {
-    LOG.debug("Enter: id: {}, version: {}, actions: {}.", id, version, actions);
-
-    ProductType valueInDb = productTypeService.getById(id);
-
-    VersionValidator.checkVersion(version, valueInDb.getVersion());
-
-    actions.stream().forEach(action -> updaterService.handle(valueInDb, action));
-
-    ProductType product = productTypeService.save(valueInDb);
-
-    cacheApplication.deleteProductTypes();
-
-    Map<String, List<CommonDataView>> dataDefinitionViews =
-        restClient.getPlatformDataDefinition();
-
-    ProductTypeView updatedProduct = ProductTypeMapper.toView(product, dataDefinitionViews);
-
-    handleSchema(updatedProduct);
-
-    LOG.trace("updated productType: {}", updatedProduct);
-    LOG.debug("Exit.");
-
-    return updatedProduct;
-  }
-
+  /**
+   * Change string schema to JsonNode schema.
+   *
+   * @param cacheProductTypes list build ProductType
+   */
   private void handleSchema(List<ProductTypeView> cacheProductTypes) {
     if (!CollectionUtils.isEmpty(cacheProductTypes)) {
       cacheProductTypes.stream().forEach(
@@ -166,6 +202,11 @@ public class ProductTypeApplication {
     }
   }
 
+  /**
+   * Change string schema to JsonNode schema.
+   *
+   * @param productTypeView the ProductType
+   */
   private void handleSchema(ProductTypeView productTypeView) {
     if (!CollectionUtils.isEmpty(productTypeView.getData())) {
       productTypeView.getData().stream().forEach(

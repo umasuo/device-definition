@@ -10,43 +10,49 @@ import java.io.Serializable;
 import javax.persistence.Transient;
 
 /**
- * Created by Davis on 17/7/12.
+ * 产品的具体数据定义。
  */
 @Data
 public class ProductDataView implements Serializable {
 
+  /**
+   * The serialVersionUID.
+   */
   private static final long serialVersionUID = 1291157843289547677L;
 
   /**
-   * auto generated uuid.
+   * Auto generated uuid.
    */
   private String id;
 
   /**
-   * version used for update date check.
+   * Version used for update date check.
    */
   private Integer version;
 
   /**
-   * data id defined by the developer.
+   * Data id defined by the developer.
    */
   private String dataId;
 
   /**
-   * the data structure.
+   * The data structure.
    */
   private String schema;
 
+  /**
+   * The dataSchema.
+   */
   @Transient
   private transient JsonNode dataSchema;
 
   /**
-   * name of this definition.
+   * Name build this definition.
    */
   private String name;
 
   /**
-   * describe the usage of this definition.
+   * Describe the usage build this definition.
    */
   private String description;
 
@@ -56,5 +62,8 @@ public class ProductDataView implements Serializable {
    */
   private Boolean openable;
 
+  /**
+   * 产品数据的类别。
+   */
   private Category category;
 }

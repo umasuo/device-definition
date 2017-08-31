@@ -15,8 +15,6 @@ import java.util.List;
 
 /**
  * 给平台使用的，用于获取及处理开发者的请求。
- *
- * Created by Davis on 17/7/19.
  */
 @Service
 public class RequestApplication {
@@ -26,10 +24,19 @@ public class RequestApplication {
    */
   private static final Logger LOG = LoggerFactory.getLogger(RequestApplication.class);
 
+  /**
+   * RequestService.
+   */
   @Autowired
   private transient RequestService requestService;
 
-
+  /**
+   * 新建一条请求记录.
+   *
+   * @param developerId the developer id
+   * @param productId the product id
+   * @return status request view
+   */
   public StatusRequestView create(String developerId, String productId) {
     LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 
@@ -44,6 +51,12 @@ public class RequestApplication {
     return result;
   }
 
+  /**
+   * 取消请求.
+   *
+   * @param developerId the developer id
+   * @param productId the product id
+   */
   public void cancelRequest(String developerId, String productId) {
     LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 
@@ -53,13 +66,24 @@ public class RequestApplication {
 
   }
 
-  // 1. 获取开发者的请求
+  /**
+   * Gets request.
+   *
+   * @return the request
+   */
+// 1. 获取开发者的请求
   public List<StatusRequestView> getRequest() {
     // TODO: 17/7/19
     return null;
   }
 
-  // 2. 处理开发的请求
+  /**
+   * Reply request.
+   *
+   * @param requestId the request id
+   * @param status the status
+   */
+// 2. 处理开发的请求
   public void replyRequest(String requestId, RequestStatus status) {
     LOG.debug("Enter. requestId: {}, status: {}.", requestId, status);
 
@@ -72,7 +96,10 @@ public class RequestApplication {
     LOG.debug("Exit.");
   }
 
-  // 3. 批量处理开发者的请求
+  /**
+   * Batch reply request.
+   */
+// 3. 批量处理开发者的请求
   public void batchReplyRequest() {
     // TODO: 17/7/19
   }

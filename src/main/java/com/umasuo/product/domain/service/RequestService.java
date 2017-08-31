@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by Davis on 17/7/19.
+ * Service class for Request.
  */
 @Service
 public class RequestService {
@@ -21,9 +21,18 @@ public class RequestService {
    */
   private static final Logger LOG = LoggerFactory.getLogger(RequestService.class);
 
+  /**
+   * RequestRepository.
+   */
   @Autowired
   private transient RequestRepository repository;
 
+  /**
+   * Save status request.
+   *
+   * @param request the request
+   * @return the status request
+   */
   public StatusRequest save(StatusRequest request) {
     LOG.debug("Enter. request: {}.", request);
 
@@ -35,6 +44,13 @@ public class RequestService {
     return savedRequest;
   }
 
+
+  /**
+   * Get status request.
+   *
+   * @param id the id
+   * @return the status request
+   */
   public StatusRequest get(String id) {
     LOG.debug("Enter. id: {}.", id);
 
@@ -50,6 +66,12 @@ public class RequestService {
     return request;
   }
 
+  /**
+   * Cancel request.
+   *
+   * @param developerId the developer id
+   * @param productId the product id
+   */
   public void cancelRequest(String developerId, String productId) {
     LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 

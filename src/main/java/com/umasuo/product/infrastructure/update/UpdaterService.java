@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 /**
- * updater service.
+ * Updater service.
  */
 @Service
 public class UpdaterService implements Updater<Object, UpdateAction> {
@@ -17,7 +17,7 @@ public class UpdaterService implements Updater<Object, UpdateAction> {
   private transient ApplicationContext context;
 
   /**
-   * constructor.
+   * Constructor.
    *
    * @param context ApplicationContext
    */
@@ -26,7 +26,7 @@ public class UpdaterService implements Updater<Object, UpdateAction> {
   }
 
   /**
-   * get mapper.
+   * Get mapper.
    *
    * @param action UpdateAction class
    * @return ZoneUpdateMapper
@@ -35,9 +35,15 @@ public class UpdaterService implements Updater<Object, UpdateAction> {
     return (Updater) context.getBean(action.getActionName());
   }
 
+  /**
+   * Handler.
+   *
+   * @param obj object need to update
+   * @param action the UpdateAction
+   */
   @Override
-  public void handle(Object o, UpdateAction action) {
+  public void handle(Object obj, UpdateAction action) {
     Updater updater = getUpdateService(action);
-    updater.handle(o, action);
+    updater.handle(obj, action);
   }
 }

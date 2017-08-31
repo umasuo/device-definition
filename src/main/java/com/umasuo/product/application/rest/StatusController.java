@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 /**
- * Created by Davis on 17/7/19.
+ * Controller class for Product status.
  */
 @CrossOrigin
 @RestController
@@ -34,6 +34,13 @@ public class StatusController {
   @Autowired
   private transient StatusApplication statusApplication;
 
+  /**
+   * 开发者申请修改产品状态.
+   *
+   * @param id the id
+   * @param developerId the developer id
+   * @param request the request
+   */
   @PutMapping(Router.PRODUCT_STATUS)
   public void request(@PathVariable("id") String id, @RequestHeader String developerId,
       @RequestBody @Valid ProductStatusRequest request) {

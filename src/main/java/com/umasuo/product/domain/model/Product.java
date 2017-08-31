@@ -27,7 +27,7 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 /**
- * Created by umasuo on 17/3/7.
+ * Entity class for Product.
  */
 @Entity
 @Table(name = "product")
@@ -35,8 +35,15 @@ import javax.persistence.Version;
 @EntityListeners(AuditingEntityListener.class)
 public class Product implements Serializable {
 
+  /**
+   * The serialVersionUID.
+   */
   private static final long serialVersionUID = -6085138635403490262L;
 
+  /**
+   * The id.
+   * Created by database when insert.
+   */
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -58,29 +65,29 @@ public class Product implements Serializable {
   protected Long lastModifiedAt;
 
   /**
-   * version used for update date check.
+   * Version used for update date check.
    */
   @Version
   private Integer version;
 
   /**
-   * which developer this kind of product belong to.
+   * Which developer this kind build product belong to.
    */
   private String developerId;
 
   /**
-   * product status: developing, published, revoked.
+   * Product status: developing, published, revoked.
    */
   private ProductStatus status;
 
   /**
-   * name of the product.
+   * Name build the product.
    */
   @Column(nullable = false)
   private String name;
 
   /**
-   * product icon.
+   * Product icon.
    */
   private String icon;
 
@@ -116,17 +123,17 @@ public class Product implements Serializable {
    * 产品的功能列表。
    * 使用orphanRemoval是为了可以在product这边把function删除。
    */
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval=true)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @OrderBy("functionId")
   private List<ProductFunction> productFunctions;
 
   /**
-   * product net type, identify by how the communicate with other services(app, cloud)
+   * Product net type, identify by how the communicate with other services(app, cloud)
    */
   private NetType communicationType;
 
   /**
-   * wifi模组型号。
+   * Wifi模组型号。
    */
   private String wifiModule;
 
@@ -136,6 +143,9 @@ public class Product implements Serializable {
    */
   private Boolean openable = false;
 
+  /**
+   * 用于开发测试的UnionId。
+   */
   @Embedded
   private transient TestUnion testUnion = new TestUnion();
 }

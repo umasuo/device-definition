@@ -1,24 +1,20 @@
 package com.umasuo.product.infrastructure.exception;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
- * exception body.
- * return customized code and message to the client.
+ * Exception body.
+ * Return customized code and message to the client.
  */
-@Getter
-@Setter
 public class ExceptionBody {
 
-  public static final int DEVELOPER_NOT_EXIST_CODE = 10001;
-  public static final String DEVELOPER_NOT_EXIST_MESSAGE = "developer not exist.";
+  /**
+   * Code for NotExistException.
+   */
+  public static final int NOT_EXIST_CODE = 10001;
 
-  public static final int DEVELOPER_ALREADY_EXIST_CODE = 10002;
-  public static final String DEVELOPER_ALREADY_EXIST_MESSAGE = "developer already exist.";
-
-  public static final int EMAIL_OR_PASSWORD_ERROR_CODE = 10003;
-  public static final String EMAIL_OR_PASSWORD_ERROR_MESSAGE = "email or password not correct.";
+  /**
+   * Code for AlreadyExistException.
+   */
+  public static final int ALREADY_EXIST_CODE = 10002;
 
   /**
    * CODE.
@@ -30,7 +26,50 @@ public class ExceptionBody {
    */
   private String message;
 
-  public static ExceptionBody of(int code, String message) {
+  /**
+   * Gets code.
+   *
+   * @return the code
+   */
+  public int getCode() {
+    return code;
+  }
+
+  /**
+   * Sets code.
+   *
+   * @param code the code
+   */
+  public void setCode(int code) {
+    this.code = code;
+  }
+
+  /**
+   * Gets message.
+   *
+   * @return the message
+   */
+  public String getMessage() {
+    return message;
+  }
+
+  /**
+   * Sets message.
+   *
+   * @param message the message
+   */
+  public void setMessage(String message) {
+    this.message = message;
+  }
+
+  /**
+   * Build one ExceptionBody.
+   *
+   * @param code the Code
+   * @param message the Message
+   * @return ExceptionBody exception body
+   */
+  public static ExceptionBody build(int code, String message) {
     ExceptionBody body = new ExceptionBody();
     body.code = code;
     body.message = message;

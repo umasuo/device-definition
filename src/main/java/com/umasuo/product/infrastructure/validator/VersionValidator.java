@@ -16,7 +16,7 @@ public final class VersionValidator {
   private static final Logger LOG = LoggerFactory.getLogger(VersionValidator.class);
 
   /**
-   * Instantiates a new Version validator.
+   * Private constructor.
    */
   private VersionValidator() {
   }

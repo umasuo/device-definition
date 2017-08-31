@@ -1,5 +1,6 @@
 package com.umasuo.product.application.service.update;
 
+import com.umasuo.model.Updater;
 import com.umasuo.product.application.dto.ProductDataView;
 import com.umasuo.product.application.dto.ProductTypeView;
 import com.umasuo.product.application.dto.action.AddDataDefinition;
@@ -9,20 +10,17 @@ import com.umasuo.product.application.service.RestClient;
 import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdateActionUtils;
-import com.umasuo.exception.AlreadyExistException;
-import com.umasuo.model.Updater;
 import com.umasuo.product.infrastructure.validator.DataIdValidator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
 /**
- * Created by Davis on 17/7/7.
+ * 添加产品的数据的service.
  */
 @Service(UpdateActionUtils.ADD_DATA_DEFINITION)
 public class AddDataDefinitionService implements Updater<Product, UpdateAction> {
@@ -32,15 +30,30 @@ public class AddDataDefinitionService implements Updater<Product, UpdateAction> 
    */
   private static final Logger LOG = LoggerFactory.getLogger(AddDataDefinitionService.class);
 
+  /**
+   * RestClient.
+   */
   @Autowired
   private transient RestClient restClient;
 
+  /**
+   * ProductTypeApplication.
+   */
   @Autowired
   private transient ProductTypeApplication productTypeApplication;
 
+  /**
+   * ProductQueryApplication.
+   */
   @Autowired
   private transient ProductQueryApplication productQueryApplication;
 
+  /**
+   * 执行update的方法。
+   *
+   * @param product the product
+   * @param updateAction the AddDataDefinition
+   */
   @Override
   public void handle(Product product, UpdateAction updateAction) {
     LOG.debug("Enter.");
@@ -56,6 +69,12 @@ public class AddDataDefinitionService implements Updater<Product, UpdateAction> 
     LOG.debug("Exit.");
   }
 
+  /**
+   * 判断dataId是否合法：对应的ProductType没有该dataId，已存在的Data没有该id。
+   *
+   * @param dataId the dataId
+   * @param product the Product
+   */
   private void checkDataId(String dataId, Product product) {
     LOG.debug("Enter.");
     ProductTypeView productType = productTypeApplication.get(product.getProductType());

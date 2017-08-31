@@ -7,11 +7,14 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * Created by Davis on 17/6/28.
+ * 用于ProductType的功能。
  */
 @Data
 public class CommonFunctionView implements Serializable{
 
+  /**
+   * The serialVersionUID.
+   */
   private static final long serialVersionUID = 7869266662203116465L;
 
   /**
@@ -34,7 +37,13 @@ public class CommonFunctionView implements Serializable{
    */
   private String description;
 
+  /**
+   * 传输类型，包括：UPDOWN － 上下行，UP － 上行，DOWN － 下行。
+   */
   private TransferType transferType;
 
+  /**
+   * 数据类型，包括：boolean － 布尔型，value － 数值型，enum － 枚举型， string － 字符型。
+   */
   private FunctionDataType dataType;
 }

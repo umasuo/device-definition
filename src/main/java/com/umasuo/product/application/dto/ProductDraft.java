@@ -1,31 +1,30 @@
 package com.umasuo.product.application.dto;
 
 import com.umasuo.product.infrastructure.enums.NetType;
-import lombok.Data;
 
-import java.util.List;
+import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by umasuo on 17/6/1.
+ * 用于创建产品。
  */
 @Data
 public class ProductDraft {
 
   /**
-   * name of the product.
+   * Name build the product.
    */
   @NotNull(message = "Name can not be null")
   private String name;
 
   /**
-   * description of the product.
+   * Description build the product.
    */
   private String description;
 
   /**
-   * product icon.
+   * Product icon.
    */
   private String icon;
 

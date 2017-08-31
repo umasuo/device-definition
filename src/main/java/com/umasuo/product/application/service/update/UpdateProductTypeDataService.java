@@ -4,8 +4,6 @@ import com.google.common.collect.Lists;
 import com.umasuo.exception.NotExistException;
 import com.umasuo.model.Updater;
 import com.umasuo.product.application.dto.action.UpdateProductTypeData;
-import com.umasuo.product.application.service.ProductQueryApplication;
-import com.umasuo.product.application.service.ProductTypeApplication;
 import com.umasuo.product.application.service.RestClient;
 import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.infrastructure.update.UpdateAction;
@@ -20,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Created by Davis on 17/7/12.
+ * 更新产品类别的数据的service.
  */
 @Service(UpdateActionUtils.UPDATE_PRODUCT_TYPE_DATA)
 public class UpdateProductTypeDataService implements Updater<ProductType, UpdateAction> {
@@ -30,18 +28,22 @@ public class UpdateProductTypeDataService implements Updater<ProductType, Update
    */
   private static final Logger LOG = LoggerFactory.getLogger(UpdateProductTypeDataService.class);
 
+  /**
+   * RestClient.
+   */
   @Autowired
   private transient RestClient restClient;
 
-  @Autowired
-  private transient ProductTypeApplication productTypeApplication;
-
-  @Autowired
-  private transient ProductQueryApplication productQueryApplication;
-
+  /**
+   * 执行update的方法。
+   *
+   * @param productType the ProductType
+   * @param updateAction the UpdateProductTypeData
+   */
   @Override
   public void handle(ProductType productType, UpdateAction updateAction) {
-    LOG.debug("Enter.");
+    LOG.debug("Enter. productType id: {}, updateAction: {}.", productType.getId(), updateAction);
+
     UpdateProductTypeData action = (UpdateProductTypeData) updateAction;
     String dataDefinitionId = action.getDataDefinitionId();
 
@@ -59,7 +61,7 @@ public class UpdateProductTypeDataService implements Updater<ProductType, Update
     request.setVersion(0);
     request.setActions(actions);
 
-    restClient.updatePlatformData(dataDefinitionId, request);
+    restClient.updateProductTypeData(dataDefinitionId, request);
 
     LOG.debug("Exit.");
   }

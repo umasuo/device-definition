@@ -18,15 +18,17 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 /**
- * Created by Davis on 17/7/19.
+ * 开发者申请变更产品状态的记录.
  */
 @Entity
 @Table(name = "status_request")
 @Data
 @EntityListeners(AuditingEntityListener.class)
 public class StatusRequest {
+
   /**
-   * id.
+   * The id.
+   * Created by database when insert.
    */
   @Id
   @GeneratedValue(generator = "uuid")
@@ -49,16 +51,28 @@ public class StatusRequest {
   protected Long lastModifiedAt;
 
   /**
-   * version used for update date check.
+   * Version used for update date check.
    */
   @Version
   private Integer version;
 
+  /**
+   * 申请记录的处理状态。
+   */
   private RequestStatus status;
 
+  /**
+   * The developerId.
+   */
   private String developerId;
 
+  /**
+   * The productId.
+   */
   private String productId;
 
+  /**
+   * 备注。
+   */
   private String remark;
 }
