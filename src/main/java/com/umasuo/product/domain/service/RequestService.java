@@ -2,7 +2,7 @@ package com.umasuo.product.domain.service;
 
 import com.umasuo.exception.NotExistException;
 import com.umasuo.product.domain.model.ApplicationRecord;
-import com.umasuo.product.infrastructure.enums.RequestStatus;
+import com.umasuo.product.infrastructure.enums.RecordStatus;
 import com.umasuo.product.infrastructure.repository.ApplicationRecordRepository;
 
 import org.slf4j.Logger;
@@ -77,7 +77,7 @@ public class RequestService {
   public void cancelRequest(String developerId, String productId) {
     LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 
-    int count = repository.changeRequestStatus(developerId, productId, RequestStatus.CANCELED);
+    int count = repository.changeRequestStatus(developerId, productId, RecordStatus.FINISHED);
 
     LOG.debug("Exit. cancel countProducts: {}.", count);
   }
