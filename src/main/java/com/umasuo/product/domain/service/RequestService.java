@@ -1,14 +1,16 @@
 package com.umasuo.product.domain.service;
 
 import com.umasuo.exception.NotExistException;
-import com.umasuo.product.domain.model.StatusRequest;
+import com.umasuo.product.domain.model.ApplicationRecord;
 import com.umasuo.product.infrastructure.enums.RequestStatus;
-import com.umasuo.product.infrastructure.repository.RequestRepository;
+import com.umasuo.product.infrastructure.repository.ApplicationRecordRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Service class for Request.
@@ -22,10 +24,10 @@ public class RequestService {
   private static final Logger LOG = LoggerFactory.getLogger(RequestService.class);
 
   /**
-   * RequestRepository.
+   * ApplicationRecordRepository.
    */
   @Autowired
-  private transient RequestRepository repository;
+  private transient ApplicationRecordRepository repository;
 
   /**
    * Save status request.
@@ -33,10 +35,10 @@ public class RequestService {
    * @param request the request
    * @return the status request
    */
-  public StatusRequest save(StatusRequest request) {
+  public ApplicationRecord save(ApplicationRecord request) {
     LOG.debug("Enter. request: {}.", request);
 
-    StatusRequest savedRequest = repository.save(request);
+    ApplicationRecord savedRequest = repository.save(request);
 
     LOG.trace("Saved request: {}.", savedRequest);
     LOG.debug("Exit.");
@@ -51,10 +53,10 @@ public class RequestService {
    * @param id the id
    * @return the status request
    */
-  public StatusRequest get(String id) {
+  public ApplicationRecord get(String id) {
     LOG.debug("Enter. id: {}.", id);
 
-    StatusRequest request = repository.findOne(id);
+    ApplicationRecord request = repository.findOne(id);
 
     if (request == null) {
       LOG.debug("Can not find request: {}.", id);
@@ -78,5 +80,20 @@ public class RequestService {
     int count = repository.changeRequestStatus(developerId, productId, RequestStatus.CANCELED);
 
     LOG.debug("Exit. cancel countProducts: {}.", count);
+  }
+
+  /**
+   * Get all request order by lastModifiedAt.
+   *
+   * @return list of ApplicationRecord
+   */
+  public List<ApplicationRecord> getAll() {
+    LOG.debug("Enter.");
+
+    List<ApplicationRecord> requests = repository.findAll();
+
+    LOG.debug("Exit. request size: {}.", requests.size());
+
+    return requests;
   }
 }

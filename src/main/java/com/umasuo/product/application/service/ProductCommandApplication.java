@@ -8,6 +8,8 @@ import com.umasuo.product.application.dto.mapper.ProductMapper;
 import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.service.ProductService;
 import com.umasuo.product.domain.service.ProductTypeService;
+import com.umasuo.product.infrastructure.enums.ApplicationStatus;
+import com.umasuo.product.infrastructure.enums.ProductStatus;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdaterService;
 import com.umasuo.product.infrastructure.validator.ProductValidator;
@@ -151,6 +153,35 @@ public class ProductCommandApplication {
 
     LOG.debug("Exit: updated product: {}", updatedProduct);
     return updatedProduct;
+  }
+
+  /**
+   * 根据admin的批复更新product的状态。
+   *
+   * @param productId the productId
+   * @param status the status
+   */
+  public void updateStatusByResponse(String productId, ApplicationStatus status) {
+    LOG.debug("Enter. productId: {}, status: {}.", productId, status);
+
+    if (ApplicationStatus.CREATED.equals(status)) {
+      LOG.debug("Admin have not handle the application about product: {}.", productId);
+      return;
+    }
+
+    Product product = productService.get(productId);
+
+    if (ApplicationStatus.AGREE.equals(status)) {
+      product.setStatus(ProductStatus.PUBLISHED);
+    } else if (ApplicationStatus.DISAGREE.equals(status)) {
+      product.setStatus(ProductStatus.DEVELOPING);
+    }
+
+    productService.save(product);
+
+    cacheApplication.deleteProducts(product.getDeveloperId());
+
+    LOG.debug("Exit.");
   }
 
   /**

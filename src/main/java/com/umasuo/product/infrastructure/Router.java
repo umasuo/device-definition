@@ -41,9 +41,26 @@ public class Router {
   public static final String PRODUCT_REQUEST_WITH_ID = PRODUCT_REQUEST + "/{}";
 
   /**
+   * Admin root path: /v1/admin/products
+   */
+  public static final String ADMIN_PRODUCT_ROOT = VERSION + "/admin/products";
+
+  /**
+   * Developer application path for admin: /v1/admin/products/applications
+   */
+  public static final String ADMIN_DEVELOPER_APPLICATION_ROOT =
+      ADMIN_PRODUCT_ROOT + "/applications";
+
+  /**
+   * One application for developer, path to admin: /v1/admin/products/applications/{id}
+   */
+  public static final String ADMIN_DEVELOPER_APPLICATION_WITH_ID =
+      ADMIN_DEVELOPER_APPLICATION_ROOT + "/{id}";
+
+  /**
    * The constant ADMIN_PRODUCT_TYPE_ROOT.
    */
-  public static final String ADMIN_PRODUCT_TYPE_ROOT = VERSION + "/admin/products/types";
+  public static final String ADMIN_PRODUCT_TYPE_ROOT = ADMIN_PRODUCT_ROOT + "/types";
 
   /**
    * The constant ADMIN_PRODUCT_TYPE_WITH_ID.

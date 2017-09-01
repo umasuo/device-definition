@@ -1,10 +1,11 @@
 package com.umasuo.product.application.service;
 
-import com.umasuo.product.application.dto.StatusRequestView;
-import com.umasuo.product.application.dto.mapper.RequestMapper;
-import com.umasuo.product.domain.model.StatusRequest;
+import com.umasuo.product.application.dto.ApplicationRecordView;
+import com.umasuo.product.application.dto.mapper.ApplicationRecordMapper;
+import com.umasuo.product.domain.model.ApplicationRecord;
 import com.umasuo.product.domain.service.RequestService;
-import com.umasuo.product.infrastructure.enums.RequestStatus;
+import com.umasuo.product.infrastructure.enums.ApplicationStatus;
+import com.umasuo.product.infrastructure.enums.RecordStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,20 +32,26 @@ public class RequestApplication {
   private transient RequestService requestService;
 
   /**
+   * The ProductCommandApplication.
+   */
+  @Autowired
+  private transient ProductCommandApplication productCommandApplication;
+
+  /**
    * 新建一条请求记录.
    *
    * @param developerId the developer id
    * @param productId the product id
    * @return status request view
    */
-  public StatusRequestView create(String developerId, String productId) {
+  public ApplicationRecordView create(String developerId, String productId) {
     LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 
-    StatusRequest statusRequest = RequestMapper.build(developerId, productId);
+    ApplicationRecord statusRequest = ApplicationRecordMapper.build(developerId, productId);
 
     requestService.save(statusRequest);
 
-    StatusRequestView result = RequestMapper.toModel(statusRequest);
+    ApplicationRecordView result = ApplicationRecordMapper.toView(statusRequest);
 
     LOG.debug("Exit.");
 
@@ -67,31 +74,24 @@ public class RequestApplication {
   }
 
   /**
-   * Gets request.
-   *
-   * @return the request
-   */
-// 1. 获取开发者的请求
-  public List<StatusRequestView> getRequest() {
-    // TODO: 17/7/19
-    return null;
-  }
-
-  /**
    * Reply request.
    *
    * @param requestId the request id
-   * @param status the status
+   * @param recordStatus the status
    */
 // 2. 处理开发的请求
-  public void replyRequest(String requestId, RequestStatus status) {
-    LOG.debug("Enter. requestId: {}, status: {}.", requestId, status);
+  public void replyRequest(String requestId, RecordStatus recordStatus, ApplicationStatus applicationStatus) {
+    LOG.debug("Enter. requestId: {}, recordStatus: {}, applicationStatus: {}.",
+        requestId, recordStatus, applicationStatus);
 
-    StatusRequest statusRequest = requestService.get(requestId);
+    ApplicationRecord statusRequest = requestService.get(requestId);
 
-    statusRequest.setStatus(status);
+    statusRequest.setRecordStatus(recordStatus);
+    statusRequest.setApplicationStatus(applicationStatus);
 
     requestService.save(statusRequest);
+
+    productCommandApplication.updateStatusByResponse(statusRequest.getProductId(), applicationStatus);
 
     LOG.debug("Exit.");
   }
@@ -102,5 +102,22 @@ public class RequestApplication {
 // 3. 批量处理开发者的请求
   public void batchReplyRequest() {
     // TODO: 17/7/19
+  }
+
+  /**
+   * Get all application record.
+   *
+   * @return list of ApplicationRecordView
+   */
+  public List<ApplicationRecordView> getApplication() {
+    LOG.debug("Enter.");
+
+    List<ApplicationRecord> requests = requestService.getAll();
+
+    List<ApplicationRecordView> result = ApplicationRecordMapper.toView(requests);
+
+    LOG.debug("Exit. applicationRecord size: {}.", result.size());
+
+    return result;
   }
 }

@@ -1,17 +1,21 @@
 package com.umasuo.product.application.rest;
 
+import com.umasuo.product.application.dto.ApplicationRecordView;
+import com.umasuo.product.application.dto.ApplicationResponse;
 import com.umasuo.product.application.service.RequestApplication;
 import com.umasuo.product.infrastructure.Router;
-import com.umasuo.product.infrastructure.enums.RequestStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * Controller class for Request.
@@ -36,14 +40,30 @@ public class RequestController {
    * Update status.
    *
    * @param id the id
-   * @param status the status
+   * @param resp the status
    */
-  @PutMapping(Router.PRODUCT_REQUEST_WITH_ID)
-  public void updateStatus(@PathVariable("id") String id, @RequestBody RequestStatus status) {
-    LOG.info("Enter. id: {}, status: {}.", id, status);
+  @PutMapping(Router.ADMIN_DEVELOPER_APPLICATION_WITH_ID)
+  public void updateStatus(@PathVariable("id") String id, @RequestBody ApplicationResponse resp) {
+    LOG.info("Enter. id: {}, resp: {}.", id, resp);
 
-    requestApplication.replyRequest(id, status);
+    requestApplication.replyRequest(id, resp.getRecordStatus(), resp.getApplicationStatus());
 
     LOG.debug("Exit.");
+  }
+
+  /**
+   * Get all request for admin.
+   *
+   * @return list of ApplicationRecordView
+   */
+  @GetMapping(Router.ADMIN_DEVELOPER_APPLICATION_ROOT)
+  public List<ApplicationRecordView> getDeveloperRequest() {
+    LOG.info("Enter.");
+
+    List<ApplicationRecordView> result = requestApplication.getApplication();
+
+    LOG.info("Exit. applicationRecord size: {}.", result.size());
+
+    return result;
   }
 }
