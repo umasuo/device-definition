@@ -1,6 +1,6 @@
 package com.umasuo.product.infrastructure.repository;
 
-import com.umasuo.product.domain.model.ApplicationRecord;
+import com.umasuo.product.domain.model.RequestRecord;
 import com.umasuo.product.infrastructure.enums.RecordStatus;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 /**
  * Repository for Request.
  */
-public interface ApplicationRecordRepository extends JpaRepository<ApplicationRecord, String> {
+public interface RequestRecordRepository extends JpaRepository<RequestRecord, String> {
 
   /**
    * Change request status.
@@ -24,13 +24,13 @@ public interface ApplicationRecordRepository extends JpaRepository<ApplicationRe
    */
   @Modifying
   @Transactional
-  @Query("update ApplicationRecord sr set sr.recordStatus = ?3 where sr.developerId = ?1 and sr.productId = ?2")
+  @Query("update RequestRecord sr set sr.recordStatus = ?3 where sr.developerId = ?1 and sr.productId = ?2")
   int changeRequestStatus(String developerId, String productId, RecordStatus status);
 
   /**
    * Get all request order by last modified time.
    *
-   * @return list of ApplicationRecord
+   * @return list of RequestRecord
    */
-//  List<ApplicationRecord> getAllOnOrder();
+//  List<RequestRecord> getAllOnOrder();
 }

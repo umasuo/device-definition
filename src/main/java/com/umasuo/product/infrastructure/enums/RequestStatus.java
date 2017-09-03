@@ -1,12 +1,10 @@
 package com.umasuo.product.infrastructure.enums;
 
 /**
- * Created by Davis on 17/7/19.
+ * Admin对开发者申请的处理结果。
  */
 public enum RequestStatus {
-  UNVIEW,
-  VIEWED,
+  CREATED,
   AGREE,
   DISAGREE,
-  CANCELED
 }

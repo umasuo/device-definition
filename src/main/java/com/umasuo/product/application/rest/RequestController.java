@@ -1,6 +1,6 @@
 package com.umasuo.product.application.rest;
 
-import com.umasuo.product.application.dto.ApplicationRecordView;
+import com.umasuo.product.application.dto.RequestRecordView;
 import com.umasuo.product.application.dto.ApplicationResponse;
 import com.umasuo.product.application.service.RequestApplication;
 import com.umasuo.product.infrastructure.Router;
@@ -54,13 +54,13 @@ public class RequestController {
   /**
    * Get all request for admin.
    *
-   * @return list of ApplicationRecordView
+   * @return list of RequestRecordView
    */
   @GetMapping(Router.ADMIN_DEVELOPER_APPLICATION_ROOT)
-  public List<ApplicationRecordView> getDeveloperRequest() {
+  public List<RequestRecordView> getDeveloperRequest() {
     LOG.info("Enter.");
 
-    List<ApplicationRecordView> result = requestApplication.getApplication();
+    List<RequestRecordView> result = requestApplication.getApplication();
 
     LOG.info("Exit. applicationRecord size: {}.", result.size());
 

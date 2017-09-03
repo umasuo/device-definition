@@ -1,10 +1,10 @@
 package com.umasuo.product.application.service;
 
-import com.umasuo.product.application.dto.ApplicationRecordView;
-import com.umasuo.product.application.dto.mapper.ApplicationRecordMapper;
-import com.umasuo.product.domain.model.ApplicationRecord;
-import com.umasuo.product.domain.service.RequestService;
-import com.umasuo.product.infrastructure.enums.ApplicationStatus;
+import com.umasuo.product.application.dto.RequestRecordView;
+import com.umasuo.product.application.dto.mapper.RequestRecordMapper;
+import com.umasuo.product.domain.model.RequestRecord;
+import com.umasuo.product.domain.service.RequestRecordService;
+import com.umasuo.product.infrastructure.enums.RequestStatus;
 import com.umasuo.product.infrastructure.enums.RecordStatus;
 
 import org.slf4j.Logger;
@@ -26,10 +26,10 @@ public class RequestApplication {
   private static final Logger LOG = LoggerFactory.getLogger(RequestApplication.class);
 
   /**
-   * RequestService.
+   * RequestRecordService.
    */
   @Autowired
-  private transient RequestService requestService;
+  private transient RequestRecordService requestService;
 
   /**
    * The ProductCommandApplication.
@@ -44,14 +44,14 @@ public class RequestApplication {
    * @param productId the product id
    * @return status request view
    */
-  public ApplicationRecordView create(String developerId, String productId) {
+  public RequestRecordView create(String developerId, String productId) {
     LOG.debug("Enter. developerId: {}, productId: {}.", developerId, productId);
 
-    ApplicationRecord statusRequest = ApplicationRecordMapper.build(developerId, productId);
+    RequestRecord statusRequest = RequestRecordMapper.build(developerId, productId);
 
     requestService.save(statusRequest);
 
-    ApplicationRecordView result = ApplicationRecordMapper.toView(statusRequest);
+    RequestRecordView result = RequestRecordMapper.toView(statusRequest);
 
     LOG.debug("Exit.");
 
@@ -80,14 +80,14 @@ public class RequestApplication {
    * @param recordStatus the status
    */
 // 2. 处理开发的请求
-  public void replyRequest(String requestId, RecordStatus recordStatus, ApplicationStatus applicationStatus) {
-    LOG.debug("Enter. requestId: {}, recordStatus: {}, applicationStatus: {}.",
+  public void replyRequest(String requestId, RecordStatus recordStatus, RequestStatus applicationStatus) {
+    LOG.debug("Enter. requestId: {}, recordStatus: {}, requestStatus: {}.",
         requestId, recordStatus, applicationStatus);
 
-    ApplicationRecord statusRequest = requestService.get(requestId);
+    RequestRecord statusRequest = requestService.get(requestId);
 
     statusRequest.setRecordStatus(recordStatus);
-    statusRequest.setApplicationStatus(applicationStatus);
+    statusRequest.setRequestStatus(applicationStatus);
 
     requestService.save(statusRequest);
 
@@ -107,14 +107,14 @@ public class RequestApplication {
   /**
    * Get all application record.
    *
-   * @return list of ApplicationRecordView
+   * @return list of RequestRecordView
    */
-  public List<ApplicationRecordView> getApplication() {
+  public List<RequestRecordView> getApplication() {
     LOG.debug("Enter.");
 
-    List<ApplicationRecord> requests = requestService.getAll();
+    List<RequestRecord> requests = requestService.getAll();
 
-    List<ApplicationRecordView> result = ApplicationRecordMapper.toView(requests);
+    List<RequestRecordView> result = RequestRecordMapper.toView(requests);
 
     LOG.debug("Exit. applicationRecord size: {}.", result.size());
 

@@ -1,7 +1,7 @@
 package com.umasuo.product.domain.model;
 
-import com.umasuo.product.infrastructure.enums.ApplicationStatus;
 import com.umasuo.product.infrastructure.enums.RecordStatus;
+import com.umasuo.product.infrastructure.enums.RequestStatus;
 
 import lombok.Data;
 
@@ -22,10 +22,10 @@ import javax.persistence.Version;
  * 开发者申请变更产品状态的记录.
  */
 @Entity
-@Table(name = "application_record")
+@Table(name = "request_record")
 @Data
 @EntityListeners(AuditingEntityListener.class)
-public class ApplicationRecord {
+public class RequestRecord {
 
   /**
    * The id.
@@ -65,7 +65,7 @@ public class ApplicationRecord {
   /**
    * Admin对开发者申请的处理结果。
    */
-  private ApplicationStatus applicationStatus;
+  private RequestStatus requestStatus;
 
   /**
    * The developerId.

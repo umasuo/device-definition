@@ -1,9 +1,9 @@
 package com.umasuo.product.domain.service;
 
 import com.umasuo.exception.NotExistException;
-import com.umasuo.product.domain.model.ApplicationRecord;
+import com.umasuo.product.domain.model.RequestRecord;
 import com.umasuo.product.infrastructure.enums.RecordStatus;
-import com.umasuo.product.infrastructure.repository.ApplicationRecordRepository;
+import com.umasuo.product.infrastructure.repository.RequestRecordRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,21 +13,21 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Service class for Request.
+ * Service class for RequestRecord.
  */
 @Service
-public class RequestService {
+public class RequestRecordService {
 
   /**
    * Logger.
    */
-  private static final Logger LOG = LoggerFactory.getLogger(RequestService.class);
+  private static final Logger LOG = LoggerFactory.getLogger(RequestRecordService.class);
 
   /**
-   * ApplicationRecordRepository.
+   * RequestRecordRepository.
    */
   @Autowired
-  private transient ApplicationRecordRepository repository;
+  private transient RequestRecordRepository repository;
 
   /**
    * Save status request.
@@ -35,10 +35,10 @@ public class RequestService {
    * @param request the request
    * @return the status request
    */
-  public ApplicationRecord save(ApplicationRecord request) {
+  public RequestRecord save(RequestRecord request) {
     LOG.debug("Enter. request: {}.", request);
 
-    ApplicationRecord savedRequest = repository.save(request);
+    RequestRecord savedRequest = repository.save(request);
 
     LOG.trace("Saved request: {}.", savedRequest);
     LOG.debug("Exit.");
@@ -53,10 +53,10 @@ public class RequestService {
    * @param id the id
    * @return the status request
    */
-  public ApplicationRecord get(String id) {
+  public RequestRecord get(String id) {
     LOG.debug("Enter. id: {}.", id);
 
-    ApplicationRecord request = repository.findOne(id);
+    RequestRecord request = repository.findOne(id);
 
     if (request == null) {
       LOG.debug("Can not find request: {}.", id);
@@ -85,12 +85,12 @@ public class RequestService {
   /**
    * Get all request order by lastModifiedAt.
    *
-   * @return list of ApplicationRecord
+   * @return list of RequestRecord
    */
-  public List<ApplicationRecord> getAll() {
+  public List<RequestRecord> getAll() {
     LOG.debug("Enter.");
 
-    List<ApplicationRecord> requests = repository.findAll();
+    List<RequestRecord> requests = repository.findAll();
 
     LOG.debug("Exit. request size: {}.", requests.size());
 

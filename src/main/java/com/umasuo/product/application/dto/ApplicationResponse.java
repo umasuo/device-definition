@@ -1,8 +1,7 @@
 package com.umasuo.product.application.dto;
 
-import com.umasuo.product.infrastructure.enums.ApplicationStatus;
-import com.umasuo.product.infrastructure.enums.RecordStatus;
 import com.umasuo.product.infrastructure.enums.RequestStatus;
+import com.umasuo.product.infrastructure.enums.RecordStatus;
 
 import lombok.Data;
 
@@ -14,7 +13,7 @@ public class ApplicationResponse {
 
   private RecordStatus recordStatus;
 
-  private ApplicationStatus applicationStatus;
+  private RequestStatus applicationStatus;
 
   /**
    * The version.

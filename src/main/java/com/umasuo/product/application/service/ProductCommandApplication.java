@@ -8,7 +8,7 @@ import com.umasuo.product.application.dto.mapper.ProductMapper;
 import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.service.ProductService;
 import com.umasuo.product.domain.service.ProductTypeService;
-import com.umasuo.product.infrastructure.enums.ApplicationStatus;
+import com.umasuo.product.infrastructure.enums.RequestStatus;
 import com.umasuo.product.infrastructure.enums.ProductStatus;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdaterService;
@@ -161,19 +161,19 @@ public class ProductCommandApplication {
    * @param productId the productId
    * @param status the status
    */
-  public void updateStatusByResponse(String productId, ApplicationStatus status) {
+  public void updateStatusByResponse(String productId, RequestStatus status) {
     LOG.debug("Enter. productId: {}, status: {}.", productId, status);
 
-    if (ApplicationStatus.CREATED.equals(status)) {
+    if (RequestStatus.CREATED.equals(status)) {
       LOG.debug("Admin have not handle the application about product: {}.", productId);
       return;
     }
 
     Product product = productService.get(productId);
 
-    if (ApplicationStatus.AGREE.equals(status)) {
+    if (RequestStatus.AGREE.equals(status)) {
       product.setStatus(ProductStatus.PUBLISHED);
-    } else if (ApplicationStatus.DISAGREE.equals(status)) {
+    } else if (RequestStatus.DISAGREE.equals(status)) {
       product.setStatus(ProductStatus.DEVELOPING);
     }
 

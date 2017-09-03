@@ -1,15 +1,15 @@
 package com.umasuo.product.application.dto;
 
-import com.umasuo.product.infrastructure.enums.ApplicationStatus;
+import com.umasuo.product.infrastructure.enums.RequestStatus;
 import com.umasuo.product.infrastructure.enums.RecordStatus;
 
 import lombok.Data;
 
 /**
- * Application record view class.
+ * Request record view class.
  */
 @Data
-public class ApplicationRecordView {
+public class RequestRecordView {
   /**
    * The id.
    * Created by database when insert.
@@ -39,7 +39,7 @@ public class ApplicationRecordView {
   /**
    * Admin对开发者申请的处理结果。
    */
-  private ApplicationStatus applicationStatus;
+  private RequestStatus applicationStatus;
 
 
   /**
