@@ -192,7 +192,7 @@ public class RequestApplication {
 
     product.setStatus(ProductStatus.REVOKED);
 
-    create(developerId, product.getId(), RequestType.PUBLISH);
+    create(developerId, product.getId(), RequestType.REVOKE);
 
     LOG.debug("Exit. revoke done.");
   }
