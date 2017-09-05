@@ -74,6 +74,7 @@ public final class RequestRecordMapper {
     view.setProductId(entity.getProductId());
     view.setRecordStatus(entity.getRecordStatus());
     view.setApplicationStatus(entity.getRequestStatus());
+    view.setRequestType(entity.getRequestType());
     view.setRemark(entity.getRemark());
 
     return view;

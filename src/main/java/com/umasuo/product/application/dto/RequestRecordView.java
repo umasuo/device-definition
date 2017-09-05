@@ -2,6 +2,7 @@ package com.umasuo.product.application.dto;
 
 import com.umasuo.product.infrastructure.enums.RequestStatus;
 import com.umasuo.product.infrastructure.enums.RecordStatus;
+import com.umasuo.product.infrastructure.enums.RequestType;
 
 import lombok.Data;
 
@@ -41,6 +42,10 @@ public class RequestRecordView {
    */
   private RequestStatus applicationStatus;
 
+  /**
+   * 请求的类型。
+   */
+  private RequestType requestType;
 
   /**
    * The developerId.
