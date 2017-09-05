@@ -1,7 +1,7 @@
 package com.umasuo.product.infrastructure.enums;
 
 /**
- * Created by Davis on 17/7/19.
+ * 开发者申请的类型，包括：PUBLISH － 申请发布，CANCEL － 申请取消，REVOKE － 申请下架.
  */
 public enum RequestType {
   PUBLISH,
