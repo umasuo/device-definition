@@ -117,7 +117,23 @@ public class ProductController {
    */
   @GetMapping(Router.PRODUCT_WITH_ID)
   public ProductView get(@PathVariable String id, @RequestHeader String developerId) {
-    LOG.info("Enter. id: {}.", id);
+    LOG.info("Enter. id: {}, developerId: {}.", id, developerId);
+
+    ProductView view = queryApplication.get(id, developerId);
+
+    LOG.info("Exit. view: {}.", view);
+    return view;
+  }
+
+  /**
+   * Query product by it's id and developerId.
+   * @param id the product id
+   * @param developerId the developer id
+   * @return ProductView
+   */
+  @GetMapping(Router.ADMIN_PRODUCT_WITH_ID)
+  public ProductView getForAdmin(@PathVariable String id, @RequestParam String developerId) {
+    LOG.info("Enter. id: {}, developerId: {}.", id, developerId);
 
     ProductView view = queryApplication.get(id, developerId);
 

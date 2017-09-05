@@ -90,7 +90,7 @@ public class RequestRecordService {
   public List<RequestRecord> getAll() {
     LOG.debug("Enter.");
 
-    List<RequestRecord> requests = repository.findAll();
+    List<RequestRecord> requests = repository.findAllByOrderByLastModifiedAtDesc();
 
     LOG.debug("Exit. request size: {}.", requests.size());
 

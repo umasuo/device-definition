@@ -19,7 +19,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 给平台使用的，用于获取及处理开发者的请求。
@@ -121,18 +124,21 @@ public class RequestApplication {
   }
 
   /**
-   * Get all application record.
+   * 获取所有的申请记录。
    *
-   * @return list of RequestRecordView
+   * @return Map<String, List<RequestRecordView>>
    */
-  public List<RequestRecordView> getApplication() {
+  public Map<String, List<RequestRecordView>> getAllRequests() {
     LOG.debug("Enter.");
 
-    List<RequestRecord> requests = requestService.getAll();
+    List<RequestRecord> requestRecords = requestService.getAll();
 
-    List<RequestRecordView> result = RequestRecordMapper.toView(requests);
+    List<RequestRecordView> views = RequestRecordMapper.toView(requestRecords);
 
-    LOG.debug("Exit. applicationRecord size: {}.", result.size());
+    Map<String, List<RequestRecordView>> result = views.stream().collect(Collectors.groupingBy(
+        RequestRecordView::getProductId, Collectors.toCollection(ArrayList::new)));
+
+    LOG.debug("Exit. product size: {}.", result.size());
 
     return result;
   }

@@ -46,8 +46,10 @@ public final class UnionMapper {
   public static TestUnionView toView(TestUnion testUnion) {
     TestUnionView view = new TestUnionView();
 
-    view.setUnionId(testUnion.getUnionId());
-    view.setSecretKey(testUnion.getSecretKey());
+    if (testUnion != null) {
+      view.setUnionId(testUnion.getUnionId());
+      view.setSecretKey(testUnion.getSecretKey());
+    }
 
     return view;
   }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller class for Request.
@@ -57,10 +58,10 @@ public class RequestController {
    * @return list of RequestRecordView
    */
   @GetMapping(Router.ADMIN_DEVELOPER_APPLICATION_ROOT)
-  public List<RequestRecordView> getDeveloperRequest() {
+  public Map<String, List<RequestRecordView>> getDeveloperRequest() {
     LOG.info("Enter.");
 
-    List<RequestRecordView> result = requestApplication.getApplication();
+    Map<String, List<RequestRecordView>> result = requestApplication.getAllRequests();
 
     LOG.info("Exit. applicationRecord size: {}.", result.size());
 

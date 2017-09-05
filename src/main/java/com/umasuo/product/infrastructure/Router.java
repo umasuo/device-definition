@@ -11,6 +11,11 @@ public class Router {
   public static final String VERSION = "/v1";
 
   /**
+   * The id string.
+   */
+  public static final String ID = "/{id}";
+
+  /**
    * The constant PRODUCT_ROOT.
    */
   public static final String PRODUCT_ROOT = VERSION + "/products";
@@ -18,7 +23,7 @@ public class Router {
   /**
    * The constant PRODUCT_WITH_ID.
    */
-  public static final String PRODUCT_WITH_ID = PRODUCT_ROOT + "/{id}";
+  public static final String PRODUCT_WITH_ID = PRODUCT_ROOT + ID;
 
   /**
    * The constant PRODUCT_STATUS.
@@ -36,14 +41,14 @@ public class Router {
   public static final String PRODUCT_REQUEST = PRODUCT_ROOT + "/request";
 
   /**
-   * The constant PRODUCT_REQUEST_WITH_ID.
-   */
-  public static final String PRODUCT_REQUEST_WITH_ID = PRODUCT_REQUEST + "/{}";
-
-  /**
    * Admin root path: /v1/admin/products
    */
   public static final String ADMIN_PRODUCT_ROOT = VERSION + "/admin/products";
+
+  /**
+   * Admin product path: /v1/admin/products/{id}
+   */
+  public static final String ADMIN_PRODUCT_WITH_ID = ADMIN_PRODUCT_ROOT + ID;
 
   /**
    * Developer application path for admin: /v1/admin/products/applications
@@ -55,7 +60,7 @@ public class Router {
    * One application for developer, path to admin: /v1/admin/products/applications/{id}
    */
   public static final String ADMIN_DEVELOPER_APPLICATION_WITH_ID =
-      ADMIN_DEVELOPER_APPLICATION_ROOT + "/{id}";
+      ADMIN_DEVELOPER_APPLICATION_ROOT + ID;
 
   /**
    * The constant ADMIN_PRODUCT_TYPE_ROOT.
@@ -65,7 +70,7 @@ public class Router {
   /**
    * The constant ADMIN_PRODUCT_TYPE_WITH_ID.
    */
-  public static final String ADMIN_PRODUCT_TYPE_WITH_ID = ADMIN_PRODUCT_TYPE_ROOT + "/{id}";
+  public static final String ADMIN_PRODUCT_TYPE_WITH_ID = ADMIN_PRODUCT_TYPE_ROOT + ID;
 
   /**
    * The constant ADMIN_PRODUCT_COUNT.

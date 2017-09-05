@@ -147,5 +147,5 @@ public class Product implements Serializable {
    * 用于开发测试的UnionId。
    */
   @Embedded
-  private transient TestUnion testUnion = new TestUnion();
+  private TestUnion testUnion = new TestUnion();
 }

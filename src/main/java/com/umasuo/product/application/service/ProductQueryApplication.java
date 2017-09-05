@@ -13,9 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -87,11 +89,14 @@ public class ProductQueryApplication {
       result = fetchProducts(developerId);
     }
 
-    result.stream().forEach(
-        productView -> productView.getDataDefinitions().stream().forEach(
-            data -> data.setDataSchema(JsonUtils.deserialize(data.getSchema(), JsonNode.class))
-        )
-    );
+    Consumer<ProductView> consumer = productView -> {
+      if (!CollectionUtils.isEmpty(productView.getDataDefinitions())) {
+        productView.getDataDefinitions().stream().forEach(
+            data -> data.setDataSchema(JsonUtils.deserialize(data.getSchema(), JsonNode.class)));
+      }
+    };
+
+    result.stream().forEach(consumer);
 
     LOG.trace("products: {}.", result);
     LOG.debug("Exit. product Size: {}.", result.size());
