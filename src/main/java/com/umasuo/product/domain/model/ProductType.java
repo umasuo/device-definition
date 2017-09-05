@@ -21,7 +21,6 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 /**
- * Created by umasuo on 17/6/28.
  * 用于系统预先定义好的一些设备类型，不同设备类型拥有不同的功能，以及数据定义.
  */
 @Entity
@@ -73,6 +72,11 @@ public class ProductType {
    * 产品类别的分组，如大家电，厨电。
    */
   private String groupName;
+
+  /**
+   * 产品类别的图标。
+   */
+  private String icon;
 
   /**
    * 该类设备预先定义好的设备功能.

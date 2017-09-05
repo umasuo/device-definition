@@ -32,6 +32,11 @@ public class ProductTypeView implements Serializable {
   private String groupName;
 
   /**
+   * 产品类别的图标。
+   */
+  private String icon;
+
+  /**
    * The functions.
    */
   private List<CommonFunctionView> functions;

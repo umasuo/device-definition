@@ -6,6 +6,7 @@ import com.umasuo.product.application.dto.ProductDraft;
 import com.umasuo.product.application.dto.ProductView;
 import com.umasuo.product.application.dto.mapper.ProductMapper;
 import com.umasuo.product.domain.model.Product;
+import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.domain.service.ProductService;
 import com.umasuo.product.domain.service.ProductTypeService;
 import com.umasuo.product.infrastructure.enums.RequestStatus;
@@ -79,11 +80,12 @@ public class ProductCommandApplication {
     // 1. 检查名字是否重复
     productService.isExistName(developerId, draft.getName());
 
-    // 2. 检查类型是否存在
+    // 2. 获取产品类型，并检测其是否存在
+    ProductType productType = productTypeService.getById(draft.getProductTypeId());
     productTypeService.exists(draft.getProductTypeId());
 
     // 3. 生成实体对象
-    Product product = ProductMapper.toModel(draft, developerId);
+    Product product = ProductMapper.toModel(draft, developerId, productType.getIcon());
 
     product = productService.save(product);
 

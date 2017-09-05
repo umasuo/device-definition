@@ -127,6 +127,7 @@ public class ProductController {
 
   /**
    * Query product by it's id and developerId.
+   *
    * @param id the product id
    * @param developerId the developer id
    * @return ProductView

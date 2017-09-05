@@ -77,6 +77,7 @@ public final class ProductTypeMapper {
     view.setFunctions(CommonFunctionMapper.toModel(entity.getFunctions()));
     view.setData(Lists.newArrayList());
     view.setVersion(entity.getVersion());
+    view.setIcon(entity.getIcon());
 
     return view;
   }
@@ -93,6 +94,7 @@ public final class ProductTypeMapper {
 
     productType.setName(draft.getName());
     productType.setGroupName(draft.getGroupName());
+    productType.setIcon(draft.getIcon());
 
     return productType;
   }

@@ -5,6 +5,8 @@ import com.umasuo.product.application.dto.ProductView;
 import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.infrastructure.enums.ProductStatus;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +19,22 @@ public final class ProductMapper {
   }
 
   /**
-   * convert from view to domain model
+   * Convert from view to domain model
+   *
+   * @param draft the draft
+   * @param developerId the developer id
+   * @param icon the icon
+   * @return the product
    */
-  public static Product toModel(ProductDraft draft, String developerId) {
+  public static Product toModel(ProductDraft draft, String developerId, String icon) {
     Product product = new Product();
 
     product.setDeveloperId(developerId);
-    product.setIcon(draft.getIcon());
+    if (StringUtils.isNotBlank(draft.getIcon())) {
+      product.setIcon(draft.getIcon());
+    } else {
+      product.setIcon(icon);
+    }
     product.setName(draft.getName());
     product.setProductType(draft.getProductTypeId());
     product.setCommunicationType(draft.getType());
@@ -40,6 +51,9 @@ public final class ProductMapper {
 
   /**
    * convert domain model to view.
+   *
+   * @param product the product
+   * @return the product view
    */
   public static ProductView toView(Product product) {
     ProductView view = new ProductView();
@@ -69,6 +83,9 @@ public final class ProductMapper {
 
   /**
    * convert list build model to list build views.
+   *
+   * @param products the products
+   * @return the list
    */
   public static List<ProductView> toView(List<Product> products) {
     List<ProductView> views = new ArrayList<>();

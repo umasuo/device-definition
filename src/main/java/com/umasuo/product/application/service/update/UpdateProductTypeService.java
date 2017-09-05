@@ -35,6 +35,7 @@ public class UpdateProductTypeService implements Updater<ProductType, UpdateActi
 
     entity.setName(action.getName());
     entity.setGroupName(action.getGroupName());
+    entity.setIcon(action.getIcon());
 
     LOG.debug("Exit.");
   }

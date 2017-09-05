@@ -26,6 +26,11 @@ public class UpdateProductType implements UpdateAction {
   private String groupName;
 
   /**
+   * 产品类别的图标。
+   */
+  private String icon;
+
+  /**
    * Get action name: updateProductType.
    *
    * @return updateProductType
