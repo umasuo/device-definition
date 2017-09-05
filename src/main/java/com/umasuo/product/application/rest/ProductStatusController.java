@@ -1,7 +1,7 @@
 package com.umasuo.product.application.rest;
 
 import com.umasuo.product.application.dto.ProductStatusRequest;
-import com.umasuo.product.application.service.StatusApplication;
+import com.umasuo.product.application.service.RequestApplication;
 import com.umasuo.product.infrastructure.Router;
 
 import org.slf4j.Logger;
@@ -21,32 +21,33 @@ import javax.validation.Valid;
  */
 @CrossOrigin
 @RestController
-public class StatusController {
+public class ProductStatusController {
 
   /**
    * Logger.
    */
-  private static final Logger LOG = LoggerFactory.getLogger(StatusController.class);
+  private static final Logger LOG = LoggerFactory.getLogger(ProductStatusController.class);
 
   /**
-   * ProductCommandApplication.
+   * Request application, to handle the request.
    */
   @Autowired
-  private transient StatusApplication statusApplication;
+  private transient RequestApplication requestApplication;
 
   /**
    * 开发者申请修改产品状态.
    *
-   * @param id the id
+   * @param productId the product id
    * @param developerId the developer id
    * @param request the request
    */
   @PutMapping(Router.PRODUCT_STATUS)
-  public void request(@PathVariable("id") String id, @RequestHeader String developerId,
+  public void request(@PathVariable("id") String productId, @RequestHeader String developerId,
       @RequestBody @Valid ProductStatusRequest request) {
-    LOG.info("Enter. developerId: {}, productId: {}, request: {}.", developerId, id, request);
+    LOG.info("Enter. developerId: {}, productId: {}, request: {}.", developerId, productId,
+        request);
 
-    statusApplication.request(developerId, id, request);
+    requestApplication.handleRequest(developerId, productId, request);
 
     LOG.info("Exit.");
   }

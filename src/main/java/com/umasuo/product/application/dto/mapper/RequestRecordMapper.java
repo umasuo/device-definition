@@ -3,8 +3,9 @@ package com.umasuo.product.application.dto.mapper;
 import com.google.common.collect.Lists;
 import com.umasuo.product.application.dto.RequestRecordView;
 import com.umasuo.product.domain.model.RequestRecord;
-import com.umasuo.product.infrastructure.enums.RequestStatus;
 import com.umasuo.product.infrastructure.enums.RecordStatus;
+import com.umasuo.product.infrastructure.enums.RequestStatus;
+import com.umasuo.product.infrastructure.enums.RequestType;
 
 import org.springframework.util.CollectionUtils;
 
@@ -28,15 +29,16 @@ public final class RequestRecordMapper {
    * @param productId the product id
    * @return the status request
    */
-  public static RequestRecord build(String developerId, String productId) {
-    RequestRecord statusRequest = new RequestRecord();
+  public static RequestRecord build(String developerId, String productId, RequestType requestType) {
+    RequestRecord requestRecord = new RequestRecord();
 
-    statusRequest.setDeveloperId(developerId);
-    statusRequest.setProductId(productId);
-    statusRequest.setRecordStatus(RecordStatus.UNVIEW);
-    statusRequest.setRequestStatus(RequestStatus.CREATED);
+    requestRecord.setDeveloperId(developerId);
+    requestRecord.setProductId(productId);
+    requestRecord.setRecordStatus(RecordStatus.UNVIEW);
+    requestRecord.setRequestStatus(RequestStatus.CREATED);
+    requestRecord.setRequestType(requestType);
 
-    return statusRequest;
+    return requestRecord;
   }
 
   /**

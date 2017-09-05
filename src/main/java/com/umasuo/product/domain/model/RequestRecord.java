@@ -2,6 +2,7 @@ package com.umasuo.product.domain.model;
 
 import com.umasuo.product.infrastructure.enums.RecordStatus;
 import com.umasuo.product.infrastructure.enums.RequestStatus;
+import com.umasuo.product.infrastructure.enums.RequestType;
 
 import lombok.Data;
 
@@ -81,4 +82,9 @@ public class RequestRecord {
    * 备注。
    */
   private String remark;
+
+  /**
+   * 请求类型，包括：申请发布，取消发布，申请下架。
+   */
+  private RequestType requestType;
 }
