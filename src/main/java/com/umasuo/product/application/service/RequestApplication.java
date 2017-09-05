@@ -106,19 +106,19 @@ public class RequestApplication {
    * @param recordStatus the status
    */
   public void replyRequest(String requestId, RecordStatus recordStatus,
-      RequestStatus applicationStatus) {
+      RequestStatus requestStatus) {
     LOG.debug("Enter. requestId: {}, recordStatus: {}, requestStatus: {}.",
-        requestId, recordStatus, applicationStatus);
+        requestId, recordStatus, requestStatus);
 
     RequestRecord statusRequest = requestService.get(requestId);
 
     statusRequest.setRecordStatus(recordStatus);
-    statusRequest.setRequestStatus(applicationStatus);
+    statusRequest.setRequestStatus(requestStatus);
 
     requestService.save(statusRequest);
 
     productCommandApplication
-        .updateStatusByResponse(statusRequest.getProductId(), applicationStatus);
+        .updateStatusByResponse(statusRequest.getProductId(), requestStatus);
 
     LOG.debug("Exit.");
   }

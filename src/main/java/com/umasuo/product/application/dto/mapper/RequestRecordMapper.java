@@ -35,8 +35,12 @@ public final class RequestRecordMapper {
     requestRecord.setDeveloperId(developerId);
     requestRecord.setProductId(productId);
     requestRecord.setRecordStatus(RecordStatus.UNVIEW);
-    requestRecord.setRequestStatus(RequestStatus.CREATED);
     requestRecord.setRequestType(requestType);
+    if (RequestType.PUBLISH.equals(requestType)) {
+      requestRecord.setRequestStatus(RequestStatus.CREATED);
+    } else {
+      requestRecord.setRequestStatus(RequestStatus.AGREE);
+    }
 
     return requestRecord;
   }
