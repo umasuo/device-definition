@@ -1,18 +1,14 @@
 package com.umasuo.product.application.dto;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 import lombok.Data;
 
 import java.io.Serializable;
-
-import javax.persistence.Transient;
 
 /**
  * Created by Davis on 17/6/28.
  */
 @Data
-public class CommonDataView implements Serializable{
+public class CommonDataView implements Serializable {
 
   /**
    * The serialVersionUID.
@@ -43,12 +39,6 @@ public class CommonDataView implements Serializable{
    * The data structure.
    */
   private String schema;
-
-  /**
-   * The dataSchema.
-   */
-  @Transient
-  private transient JsonNode dataSchema;
 
   /**
    * The description.

@@ -1,23 +1,19 @@
 package com.umasuo.product.application.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Lists;
 import com.umasuo.product.application.dto.ProductDataView;
 import com.umasuo.product.application.dto.ProductView;
 import com.umasuo.product.application.dto.mapper.ProductMapper;
 import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.service.ProductService;
-import com.umasuo.util.JsonUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -88,15 +84,6 @@ public class ProductQueryApplication {
       LOG.debug("Cache fail, get from database.");
       result = fetchProducts(developerId);
     }
-
-    Consumer<ProductView> consumer = productView -> {
-      if (!CollectionUtils.isEmpty(productView.getDataDefinitions())) {
-        productView.getDataDefinitions().stream().forEach(
-            data -> data.setDataSchema(JsonUtils.deserialize(data.getSchema(), JsonNode.class)));
-      }
-    };
-
-    result.stream().forEach(consumer);
 
     LOG.trace("products: {}.", result);
     LOG.debug("Exit. product Size: {}.", result.size());

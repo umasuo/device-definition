@@ -1,6 +1,5 @@
 package com.umasuo.product.application.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.umasuo.exception.NotExistException;
 import com.umasuo.product.application.dto.CommonDataView;
 import com.umasuo.product.application.dto.ProductTypeDraft;
@@ -11,13 +10,11 @@ import com.umasuo.product.domain.service.ProductTypeService;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdaterService;
 import com.umasuo.product.infrastructure.validator.VersionValidator;
-import com.umasuo.util.JsonUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -127,8 +124,6 @@ public class ProductTypeApplication {
 
     ProductTypeView updatedProduct = ProductTypeMapper.toView(product, dataDefinitionViews);
 
-    handleSchema(updatedProduct);
-
     LOG.trace("updated productType: {}", updatedProduct);
     LOG.debug("Exit.");
 
@@ -160,8 +155,6 @@ public class ProductTypeApplication {
 
     }
 
-    handleSchema(cacheProductTypes);
-
     LOG.debug("Exit. productType size: {}.", cacheProductTypes.size());
     return cacheProductTypes;
   }
@@ -187,31 +180,5 @@ public class ProductTypeApplication {
 
     LOG.debug("Exit. productType: {}.", result);
     return result;
-  }
-
-  /**
-   * Change string schema to JsonNode schema.
-   *
-   * @param cacheProductTypes list build ProductType
-   */
-  private void handleSchema(List<ProductTypeView> cacheProductTypes) {
-    if (!CollectionUtils.isEmpty(cacheProductTypes)) {
-      cacheProductTypes.stream().forEach(
-          productTypeView -> handleSchema(productTypeView)
-      );
-    }
-  }
-
-  /**
-   * Change string schema to JsonNode schema.
-   *
-   * @param productTypeView the ProductType
-   */
-  private void handleSchema(ProductTypeView productTypeView) {
-    if (!CollectionUtils.isEmpty(productTypeView.getData())) {
-      productTypeView.getData().stream().forEach(
-          data -> data.setDataSchema(JsonUtils.deserialize(data.getSchema(), JsonNode.class))
-      );
-    }
   }
 }

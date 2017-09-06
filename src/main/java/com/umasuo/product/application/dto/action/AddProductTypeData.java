@@ -1,6 +1,5 @@
 package com.umasuo.product.application.dto.action;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdateActionUtils;
 
@@ -35,7 +34,7 @@ public class AddProductTypeData implements UpdateAction {
    * 数据具体的结构.
    */
   @NotNull
-  private JsonNode dataSchema;
+  private String schema;
 
   /**
    * 数据定义id。

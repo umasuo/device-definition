@@ -57,6 +57,7 @@ public final class ProductMapper {
    */
   public static ProductView toView(Product product) {
     ProductView view = new ProductView();
+
     view.setId(product.getId());
     view.setProductTypeId(product.getProductType());
     view.setCreatedAt(product.getCreatedAt());

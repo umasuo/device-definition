@@ -1,13 +1,10 @@
 package com.umasuo.product.application.dto;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.umasuo.product.infrastructure.enums.Category;
 
 import lombok.Data;
 
 import java.io.Serializable;
-
-import javax.persistence.Transient;
 
 /**
  * 产品的具体数据定义。
@@ -39,12 +36,6 @@ public class ProductDataView implements Serializable {
    * The data structure.
    */
   private String schema;
-
-  /**
-   * The dataSchema.
-   */
-  @Transient
-  private transient JsonNode dataSchema;
 
   /**
    * Name build this definition.

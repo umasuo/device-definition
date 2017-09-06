@@ -1,6 +1,5 @@
 package com.umasuo.product.application.dto.action;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdateActionUtils;
 
@@ -30,6 +29,7 @@ public class AddDataDefinition implements UpdateAction {
    * 产品ID.
    */
   private String productId;
+
   /**
    * 数据定义介绍，主要用于介绍此数据格点的用途，目的等。
    */
@@ -39,7 +39,7 @@ public class AddDataDefinition implements UpdateAction {
    * 数据具体的结构.
    */
   @NotNull
-  private JsonNode dataSchema;
+  private String schema;
 
   /**
    * The Openable.

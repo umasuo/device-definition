@@ -1,6 +1,5 @@
 package com.umasuo.product.application.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.umasuo.product.application.dto.ProductDataView;
 import com.umasuo.product.application.dto.ProductDraft;
 import com.umasuo.product.application.dto.ProductView;
@@ -9,13 +8,12 @@ import com.umasuo.product.domain.model.Product;
 import com.umasuo.product.domain.model.ProductType;
 import com.umasuo.product.domain.service.ProductService;
 import com.umasuo.product.domain.service.ProductTypeService;
-import com.umasuo.product.infrastructure.enums.RequestStatus;
 import com.umasuo.product.infrastructure.enums.ProductStatus;
+import com.umasuo.product.infrastructure.enums.RequestStatus;
 import com.umasuo.product.infrastructure.update.UpdateAction;
 import com.umasuo.product.infrastructure.update.UpdaterService;
 import com.umasuo.product.infrastructure.validator.ProductValidator;
 import com.umasuo.product.infrastructure.validator.VersionValidator;
-import com.umasuo.util.JsonUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -148,10 +146,6 @@ public class ProductCommandApplication {
     ProductView updatedProduct = ProductMapper.toView(product);
 
     updatedProduct.setDataDefinitions(productDataViews);
-
-    updatedProduct.getDataDefinitions().stream().forEach(
-        data -> data.setDataSchema(JsonUtils.deserialize(data.getSchema(), JsonNode.class))
-    );
 
     LOG.debug("Exit: updated product: {}", updatedProduct);
     return updatedProduct;
