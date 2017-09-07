@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,7 +49,9 @@ public class CacheApplication {
         redisTemplate.opsForHash().entries(RedisUtils.PRODUCT_TYPE_KEY);
 
     if (!CollectionUtils.isEmpty(cacheProductTypes)) {
-      result = cacheProductTypes.values().stream().collect(Collectors.toList());
+      result = cacheProductTypes.values().stream()
+          .sorted((view1, view2) -> view2.getCreatedAt().compareTo(view1.getCreatedAt()))
+          .collect(Collectors.toList());
     }
 
     LOG.trace("ProductType: {}.", result);
@@ -96,12 +99,12 @@ public class CacheApplication {
     List<ProductView> result = Lists.newArrayList();
 
     String key = String.format(RedisUtils.PRODUCT_KEY_FORMAT, developerId);
-    Map<String, Object> cacheProducts = redisTemplate.opsForHash().entries(key);
+    Map<String, ProductView> cacheProducts = redisTemplate.opsForHash().entries(key);
 
-    if (! CollectionUtils.isEmpty(cacheProducts)) {
-      cacheProducts.entrySet().stream().forEach(
-          entry -> result.add((ProductView) entry.getValue())
-      );
+    if (!CollectionUtils.isEmpty(cacheProducts)) {
+      result = cacheProducts.values().stream()
+          .sorted((view1, view2) -> view2.getCreatedAt().compareTo(view1.getCreatedAt()))
+          .collect(Collectors.toList());
     }
 
     LOG.trace("Products: {}.", result);

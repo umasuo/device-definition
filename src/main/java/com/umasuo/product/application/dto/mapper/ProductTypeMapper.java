@@ -78,6 +78,8 @@ public final class ProductTypeMapper {
     view.setData(Lists.newArrayList());
     view.setVersion(entity.getVersion());
     view.setIcon(entity.getIcon());
+    view.setCreatedAt(entity.getCreatedAt());
+    view.setLastModifiedAt(entity.getLastModifiedAt());
 
     return view;
   }

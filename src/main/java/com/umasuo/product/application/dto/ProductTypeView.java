@@ -50,4 +50,14 @@ public class ProductTypeView implements Serializable {
    * The version.
    */
   private Integer version;
+
+  /**
+   * Create time.
+   */
+  private Long createdAt;
+
+  /**
+   * Last modify time.
+   */
+  private Long lastModifiedAt;
 }
