@@ -4,9 +4,16 @@ import com.umasuo.product.domain.model.ProductType;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
- * Created by Davis on 17/6/28.
+ * Repository class for ProductType.
  */
 public interface ProductTypeRepository extends JpaRepository<ProductType, String> {
 
+  /**
+   * Find all ProductType order by
+   * @return
+   */
+  List<ProductType> findAllByOrderByCreatedAt();
 }

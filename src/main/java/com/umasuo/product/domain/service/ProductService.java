@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,7 +69,13 @@ public class ProductService {
   public List<Product> getByDeveloperId(String developerId) {
     LOG.debug("Enter. developerId: {}.", developerId);
 
-    List<Product> products = repository.findAllByDeveloperId(developerId);
+    Product sample = new Product();
+    sample.setDeveloperId(developerId);
+
+    Example<Product> example = Example.of(sample);
+    Sort sort = new Sort(Direction.ASC, "createdAt");
+
+    List<Product> products = repository.findAll(example, sort);
 
     LOG.debug("Exit. products size: {}.", products.size());
 

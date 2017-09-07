@@ -65,7 +65,7 @@ public class ProductTypeService {
   public List<ProductType> getAll() {
     LOG.debug("Enter.");
 
-    List<ProductType> productTypes = repository.findAll();
+    List<ProductType> productTypes = repository.findAllByOrderByCreatedAt();
 
     LOG.debug("Exit. productType size: {}.", productTypes.size());
 

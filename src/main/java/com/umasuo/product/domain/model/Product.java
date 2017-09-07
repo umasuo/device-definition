@@ -124,7 +124,7 @@ public class Product implements Serializable {
    * 使用orphanRemoval是为了可以在product这边把function删除。
    */
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-  @OrderBy("functionId")
+  @OrderBy("createdAt")
   private List<ProductFunction> productFunctions;
 
   /**

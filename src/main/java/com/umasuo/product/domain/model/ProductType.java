@@ -17,6 +17,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -82,6 +83,7 @@ public class ProductType {
    * 该类设备预先定义好的设备功能.
    */
   @OneToMany(cascade = CascadeType.ALL)
+  @OrderBy("createdAt")
   private List<CommonFunction> functions;
 
   /**
