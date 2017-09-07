@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -298,9 +299,9 @@ public class RestClient {
       LOG.debug("url: {}.", url);
       ResponseEntity response = restTemplate.exchange(url, POST, entity, Map.class);
       newDataDefinitionId = ((LinkedHashMap) response.getBody()).get("id").toString();
-    } catch (RestClientException ex) {
+    } catch (InvalidMediaTypeException | RestClientException ex) {
       LOG.debug("Wrong when create dataDefinition.", ex);
-      throw new ParametersException("Something wrong when create dataDefinition");
+      throw new ParametersException("Wrong when create dataDefinition, maybe dataId exist");
     }
 
     LOG.debug("Exit. new dataDefinition id: {}.", newDataDefinitionId);
